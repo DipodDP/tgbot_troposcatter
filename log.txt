@@ -1,0 +1,609 @@
+bot.py:49 #INFO     [2022-04-15 21:05:06,867] - __main__ - Starting bot
+dispatcher.py:358 #INFO     [2022-04-15 21:05:06,882] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-15 21:06:28,738] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:75 #ERROR    [2022-04-15 21:06:28,738] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-15 21:06:28,753] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:26:14,737] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:26:15,303] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:26:16,082] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-20 15:26:37,072] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:26:37,073] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:26:37,085] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:26:37,882] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:26:38,294] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:26:38,807] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-20 15:26:39,039] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:26:39,040] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:26:39,052] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:26:39,847] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:26:40,210] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:26:40,680] - aiogram.dispatcher.dispatcher - Start polling.
+big_brother.py:12 #INFO     [2022-04-20 15:26:45,489] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:26:45,489] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:26:45,489] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:26:45,489] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:26:45,489] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:26:45,490] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:26:45,490] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:26:45,490] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:45,490] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:26:45,490] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:45,490] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:26:45,490] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:45,490] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:26:45,491] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:26:45,491] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:26:45,630] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0D3F0>, 'command': Command.CommandObj(prefix='/', command='start', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:26:45,630] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:26:45,630] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:26:45,630] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:26:46,951] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:26:46,951] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:26:46,951] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:26:46,951] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:26:46,951] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:26:46,951] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:26:46,951] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:26:46,952] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:46,952] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:26:46,952] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:46,952] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:26:46,952] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:26:46,952] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:26:47,090] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0DBD0>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:26:47,090] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:26:47,090] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:26:47,090] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:26:51,227] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:26:51,228] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:26:51,228] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:26:51,228] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:26:51,228] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:26:51,228] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:26:51,228] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:26:51,228] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:51,228] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:26:51,228] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:51,228] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:26:51,229] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:26:51,229] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:26:51,351] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0DF90>, 'raw_state': 'BotStates:s_names'}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:26:51,351] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:26:51,351] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:26:51,351] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:26:53,879] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:26:53,879] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:26:53,879] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:26:53,879] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:26:53,880] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:26:53,880] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:26:53,880] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:26:53,880] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:53,880] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:26:53,880] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:26:53,880] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:26:53,880] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:26:53,880] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:26:54,012] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0E290>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:26:54,012] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:26:54,012] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:26:54,012] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:26:55,589] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:26:55,589] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:26:55,589] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:26:55,589] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:26:55,589] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:26:55,824] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:26:55,824] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:00,656] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:00,656] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:00,656] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:00,656] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:00,656] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:27:01,362] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:01,362] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:05,706] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:05,706] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:05,706] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:05,706] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:05,706] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:27:05,707] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:27:05,707] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:27:05,707] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:05,707] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:05,707] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:05,707] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:05,707] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:05,707] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:27:05,707] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:27:05,708] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:27:05,905] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0F4F0>, 'command': Command.CommandObj(prefix='/', command='start', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:27:05,905] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:27:05,905] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:05,905] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:12,769] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:12,769] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:12,769] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:12,769] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:12,770] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:27:12,770] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:27:12,770] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:27:12,770] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:12,770] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:12,770] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:12,770] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:27:12,771] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:27:12,771] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:27:12,904] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0FF40>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:27:12,904] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:27:12,904] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:12,904] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:18,945] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:18,945] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:18,946] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:18,946] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:18,946] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:27:18,946] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:27:18,946] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:27:18,946] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:18,946] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:18,946] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:18,946] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:27:18,947] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:27:18,947] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:27:19,104] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0DB70>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:27:19,104] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:27:19,104] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:19,104] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:24,511] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:24,511] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:24,511] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:24,511] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:24,511] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:27:24,512] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:27:24,512] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:27:24,512] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:24,512] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:24,512] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:24,512] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:24,512] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:24,512] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:27:24,512] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:27:24,513] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:27:24,654] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0D540>, 'command': Command.CommandObj(prefix='/', command='start', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:27:24,654] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:27:24,654] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:24,654] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:27:25,860] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:27:25,860] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:27:25,860] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:27:25,860] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:27:25,860] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:27:25,861] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:27:25,861] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:27:25,861] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:25,861] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:27:25,861] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:27:25,861] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:27:25,862] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:27:25,862] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:27:26,014] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128FD4A00>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:27:26,014] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:27:26,014] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:27:26,014] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:30:31,494] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:30:31,494] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:30:31,494] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:30:31,494] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:30:31,494] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:30:31,494] - root - 3. preprocess message data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>}
+big_brother.py:36 #INFO     [2022-04-20 15:30:31,494] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:30:31,494] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:30:31,494] - root - Next: process message
+admin.py:18 #INFO     [2022-04-20 15:30:31,495] - root - 4. filter data={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:30:31,495] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:30:31,495] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:30:31,495] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:30:31,631] - root - 7. post process messagedata={'user': <tgbot.models.models.User object at 0x000001A128F0CAF0>, 'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001A128F0E140>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:30:31,631] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:30:31,631] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:30:31,631] - root - -----------------Exit-----------------
+dispatcher.py:405 #WARNING  [2022-04-20 15:31:17,398] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:31:17,399] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:31:17,411] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:31:18,219] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:31:18,578] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:31:19,045] - aiogram.dispatcher.dispatcher - Start polling.
+big_brother.py:12 #INFO     [2022-04-20 15:31:23,957] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:23,957] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:23,957] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:23,957] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:23,957] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:23,957] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:23,957] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:23,958] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:23,958] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:24,093] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E4430>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:24,093] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:24,093] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:24,093] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:26,071] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:26,071] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:26,071] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:26,071] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:26,071] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:26,072] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:26,072] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:26,072] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:26,072] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:26,201] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E54E0>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:26,201] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:26,201] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:26,201] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:31,898] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:31,898] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:31,898] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:31,898] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:31,898] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:31,898] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:31,898] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:31,899] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:31,899] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:32,128] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E5BA0>, 'raw_state': None, 'command': Command.CommandObj(prefix='/', command='item', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:32,128] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:32,128] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:32,128] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:39,903] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:39,903] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:39,903] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:39,903] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:39,903] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:31:40,275] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:40,275] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:46,825] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:46,825] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:46,825] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:46,825] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:46,825] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:46,825] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:46,825] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:46,826] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:46,826] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:47,222] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E5F60>, 'command': Command.CommandObj(prefix='/', command='help', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:47,222] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:47,222] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:47,222] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:48,597] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:48,597] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:48,597] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:48,597] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:48,597] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:48,597] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:48,597] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:48,598] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:48,598] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:48,763] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E6890>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:48,763] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:48,763] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:48,763] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:53,353] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:53,353] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:53,353] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:53,353] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:53,353] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:53,353] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:53,353] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:53,354] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:53,354] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:53,481] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E6CE0>, 'raw_state': 'BotStates:s_names'}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:53,481] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:53,481] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:53,481] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:57,327] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:57,327] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:57,327] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:57,327] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:57,327] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:31:57,327] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:31:57,327] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:31:57,328] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:31:57,328] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:31:57,511] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E6410>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:31:57,511] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:31:57,511] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:57,511] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:31:59,093] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:31:59,093] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:31:59,093] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:31:59,093] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:31:59,093] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:31:59,361] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:31:59,361] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:36:53,131] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:36:53,131] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:36:53,131] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:36:53,132] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:36:53,132] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:36:53,132] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:36:53,132] - root - Next: filters, process message
+admin.py:18 #INFO     [2022-04-20 15:36:53,132] - root - 4. filter data={'mware_data': 'Send to on_process_message'}
+admin.py:19 #INFO     [2022-04-20 15:36:53,132] - root - Next: process message
+big_brother.py:42 #INFO     [2022-04-20 15:36:53,132] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:36:53,132] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:36:53,278] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E6F50>, 'command': Command.CommandObj(prefix='/', command='start', mention='')}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:36:53,278] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:36:53,279] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:36:53,279] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:36:54,394] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:36:54,394] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:36:54,394] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:36:54,394] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:36:54,395] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:36:54,395] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:36:54,395] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:36:54,395] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:36:54,395] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:36:54,565] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E6F20>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:36:54,566] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:36:54,566] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:36:54,566] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:36:58,925] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:36:58,925] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:36:58,925] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:36:58,925] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:36:58,926] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:36:58,926] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:36:58,926] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:36:58,926] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:36:58,926] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:36:59,133] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E60B0>, 'raw_state': 'BotStates:s_names'}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:36:59,133] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:36:59,133] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:36:59,133] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:04,955] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:04,955] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:04,955] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:04,955] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:04,955] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:37:04,956] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:37:04,956] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:37:04,956] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:37:04,956] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:37:05,179] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E72B0>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:37:05,179] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:37:05,179] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:05,179] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:06,992] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:06,992] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:06,992] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:06,992] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:06,992] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:37:07,215] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:07,215] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:20,334] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:20,335] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:20,335] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:20,335] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:20,335] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:37:20,557] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:20,557] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:21,061] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:21,061] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:21,061] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:21,061] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:21,061] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:37:21,406] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:21,406] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:25,208] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:25,208] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:25,208] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:25,208] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:25,208] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:37:25,209] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:37:25,209] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:37:25,209] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:37:25,209] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:37:25,365] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E54B0>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:37:25,365] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:37:25,365] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:25,365] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:28,748] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:28,748] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:28,748] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:28,748] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:28,748] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:37:28,748] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:37:28,748] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:37:28,749] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:37:28,749] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:37:28,879] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD95E5930>, 'raw_state': 'BotStates:s_names'}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:37:28,879] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:37:28,879] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:28,879] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:37:31,399] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:37:31,400] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:37:31,400] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:37:31,400] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:37:31,400] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:37:31,400] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:37:31,400] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:37:31,400] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:37:31,400] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:37:31,544] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD96A80A0>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:37:31,544] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:37:31,544] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:37:31,544] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:50,628] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:50,628] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:50,628] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:50,628] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:50,628] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:38:50,848] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:50,848] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:52,068] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:52,068] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:52,068] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:52,068] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:52,068] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:38:52,365] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:52,365] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:54,981] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:54,981] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:54,981] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:54,981] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:54,981] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:38:55,230] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:55,230] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:55,944] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:55,944] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:55,944] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:55,945] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:55,945] - root - Next: pre process message
+big_brother.py:12 #INFO     [2022-04-20 15:38:56,162] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:56,162] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:56,162] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:56,162] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:56,162] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:38:56,257] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:56,257] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:56,357] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:56,358] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:56,358] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:56,358] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:56,358] - root - Next: pre process message
+big_brother.py:55 #INFO     [2022-04-20 15:38:56,499] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:56,499] - root - -----------------Exit-----------------
+big_brother.py:55 #INFO     [2022-04-20 15:38:56,670] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:56,670] - root - -----------------Exit-----------------
+big_brother.py:12 #INFO     [2022-04-20 15:38:59,522] - root - ---------------New_update---------------
+big_brother.py:13 #INFO     [2022-04-20 15:38:59,522] - root - 1. pre process update
+big_brother.py:14 #INFO     [2022-04-20 15:38:59,522] - root - Next: process update
+big_brother.py:30 #INFO     [2022-04-20 15:38:59,522] - root - 2. process update data={'mware_data': 'Send to on_post_process_update'}
+big_brother.py:31 #INFO     [2022-04-20 15:38:59,522] - root - Next: pre process message
+big_brother.py:35 #INFO     [2022-04-20 15:38:59,522] - root - 3. preprocess message data={}
+big_brother.py:36 #INFO     [2022-04-20 15:38:59,522] - root - Next: filters, process message
+big_brother.py:42 #INFO     [2022-04-20 15:38:59,523] - root - 5. process message
+big_brother.py:43 #INFO     [2022-04-20 15:38:59,523] - root - Next: handler
+big_brother.py:49 #INFO     [2022-04-20 15:38:59,652] - root - 7. post process messagedata={'mware_data': 'Send to hadnler', 'state': <aiogram.dispatcher.storage.FSMContext object at 0x000001ADD96A8C70>}data_from_handler=[]
+big_brother.py:50 #INFO     [2022-04-20 15:38:59,652] - root - Next: post process update
+big_brother.py:55 #INFO     [2022-04-20 15:38:59,652] - root - 8. post process updatedata={'mware_data': 'Send to on_post_process_update'}, data_from_handler=[[]]
+big_brother.py:56 #INFO     [2022-04-20 15:38:59,652] - root - -----------------Exit-----------------
+dispatcher.py:405 #WARNING  [2022-04-20 15:39:16,846] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:39:16,848] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:39:16,861] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:39:17,702] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:39:18,052] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:39:18,490] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-20 15:39:25,398] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:39:25,399] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:39:25,411] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:39:29,207] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:39:29,630] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:39:30,264] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-20 15:39:42,558] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:39:42,559] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:39:42,571] - aiogram.dispatcher.dispatcher - Stop polling...
+bot.py:64 #INFO     [2022-04-20 15:39:52,775] - __main__ - Starting bot
+notify_admins.py:14 #ERROR    [2022-04-20 15:39:53,208] - root - Chat not found
+Traceback (most recent call last):
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\tgbot\misc\notify_admins.py", line 12, in on_startup_notify
+    await dp.bot.send_message(admin, "Bot is running and ready")
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\bot.py", line 334, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\base.py", line 231, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "C:\Users\DP\Documents\GitHub\tgbot_troposcatter\venv\lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+dispatcher.py:358 #INFO     [2022-04-20 15:39:53,671] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:405 #WARNING  [2022-04-20 15:40:14,468] - aiogram.dispatcher.dispatcher - Polling is stopped.
+bot.py:94 #ERROR    [2022-04-20 15:40:14,469] - __main__ - Bot stopped!
+dispatcher.py:433 #INFO     [2022-04-20 15:40:14,481] - aiogram.dispatcher.dispatcher - Stop polling...
