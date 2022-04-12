@@ -1,6 +1,8 @@
+import logging
 import typing
 
 from aiogram.dispatcher.filters import BoundFilter
+from aiogram.dispatcher.handler import ctx_data
 
 from tgbot.config import Config
 
@@ -12,6 +14,10 @@ class AdminFilter(BoundFilter):
         self.is_admin = is_admin
 
     async def check(self, obj):
+        data = ctx_data.get()
+        logging.info(f'4. filter {data=}')
+        logging.info('Next: process message')
+
         if self.is_admin is None:
             return False
         config: Config = obj.bot.get('config')

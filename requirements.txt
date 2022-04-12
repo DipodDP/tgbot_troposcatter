@@ -1,3 +1,9 @@
 aiogram~=2.18
-aioredis~=2.0
+aioredis ~=2.0.1
 environs~=9.0
+
+numpy~=1.22.3
+matplotlib~=3.5.1
+scipy~=1.8.0
+
+progress~=1.6

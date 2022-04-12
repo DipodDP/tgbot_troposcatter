@@ -61,5 +61,3 @@ venv.bak/
 .pyre/
 .idea/*
 .env
-/ubuntu/
-/tgbot/services/sites coords/
