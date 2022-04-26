@@ -1,5 +1,5 @@
-aiogram~=2.18
-aioredis ~=2.0.1
+aiogram=latest
+aioredis~=2.0.1
 environs~=9.0
 
 numpy~=1.22.3

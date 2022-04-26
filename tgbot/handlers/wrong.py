@@ -11,6 +11,6 @@ async def unkw_text(message: Message):
     await message.reply("Неизвестная команда")
 
 
-def register_user(dp: Dispatcher):
+def register_wrong(dp: Dispatcher):
     dp.register_message_handler(bad_words, bad_words=True, state="*")
     dp.register_message_handler(unkw_text, ChatTypeFilter(types.ChatType.PRIVATE), state="*")
