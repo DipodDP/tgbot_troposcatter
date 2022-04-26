@@ -8,25 +8,18 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
 from tgbot.filters.bad_words import BadWords
-from tgbot.handlers.acl_test import register_acl_test
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.calc_t_menu_buttons import register_calc_t_menu_buttons
 from tgbot.handlers.calc_t_menu_sites import register_calc_t_menu_sites
 from tgbot.handlers.climate_zone_menu import register_climate_zone_menu
-from tgbot.handlers.echo import register_echo
 from tgbot.handlers.error_handler import register_errors
-from tgbot.handlers.menu import register_menu
 from tgbot.handlers.my_id import register_my_id
-from tgbot.handlers.purchases import register_purchase
 from tgbot.handlers.show_bot_inf_menu import register_show_bot_inf_menu
 from tgbot.handlers.start import register_start
 from tgbot.handlers.sticker import register_sticker
-from tgbot.handlers.user import register_user
-from tgbot.middlewares.acl import ACLMiddleware
+from tgbot.handlers.wrong import register_wrong
 from tgbot.middlewares.big_brother import BigBrother
-from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.rate_limit import RateLimitMiddleware
-from tgbot.middlewares.sentinel import Sentinel
 from tgbot.misc.notify_admins import on_startup_notify
 from tgbot.misc.setting_comands import set_all_default_commands
 
@@ -35,9 +28,6 @@ logger = logging.getLogger(__name__)
 
 def register_all_middlewares(dp):
     dp.setup_middleware(RateLimitMiddleware())
-    dp.setup_middleware(DbMiddleware())
-    dp.setup_middleware(ACLMiddleware())
-    dp.setup_middleware(Sentinel())
     dp.setup_middleware(BigBrother())
 
 
@@ -47,19 +37,15 @@ def register_all_filters(dp):
 
 
 def register_all_handlers(dp):
-    register_acl_test(dp)
     register_admin(dp)
     register_start(dp)
     register_calc_t_menu_buttons(dp)
     register_calc_t_menu_sites(dp)
     register_climate_zone_menu(dp)
     register_show_bot_inf_menu(dp)
-    register_menu(dp)
     register_my_id(dp)
     register_sticker(dp)
-    register_purchase(dp)
-    register_user(dp)
-    register_echo(dp)
+    register_wrong(dp)
     register_errors(dp)
 
 
