@@ -1,8 +1,8 @@
 # functions for troposphere trace analysis
 import math
 
-import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib.pyplot import subplots
+from numpy import correlate, pad, ones, zeros, polyval, fromfile, hstack, column_stack
 
 from tgbot.services import async_path_profiler
 
@@ -57,24 +57,24 @@ def filt_elevation_profile(els, aa_level):
     # z1 = round(els_fft.size - els_fft.size/(2*aa_level))
     # els_fft[z0:z1] = 0
     # ret_els = sf.ifft(els_fft)[10:els_fft.size-10].real
-    win = np.ones(5) / 5;
-    ret_els = np.correlate(np.pad(els, (10, 10), 'edge'), win, 'same')[10:els.size + 10]
+    win = ones(5) / 5;
+    ret_els = correlate(pad(els, (10, 10), 'edge'), win, 'same')[10:els.size + 10]
 
     return ret_els
 
 
 def get_line_pol(p0, p1):
-    pol = np.zeros(2);
+    pol = zeros(2);
     pol[0] = (p1[1] - p0[1]) / (p1[0] - p0[0]);
     pol[1] = p0[1] - pol[0] * p0[0];
     return pol
 
 
 def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha):
-    fig, axes = plt.subplots(2, 1, figsize=[19.20, 5.4])
+    fig, axes = subplots(2, 1, figsize=[19.20, 5.4])
 
     # plot plain profile
-    zero_line = np.zeros(dist.size)
+    zero_line = zeros(dist.size)
     if els.min() < 0:
         zero_line = zero_line + els.min()
 
@@ -102,8 +102,8 @@ def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha):
     pol_2 = get_line_pol((dist[-1], els_curved[-1] + ha),
                          (dist[hca_dist_ind[1]], els_curved[hca_dist_ind[1]]))
 
-    axes[1].plot(dist, np.polyval(pol_1, dist), 'k', lw=1)
-    axes[1].plot(dist, np.polyval(pol_2, dist), 'k', lw=1)
+    axes[1].plot(dist, polyval(pol_1, dist), 'k', lw=1)
+    axes[1].plot(dist, polyval(pol_2, dist), 'k', lw=1)
 
     crosspoint = ((pol_2[1] - pol_1[1]) / (pol_1[0] - pol_2[0]),
                   (pol_2[1] - pol_1[1]) / (pol_1[0] - pol_2[0]) * pol_1[0] + pol_1[1])
@@ -162,14 +162,14 @@ def profile_an(prof, pathfilename, ha=2):
 async def coords_analyzis(coord_a, coord_b, Lk, pathfilename, ha=2):
     # try to load path_coords from the file
     try:
-        tmp = np.fromfile(pathfilename + '.path').reshape((-1, 4))
+        tmp = fromfile(pathfilename + '.path').reshape((-1, 4))
         path = {'coordinates': tmp[:, 0:2], 'distance': tmp[:, 2], 'elevation': tmp[:, 3]}
     except Exception:
         # there are problems with read file or path_coords didn't match.
         # get the new one
         path = await async_path_profiler.get_profile(coord_a, coord_b, 0.2)
-        tmp = np.hstack((path['coordinates'],
-                         np.column_stack((path['distance'], path['elevation']))))
+        tmp = hstack((path['coordinates'],
+                      column_stack((path['distance'], path['elevation']))))
         tmp.tofile(pathfilename + '.path')
 
     L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum = profile_an(path, pathfilename, ha)

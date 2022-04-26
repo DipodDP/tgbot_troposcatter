@@ -2,7 +2,7 @@ import http.client
 import json
 import time
 
-import numpy as np
+from numpy import zeros
 from progress.bar import Bar
 
 BLOCK_SIZE = 256
@@ -18,7 +18,7 @@ async def get_elevations(coord_vect):
     }
 
     blocks_num = coord_vect.shape[0] // BLOCK_SIZE;
-    els = np.zeros(BLOCK_SIZE * blocks_num)
+    els = zeros(BLOCK_SIZE * blocks_num)
     bar = Bar('Retreiving data', max=blocks_num)
 
     for n in range(blocks_num):
