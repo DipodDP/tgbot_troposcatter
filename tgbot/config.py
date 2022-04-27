@@ -16,6 +16,7 @@ class TgBot:
     token: str
     admin_ids: list[int]
     use_redis: bool
+    proxy: str
 
 
 @dataclass
@@ -39,6 +40,7 @@ def load_config(path: str = None):
             token=env.str("BOT_TOKEN"),
             admin_ids=list(map(int, env.list("ADMINS"))),
             use_redis=env.bool("USE_REDIS"),
+            proxy=env.str("PROXY_URL"),
         ),
         db=DbConfig(
             host=env.str('DB_HOST'),

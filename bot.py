@@ -1,9 +1,11 @@
 import asyncio
+import aiohttp
 import logging
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.utils.markdown import text, bold, code, italic
 
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
@@ -49,6 +51,11 @@ def register_all_handlers(dp):
     register_errors(dp)
 
 
+async def fetch(url, session):
+    async with session.get(url) as response:
+        return await response.text()
+
+
 async def main():
     logging.basicConfig(
         # filename='log.txt',
@@ -59,10 +66,19 @@ async def main():
     config = load_config(".env")
 
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
-    bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
+    bot = Bot(token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy)
     dp = Dispatcher(bot, storage=storage)
 
     bot['config'] = config
+    # NOTE: If authentication is required in your proxy then uncomment next line and change login/password for it
+    # PROXY_AUTH = aiohttp.BasicAuth(login='login', password='password')
+    # And add `proxy_auth=PROXY_AUTH` argument, like this:
+    # >>> bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)
+    # Also you can use Socks5 proxy but you need manually install aiohttp_socks package.
+
+    # Get my ip URL
+
+    GET_IP_URL = 'http://bot.whatismyipaddress.com/'
 
     register_all_middlewares(dp)
     register_all_filters(dp)
@@ -72,6 +88,22 @@ async def main():
 
     # start
     await set_all_default_commands(bot)
+    await types.ChatActions.typing()
+
+    content = []
+    # Make request (without proxy)
+
+    async with aiohttp.ClientSession() as session:
+
+        ip = await fetch(GET_IP_URL, session)
+
+    content.append(text(':globe_showing_Americas:', bold('IP:'), code(ip)))
+    # This line is formatted to '🌎 *IP:* `YOUR IP`'
+
+    # Make request through bot's proxy
+
+    ip = await fetch(GET_IP_URL, await bot.get_session())
+    print(ip)
 
     try:
         await dp.start_polling()
