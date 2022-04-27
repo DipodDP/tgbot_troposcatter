@@ -1,7 +1,10 @@
 import logging
 
 import aiohttp
+<<<<<<< HEAD
 from environs import Env
+=======
+>>>>>>> 6d83389 (proxy light)
 
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
@@ -11,6 +14,7 @@ from aiogram.utils.executor import start_polling
 from aiogram.utils.markdown import bold, code, italic, text
 
 # Configure bot here
+<<<<<<< HEAD
 env = Env()
 env.read_env(".env")
 
@@ -18,6 +22,10 @@ API_TOKEN = env.str("BOT_TOKEN")
 PROXY_URL = env.str("PROXY_URL")
 # API_TOKEN = '5127325173:AAE4Vq0cOVphdMKU8rwenQ9xsCSg773HnYg'
 # PROXY_URL = 'http://proxy.server:3128'
+=======
+API_TOKEN = '5127325173:AAE4Vq0cOVphdMKU8rwenQ9xsCSg773HnYg'
+PROXY_URL = 'http://proxy.server:3128'
+>>>>>>> 6d83389 (proxy light)
 # Or 'socks5://host:port'
 
 # NOTE: If authentication is required in your proxy then uncomment next line and change login/password for it
@@ -27,7 +35,11 @@ PROXY_URL = env.str("PROXY_URL")
 # Also you can use Socks5 proxy but you need manually install aiohttp_socks package.
 
 # Get my ip URL
+<<<<<<< HEAD
 GET_IP_URL = 'https://api.myip.com/'
+=======
+GET_IP_URL = 'http://bot.whatismyipaddress.com/'
+>>>>>>> 6d83389 (proxy light)
 
 logging.basicConfig(level=logging.INFO)
 
