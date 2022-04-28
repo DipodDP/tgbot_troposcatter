@@ -1,8 +1,8 @@
-import http.client
+import requests
 import json
 import time
 
-from numpy import zeros
+import numpy as np
 from progress.bar import Bar
 
 BLOCK_SIZE = 256
@@ -11,27 +11,27 @@ BLOCK_SIZE = 256
 async def get_elevations(coord_vect):
     assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
 
-    conn = http.client.HTTPSConnection("geo-services-by-mvpc-com.p.rapidapi.com")
+    url = "https://geo-services-by-mvpc-com.p.rapidapi.com/elevation"
+
     headers = {
-        'x-rapidapi-host': "geo-services-by-mvpc-com.p.rapidapi.com",
-        'x-rapidapi-key': "16e3b027e2mshb4312fe84fe66e2p1f76b7jsn7d81aa678c1b"
+        "X-RapidAPI-Host": "geo-services-by-mvpc-com.p.rapidapi.com",
+        "X-RapidAPI-Key": "16e3b027e2mshb4312fe84fe66e2p1f76b7jsn7d81aa678c1b"
     }
 
     blocks_num = coord_vect.shape[0] // BLOCK_SIZE;
-    els = zeros(BLOCK_SIZE * blocks_num)
+    els = np.zeros(BLOCK_SIZE * blocks_num)
     bar = Bar('Retreiving data', max=blocks_num)
 
     for n in range(blocks_num):
-        req_str = "/elevation?locations="
+        querystring = {"locations": ''}
         for c in coord_vect[n * BLOCK_SIZE: (n + 1) * BLOCK_SIZE]:
-            req_str += f'{c[0]:.6f},{c[1]:.6f}|'
-        req_str = req_str[:-1];
+            querystring["locations"] += f'{c[0]:.6f},{c[1]:.6f}|'
+        querystring["locations"] = querystring["locations"][:-1]
 
-        conn.request("GET", req_str, headers=headers)
-        res = conn.getresponse()
-        resp = res.read()
-        resp_data = json.loads(resp);
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        resp_data = json.loads(response.text)
 
+        print(f'{querystring}/{resp_data}')
         for i in range(BLOCK_SIZE):
             els[n * BLOCK_SIZE + i] = resp_data['data'][i]['elevation']
 

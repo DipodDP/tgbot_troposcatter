@@ -61,5 +61,8 @@ venv.bak/
 .pyre/
 .idea/*
 .env
-/ubuntu/
-/tgbot/services/sites coords/
+
+# calculation results
+*.trlc
+*.path
+*.png

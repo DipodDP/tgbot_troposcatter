@@ -58,7 +58,8 @@ async def btn_next_handler(message: Message, state: FSMContext):
             await CalcMenuStates.s_coords.set()
 
     elif curr_state == 'CalcMenuStates:s_coords':
-        await message.answer('Нажмите кнопку ' + reply.btn_next.text + ' для начала расчета')
+        await message.answer('Нажмите кнопку ' + reply.btn_next.text + ' для начала расчета',
+                             reply_markup=reply.calc_t_menu)
         await CalcMenuStates.got_s_coords.set()
 
     elif curr_state == 'CalcMenuStates:got_s_coords':

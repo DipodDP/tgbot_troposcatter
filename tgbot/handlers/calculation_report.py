@@ -1,3 +1,4 @@
+from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
@@ -35,11 +36,13 @@ async def calc_report(message: Message, state: FSMContext):
         coords_dec = sites[1]
         coords = sites[2]
 
+        await types.ChatActions.typing()
         await message.bot.send_message(message.from_user.id,
                                        text='Координаты точек: \n\n'
                                             + s_name[0] + ':\nШирота: ' + coords[0] + '\nДолгота: ' + coords[1] + '\n\n'
                                             + s_name[1] + ':\nШирота: ' + coords[2] + '\nДолгота: ' + coords[3])
 
+        await types.ChatActions.typing()
         azim1, azim2, mazim1, mazim2 = await get_azim(coords_dec)
         azimuth = str(
             'Азимут на точку ' + s_name[1] + ': ' + str(azim1) + '°\n' +
@@ -52,6 +55,7 @@ async def calc_report(message: Message, state: FSMContext):
         )
         await message.bot.send_message(message.from_user.id, text=azimuth)
 
+        await types.ChatActions.typing()
         L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum, \
         Ltot, dL, speed, sp_pref = await coords_analyzis(
             coords_dec[0:2], coords_dec[2:4], 0, str(path)
