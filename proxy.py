@@ -16,7 +16,7 @@ env.read_env(".env")
 
 API_TOKEN = env.str("BOT_TOKEN")
 PROXY_URL = env.str("PROXY_URL")
-# API_TOKEN = '5127325173:AAE4Vq0cOVphdMKU8rwenQ9xsCSg773HnYg'
+# API_TOKEN = '123456:Your-TokEn_ExaMple'
 # PROXY_URL = 'http://proxy.server:3128'
 # Or 'socks5://host:port'
 
