@@ -27,7 +27,7 @@ PROXY_URL = env.str("PROXY_URL")
 # Also you can use Socks5 proxy but you need manually install aiohttp_socks package.
 
 # Get my ip URL
-GET_IP_URL = 'https://api.myip.com/'
+GET_IP_URL = 'http://api.hostip.info/'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -51,18 +51,25 @@ async def cmd_start(message: types.Message):
     content = []
 
     # Make request (without proxy)
-    async with aiohttp.ClientSession() as session:
-        ip = await fetch(GET_IP_URL, session)
-    content.append(text(':globe_showing_Americas:', bold('IP:'), code(ip)))
-    # This line is formatted to '🌎 *IP:* `YOUR IP`'
+    try:
+        async with aiohttp.ClientSession() as session:
+            ip = await fetch(GET_IP_URL, session)
+        content.append(text(':globe_showing_Americas:', bold('IP:'), code(ip)))
+        # This line is formatted to '🌎 *IP:* `YOUR IP`'
+    except Exception as e:
+        print(f'Err no proxy: {e}, URL: {GET_IP_URL}')
 
     # Make request through bot's proxy
-    ip = await fetch(GET_IP_URL, await bot.get_session())
-    content.append(text(':locked_with_key:', bold('IP:'), code(ip), italic('via proxy')))
-    # This line is formatted to '🔐 *IP:* `YOUR IP` _via proxy_'
+    try:
+        ip = await fetch(GET_IP_URL, await bot.get_session())
+        content.append(text(':locked_with_key:', bold('IP:'), code(ip), italic('via proxy')))
+        # This line is formatted to '🔐 *IP:* `YOUR IP` _via proxy_'
+    except Exception as e:
+        print(f'Err with proxy: {e}, URL: {GET_IP_URL}')
 
     # Send content
-    await bot.send_message(message.chat.id, emojize(text(*content, sep='\n')), parse_mode=ParseMode.MARKDOWN)
+    await bot.send_message(message.chat.id, emojize(text(*content, '----------', sep='\n')),
+                           parse_mode=ParseMode.MARKDOWN)
 
     # In this example you can see emoji codes: ":globe_showing_Americas:" and ":locked_with_key:"
     # You can find full emoji cheat sheet at https://www.webpagefx.com/tools/emoji-cheat-sheet/
