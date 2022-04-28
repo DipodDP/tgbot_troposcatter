@@ -2,6 +2,7 @@
 Troposcatter trace calculator
 
 Bot is awaible as Troposcatter_bot in Telegram
+Bot is running on free server https://eu.pythonanywhere.com/, so it may working slowly sometimes.
 
 This telegram bot was created for calculating troposcatter trace parameters, but, mostly as education project (that's my first expirience in in Python).
 It useful for guidance station antennas at two sites on azimuth between them. Also bot calculate horizon close angle (HCA) and trace profile between sites.
