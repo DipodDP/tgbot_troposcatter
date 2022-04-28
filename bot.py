@@ -60,6 +60,7 @@ async def main():
 
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy)
+    await bot.get_session()
     dp = Dispatcher(bot, storage=storage)
 
     bot['config'] = config
