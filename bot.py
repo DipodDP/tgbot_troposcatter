@@ -20,7 +20,7 @@ from tgbot.handlers.sticker import register_sticker
 from tgbot.handlers.wrong import register_wrong
 from tgbot.middlewares.big_brother import BigBrother
 from tgbot.middlewares.rate_limit import RateLimitMiddleware
-from tgbot.misc.notify_admins import on_startup_notify
+from tgbot.misc.notify_admins import on_startup_notify, on_down_notify
 from tgbot.misc.setting_comands import set_all_default_commands
 
 logger = logging.getLogger(__name__)
@@ -76,9 +76,11 @@ async def main():
     try:
         await dp.start_polling()
     finally:
+
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
+        await on_down_notify(dp)
 
 
 if __name__ == '__main__':
