@@ -18,5 +18,5 @@ btn_like = KeyboardButton('❤️ Лайк!')
 climate_zone_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_like, btn_back)
 
 # bot info menu
-btn_bot_inf = KeyboardButton('🙈 Как работать со мной?')
+btn_bot_inf = KeyboardButton('🙈️ Зачем нужен этот бот?')
 bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_bot_inf, btn_back)
