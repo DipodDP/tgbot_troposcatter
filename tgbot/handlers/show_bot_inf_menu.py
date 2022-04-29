@@ -16,7 +16,9 @@ async def show_bot_inf_menu(message: Message):
 
 @rate_limit(5, key=btn_bot_inf.text)
 async def bot_inf(message: Message):
-    await message.answer('Здесь будет инфа обо мне', reply_markup=bot_inf_menu)
+    with open('README.md') as f:
+        text_info = f.read()
+    await message.answer(text_info, disable_web_page_preview=True, reply_markup=bot_inf_menu)
     await message.bot.send_sticker(message.chat.id,
                                    'CAACAgIAAxkBAAMRYj7tTaXGWTKSBxdW6mtoSDRwyTIAAioAA7SEmBj9IhaQyPilryME')
 

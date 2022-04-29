@@ -18,9 +18,9 @@ async def get_elevations(coord_vect):
         "X-RapidAPI-Key": "16e3b027e2mshb4312fe84fe66e2p1f76b7jsn7d81aa678c1b"
     }
 
-    blocks_num = coord_vect.shape[0] // BLOCK_SIZE;
+    blocks_num = coord_vect.shape[0] // BLOCK_SIZE
     els = np.zeros(BLOCK_SIZE * blocks_num)
-    bar = Bar('Retreiving data', max=blocks_num)
+    bar = Bar('Retrieving data', max=blocks_num)
 
     for n in range(blocks_num):
         querystring = {"locations": ''}
@@ -44,8 +44,8 @@ async def get_elevations(coord_vect):
 
 
 async def get_angle(coord_a, coord_b):
-    a = (coord_a[0] * np.pi / 180.0, coord_a[1] * np.pi / 180.0);
-    b = (coord_b[0] * np.pi / 180.0, coord_b[1] * np.pi / 180.0);
+    a = (coord_a[0] * np.pi / 180.0, coord_a[1] * np.pi / 180.0)
+    b = (coord_b[0] * np.pi / 180.0, coord_b[1] * np.pi / 180.0)
     return np.arccos(np.sin(a[0]) * np.sin(b[0]) +
                      np.cos(a[0]) * np.cos(b[0]) * np.cos(b[1] - a[1]))
 
@@ -55,8 +55,8 @@ async def get_distance(coord_a, coord_b):
 
 
 async def linspace_coord(coord_a, coord_b, resolution=0.5):
-    dist = await get_distance(coord_a, coord_b);
-    points_num = (np.ceil(dist / (BLOCK_SIZE * resolution)) * BLOCK_SIZE).astype(np.int)
+    dist = await get_distance(coord_a, coord_b)
+    points_num = (np.ceil(dist / (BLOCK_SIZE * resolution)) * BLOCK_SIZE).astype(int)
     lat_vect = np.linspace(coord_a[0], coord_b[0], points_num)
     lon_vect = np.linspace(coord_a[1], coord_b[1], points_num)
     return np.column_stack((lat_vect, lon_vect))
@@ -64,7 +64,7 @@ async def linspace_coord(coord_a, coord_b, resolution=0.5):
 
 async def get_profile(coord_a, coord_b, resolution=0.5):
     coord_v = await linspace_coord(coord_a, coord_b, resolution)
-    points_num = coord_v.shape[0];
+    points_num = coord_v.shape[0]
 
     profile = {'distance': np.zeros(points_num), 'elevation': np.zeros(points_num),
                'coordinates': coord_v}
@@ -72,7 +72,7 @@ async def get_profile(coord_a, coord_b, resolution=0.5):
     # calc distance vector
     for i in range(points_num):
         profile['distance'][i] = await get_distance(coord_v[0], coord_v[i])
-
+    profile['distance'][0] = 0.0
     profile['elevation'] = await get_elevations(coord_v)
 
     return profile

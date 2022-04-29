@@ -42,7 +42,7 @@ async def get_dist_azim(coord_a, coord_b):
     y = sdelta * cl2
     z = math.degrees(math.atan(-y / x))
 
-    if (x < 0):
+    if x < 0:
         z = z + 180.
 
     z2 = (z + 180.) % 360. - 180.
@@ -66,7 +66,7 @@ async def get_magdec(coord):
     latitude = coord[0]
     longitude = coord[1]
 
-    def getText(nodelist):
+    def get_text(nodelist):
         rc = []
         for node in nodelist:
             if node.nodeType == node.TEXT_NODE:
@@ -78,7 +78,7 @@ async def get_magdec(coord):
     f = urllib.request.urlopen("http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
     # Process XML file into object tree and get only declination info
     dom = xml.dom.minidom.parseString(f.read())
-    my_string = getText(dom.getElementsByTagName("declination")[0].childNodes)
+    my_string = get_text(dom.getElementsByTagName("declination")[0].childNodes)
     # At this point the string still contains some formatting, this removes it
     declination = float(re.findall(r"[-+]?\d*\.\d+|\d+", my_string)[0])
     # Output formatting and append line to declination file
