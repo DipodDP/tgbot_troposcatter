@@ -2,7 +2,6 @@
 Troposcatter trace calculator
 
 Bot is available as Troposcatter_bot in Telegram
-
 Bot is running on free server https://eu.pythonanywhere.com/, so it may working slowly sometimes.
 
 This telegram bot was created for calculating troposcatter trace parameters, but, mostly as education project (that's my first expirience in in Python).
