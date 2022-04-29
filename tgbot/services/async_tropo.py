@@ -57,16 +57,16 @@ def filt_elevation_profile(els, aa_level):
     # z1 = round(els_fft.size - els_fft.size/(2*aa_level))
     # els_fft[z0:z1] = 0
     # ret_els = sf.ifft(els_fft)[10:els_fft.size-10].real
-    win = ones(5) / 5;
+    win = ones(5) / 5
     ret_els = correlate(pad(els, (10, 10), 'edge'), win, 'same')[10:els.size + 10]
 
     return ret_els
 
 
 def get_line_pol(p0, p1):
-    pol = zeros(2);
-    pol[0] = (p1[1] - p0[1]) / (p1[0] - p0[0]);
-    pol[1] = p0[1] - pol[0] * p0[0];
+    pol = zeros(2)
+    pol[0] = (p1[1] - p0[1]) / (p1[0] - p0[0])
+    pol[1] = p0[1] - pol[0] * p0[0]
     return pol
 
 
