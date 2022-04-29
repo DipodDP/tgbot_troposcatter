@@ -21,7 +21,9 @@ class TgBot:
 
 @dataclass
 class Miscellaneous:
-    other_params: str = None
+    # other_params: str = None
+    bad_words_ru: list = None
+    bad_words_en: list = None
 
 
 @dataclass
@@ -34,6 +36,14 @@ class Config:
 def load_config(path: str = None):
     env = Env()
     env.read_env(path)
+    # Get bad ru and en words lists from file
+    try:
+        with open('tgbot/filters/badwords.txt', encoding='utf8') as f:
+            bw_list = f.readlines()
+    except FileNotFoundError:
+        bw_list = []
+    bw_list_ru = bw_list[0].replace('\n', '').split(', ')
+    bw_list_en = bw_list[1].replace('\n', '').split(', ')
 
     return Config(
         tg_bot=TgBot(
@@ -48,5 +58,8 @@ def load_config(path: str = None):
             user=env.str('DB_USER'),
             database=env.str('DB_NAME')
         ),
-        misc=Miscellaneous()
+        misc=Miscellaneous(
+            bad_words_ru=bw_list_ru,
+            bad_words_en=bw_list_en
+        )
     )

@@ -7,7 +7,8 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
-from tgbot.filters.bad_words import BadWords
+from tgbot.filters.bad_words import BadWordsEN
+from tgbot.filters.bad_words import BadWordsRU
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.calc_t_menu_buttons import register_calc_t_menu_buttons
 from tgbot.handlers.calc_t_menu_sites import register_calc_t_menu_sites
@@ -33,7 +34,8 @@ def register_all_middlewares(dp):
 
 def register_all_filters(dp):
     dp.filters_factory.bind(AdminFilter)
-    dp.filters_factory.bind(BadWords)
+    dp.filters_factory.bind(BadWordsEN)
+    dp.filters_factory.bind(BadWordsRU)
 
 
 def register_all_handlers(dp):
