@@ -108,4 +108,4 @@ async def get_azim(coords):
     mazim1 = round(azim1 - await gc.get_magdec(coords[0:2]), 2)
     mazim2 = round(azim2 - await gc.get_magdec(coords[2:4]), 2)
 
-    return azim1, azim1, mazim1, mazim2
+    return azim1, azim2, mazim1, mazim2

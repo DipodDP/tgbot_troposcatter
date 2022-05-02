@@ -3,7 +3,9 @@ import json
 import time
 
 import numpy as np
+from environs import Env
 from progress.bar import Bar
+
 
 BLOCK_SIZE = 256
 
@@ -13,9 +15,12 @@ async def get_elevations(coord_vect):
 
     url = "https://geo-services-by-mvpc-com.p.rapidapi.com/elevation"
 
+    env = Env()
+    env.read_env(".env")
+    api_key = env.str('GEO_MVPC_API_KEY')
     headers = {
         "X-RapidAPI-Host": "geo-services-by-mvpc-com.p.rapidapi.com",
-        "X-RapidAPI-Key": "16e3b027e2mshb4312fe84fe66e2p1f76b7jsn7d81aa678c1b"
+        "X-RapidAPI-Key": api_key
     }
 
     blocks_num = coord_vect.shape[0] // BLOCK_SIZE
@@ -31,7 +36,6 @@ async def get_elevations(coord_vect):
         response = requests.request("GET", url, headers=headers, params=querystring)
         resp_data = json.loads(response.text)
 
-        print(f'{querystring}/{resp_data}')
         for i in range(BLOCK_SIZE):
             els[n * BLOCK_SIZE + i] = resp_data['data'][i]['elevation']
 
