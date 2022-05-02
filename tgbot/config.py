@@ -60,6 +60,6 @@ def load_config(path: str = None):
         ),
         misc=Miscellaneous(
             bad_words_ru=bw_list_ru,
-            bad_words_en=bw_list_en
+            bad_words_en=bw_list_en,
         )
     )
