@@ -21,3 +21,12 @@ async def on_down_notify(dp: Dispatcher):
             await dp.bot.send_message(admin, "Bot is stopped")
         except Exception as err:
             logging.exception(err)
+
+
+async def on_down_notify(dp: Dispatcher):
+    config: Config = dp.bot.get('config')
+    for admin in config.tg_bot.admin_ids:
+        try:
+            await dp.bot.send_message(admin, "Bot is stopped")
+        except Exception as err:
+            logging.exception(err)
