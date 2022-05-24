@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.types import Message, CallbackQuery
 
-from tgbot.handlers.calculation_report import calc_report
+from tgbot.services.calculation_report import calc_report
 from tgbot.keyboards import reply, inline
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import CalcMenuStates
@@ -17,7 +17,7 @@ async def btn_next_handler(message: Message, state: FSMContext):
     curr_state = await state.get_state('CalcMenuStates')
 
     if curr_state == 'CalcMenuStates:s_names':
-        await message.answer('Введите координаты точек: ')
+        await message.answer('Введите координаты точек:')
         await CalcMenuStates.s_coords.set()
 
     elif curr_state == 'CalcMenuStates:got_s_names':
@@ -30,6 +30,8 @@ async def btn_next_handler(message: Message, state: FSMContext):
                 s_names = s_names[0].split(',')
             if len(s_names) == 1:
                 s_names = s_names[0].split(' - ')
+            if len(s_names) == 1:
+                s_names = s_names[0].split(' — ')
             # Если разделителей нет, то разделяю их по " "
             if len(s_names) == 1:
                 s_names = s_names[0].split(' ')

@@ -3,7 +3,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 btn_calc_t = KeyboardButton('⚡️ Рассчитать трассу')
 btn_show_climate_zone = KeyboardButton('🌤 Показать климатические зоны')
-btn_show_bot_inf = KeyboardButton('🤖 Показать информацию о боте')
+btn_show_bot_inf = KeyboardButton('🙈 Показать информацию')
 main_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_calc_t, btn_show_climate_zone,
                                                                        btn_show_bot_inf)
 
@@ -18,5 +18,6 @@ btn_like = KeyboardButton('❤️ Лайк!')
 climate_zone_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_like, btn_back)
 
 # bot info menu
-btn_bot_inf = KeyboardButton('🙈 Как работать со мной?')
-bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_bot_inf, btn_back)
+btn_bot_inf = KeyboardButton('🤖 About Troposcatter bot')
+btn_saved_sites = KeyboardButton('🧭 Показать сохраненные точки')
+bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_saved_sites, btn_bot_inf, btn_back)

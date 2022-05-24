@@ -105,7 +105,7 @@ async def get_azim(coords):
     azim1 = round(azim1[1], 2)
     azim2 = await gc.get_dist_azim(coords[2:4], coords[0:2])
     azim2 = round(azim2[1], 2)
-    mazim1 = round(azim1 - await gc.get_magdec(coords[0:2]), 2)
-    mazim2 = round(azim2 - await gc.get_magdec(coords[2:4]), 2)
+    m_azim1 = round(azim1 - await gc.get_magdec(coords[0:2]), 2)
+    m_azim2 = round(azim2 - await gc.get_magdec(coords[2:4]), 2)
 
-    return azim1, azim2, mazim1, mazim2
+    return azim1, azim2, m_azim1, m_azim2

@@ -1,3 +1,5 @@
+import os
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
@@ -78,6 +80,8 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
                                         reply_markup=main_menu)
         # await  state.reset_state(with_data=False)
         await state.finish()
+
+        os.remove(str(path)+'.png')
 
     except IndexError:
         await message.bot.send_message(message.from_user.id, text="Неизвестный формат координат, попробуйте еще раз",
