@@ -29,9 +29,9 @@ async def btn_next_handler(message: Message, state: FSMContext):
             if len(s_names) == 1:
                 s_names = s_names[0].split(',')
             if len(s_names) == 1:
-                s_names = s_names[0].split(' - ')
-            if len(s_names) == 1:
                 s_names = s_names[0].split(' — ')
+            if len(s_names) == 1:
+                s_names = s_names[0].split(' - ')
             # Если разделителей нет, то разделяю их по " "
             if len(s_names) == 1:
                 s_names = s_names[0].split(' ')
