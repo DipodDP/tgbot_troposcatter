@@ -9,7 +9,7 @@ from tgbot.services.calculation_report import calc_report
 from tgbot.keyboards import reply, inline
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import CalcMenuStates
-from tgbot.services.async_get_sites import path_name
+from tgbot.services.async_get_sites import path_sites
 
 
 @rate_limit(1, key=reply.btn_next.text)
@@ -45,10 +45,10 @@ async def btn_next_handler(message: Message, state: FSMContext):
 
         try:
             if len(s_names) == 1:
-                with open(path_name(f'{s_names[0]} Точка Б.trlc'), 'r') as f:
+                with open(path_sites(f'{s_names[0]} Точка Б.trlc'), 'r') as f:
                     f.close()
             else:
-                with open(path_name(f'{s_names[0]} {s_names[1]}.trlc'), 'r') as f:
+                with open(path_sites(f'{s_names[0]} {s_names[1]}.trlc'), 'r') as f:
                     f.close()
             await message.bot.send_message(message.chat.id,
                                            "Нашел координаты этих точек!"
@@ -109,13 +109,13 @@ async def use_del_file(call: CallbackQuery, state: FSMContext):
         s_names = data['s_names']
         try:
             if len(s_names) == 1:
-                remove(path_name(f'{s_names[0]} Точка Б.trlc'))
-                remove(path_name(f'{s_names[0]} Точка Б.path'))
-                remove(path_name(f'{s_names[0]} Точка Б.png'))
+                remove(path_sites(f'{s_names[0]} Точка Б.trlc'))
+                remove(path_sites(f'{s_names[0]} Точка Б.path'))
+                remove(path_sites(f'{s_names[0]} Точка Б.png'))
             else:
-                remove(path_name(f'{s_names[0]} {s_names[1]}.trlc'))
-                remove(path_name(f'{s_names[0]} {s_names[1]}.path'))
-                remove(path_name(f'{s_names[0]} {s_names[1]}.png'))
+                remove(path_sites(f'{s_names[0]} {s_names[1]}.trlc'))
+                remove(path_sites(f'{s_names[0]} {s_names[1]}.path'))
+                remove(path_sites(f'{s_names[0]} {s_names[1]}.png'))
             await call.bot.send_message(call.message.chat.id, "Сохраненые координаты удалены."
                                                               " Введите координаты точек: ")
         except FileNotFoundError:

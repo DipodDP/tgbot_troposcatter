@@ -6,7 +6,7 @@ import tgbot.services.async_great_circles as gc
 from tgbot.services.async_path_profiler import coord_min2dec
 
 
-def path_name(file_name: str):
+def path_sites(file_name: str):
     return Path(Path.cwd(), 'tgbot', 'services', 'sites coords', file_name)
 
 
@@ -26,12 +26,12 @@ async def get_sites(s_name: str, coords: str):
         s_name.append('Точка Б')
 
     try:
-        remove(path_name('Точка А Точка Б.trlc'))
-        remove(path_name('Точка А Точка Б.path'))
+        remove(path_sites('Точка А Точка Б.trlc'))
+        remove(path_sites('Точка А Точка Б.path'))
     except FileNotFoundError:
         pass
 
-    path = str(path_name(f'{s_name[0]} {s_name[1]}'))
+    path = str(path_sites(f'{s_name[0]} {s_name[1]}'))
     if coords == '' or '?':
         try:
             with open(path + '.trlc', 'r') as f:

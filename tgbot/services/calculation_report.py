@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
 from tgbot.keyboards.reply import main_menu
-from tgbot.services.async_get_sites import get_sites, get_azim, path_name
+from tgbot.services.async_get_sites import get_sites, get_azim, path_sites
 from tgbot.services.async_great_circles import get_magdec
 from tgbot.services.async_tropo import coords_analyzis
 
@@ -26,11 +26,11 @@ async def calc_report(message: Message, state: FSMContext):
             data['s_coords']: list
             s_names = data['s_names']
             if not s_names:
-                path = path_name('Точка А Точка Б')
+                path = path_sites('Точка А Точка Б')
             elif len(s_names) == 1:
-                path = path_name(f'{s_names[0]} Точка Б')
+                path = path_sites(f'{s_names[0]} Точка Б')
             else:
-                path = path_name(f'{s_names[0]} {s_names[1]}')
+                path = path_sites(f'{s_names[0]} {s_names[1]}')
             sites = await get_sites(' '.join(data['s_names']), ' '.join(data['s_coords']))
 
         sites = tuple(sites)

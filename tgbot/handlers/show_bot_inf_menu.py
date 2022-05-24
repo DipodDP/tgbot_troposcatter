@@ -9,7 +9,7 @@ from aiogram.utils.markdown import code, text
 from tgbot.keyboards.reply import bot_inf_menu, btn_back, main_menu, btn_bot_inf, btn_show_bot_inf, btn_saved_sites
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import BotInfMenuStates
-from tgbot.services.async_get_sites import path_name
+from tgbot.services.async_get_sites import path_sites
 
 
 @rate_limit(5, key=btn_show_bot_inf.text)
@@ -21,7 +21,7 @@ async def show_bot_inf_menu(message: Message):
 @rate_limit(5, key=btn_saved_sites.text)
 async def saved_sites(message: Message):
     await message.answer('Я знаю координаты точек для этих трасс:')
-    files = listdir(path_name(''))
+    files = listdir(path_sites(''))
     sites = list(filter(lambda x: x.endswith('.trlc'), files))
 
     try:
@@ -34,6 +34,7 @@ async def saved_sites(message: Message):
         sites[i] = sites[i].replace(' ', " — ")
         sites[i] = sites[i].replace('_', " ")
         sites[i] = text('\n', code(sites[i]), '\n')
+        sites[i] = sites[i].replace("\\-", " - ")
 
     msg_text = ''.join(sites)
     await message.bot.send_message(message.chat.id, msg_text, 'Markdown')
