@@ -14,6 +14,7 @@ from tgbot.handlers.calc_t_menu_buttons import register_calc_t_menu_buttons
 from tgbot.handlers.calc_t_menu_sites import register_calc_t_menu_sites
 from tgbot.handlers.climate_zone_menu import register_climate_zone_menu
 from tgbot.handlers.error_handler import register_errors
+from tgbot.handlers.file import register_file
 from tgbot.handlers.my_id import register_my_id
 from tgbot.handlers.show_bot_inf_menu import register_show_bot_inf_menu
 from tgbot.handlers.start import register_start
@@ -47,6 +48,7 @@ def register_all_handlers(dp):
     register_show_bot_inf_menu(dp)
     register_my_id(dp)
     register_sticker(dp)
+    register_file(dp)
     register_wrong(dp)
     register_errors(dp)
 

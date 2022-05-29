@@ -1,8 +1,10 @@
+import datetime
 import os
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
+
 
 from tgbot.keyboards.reply import main_menu
 from tgbot.services.async_get_sites import get_sites, get_azim, path_sites
@@ -57,6 +59,7 @@ async def calc_report(message: Message, state: FSMContext):
         await message.bot.send_message(message.from_user.id, text=azimuth)
 
         await types.ChatActions.typing()
+        print(f"{datetime.datetime.now()} {s_name[0]} - {s_name[1]}")
         L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum, \
         Ltot, dL, speed, sp_pref = await coords_analyzis(
             coords_dec[0:2], coords_dec[2:4], 0, str(path)
