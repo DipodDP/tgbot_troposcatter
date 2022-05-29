@@ -14,10 +14,13 @@ btn_back = KeyboardButton('↩️ Назад')
 calc_t_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_next, btn_back)
 
 # climate menu
-btn_like = KeyboardButton('❤️ Лайк!')
-climate_zone_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_like, btn_back)
+btn_climate_zones = KeyboardButton('🌍 Карта климатических зон')
+climate_zone_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_climate_zones, btn_back)
 
 # bot info menu
 btn_bot_inf = KeyboardButton('🤖 About Troposcatter bot')
+btn_like = KeyboardButton('❤️ Лайк!')
 btn_saved_sites = KeyboardButton('🧭 Показать сохраненные точки')
-bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_saved_sites, btn_bot_inf, btn_back)
+bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(btn_saved_sites, btn_bot_inf, btn_like,
+                                                                          btn_back)
+
