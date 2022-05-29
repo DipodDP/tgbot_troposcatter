@@ -10,6 +10,8 @@ It's useful for guidance station antennas at two sites on azimuth between them. 
 
 For tropo station Groza-1.5 it calculates losses and estimated median speed on trace.
 
-Bot supports almost any input formats for sites coordinates.
+Bot supports almost any input formats for sites coordinates like decimal or "ddd_mm_ss.s".
+
+By default, if not defined S-latitude or W-longitude, is N-latitude and E-longitude.
 
 And watch your language, please. Bot may be a little pique.

@@ -8,21 +8,24 @@ from tgbot.misc.rate_limit import rate_limit
 
 @rate_limit(5, key='start')
 async def user_start(message: Message):
-    answer_message = '  Привет, ' + message.chat.first_name + '! Этот бот может рассчитать параметры тропосферной линии ' \
-                                                            'для станции "Гроза 1,5" и, даже, её скорость (но это не ' \
-                                                            'точно). '
+    answer_message = '  Привет, ' + message.chat.first_name + '! Этот бот может рассчитать параметры тропосферной ' \
+                                                              'линии ''для станции "Гроза 1,5" и, ' \
+                                                              'даже, её скорость (но это не точно). '
     # bot.send_message(message.chat.id, answer_message, reply_markup=mainMenu)
     await message.bot.send_message(message.chat.id, answer_message, reply_markup=main_menu)
 
 
 @rate_limit(5, key='help')
 async def user_help(message: Message):
-    answer_message1 = 'Для начала расчета нажмите кнопку ' + btn_calc_t.text +\
+    answer_message1 = 'Для начала расчета нажмите кнопку ' + btn_calc_t.text + \
                       ' и следуйте инструкциям.\n\n' \
                       'Названия точек и их координаты можно вводить в одном сообщении ' \
                       'или в нескольких (попорядку).\n' \
-                      'Формат ввода координат - любой'
-    answer_message2 = '     В меню ' + btn_show_climate_zone.text +\
+                      'Формат ввода координат - любой, вида ггг_мм_сс,с или ггг,г.\n\n' \
+                      'Расчет производится для северной широты и восточной долготы, ' \
+                      'если в заданных координатах не определено иначе'
+
+    answer_message2 = '     В меню ' + btn_show_climate_zone.text + \
                       ' можно узнать значение климатической поправки для региона.'
     await message.bot.send_message(message.chat.id, answer_message1, reply_markup=main_menu)
     await message.bot.send_message(message.chat.id, answer_message2, reply_markup=main_menu)
