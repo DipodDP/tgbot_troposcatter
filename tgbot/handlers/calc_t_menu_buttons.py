@@ -25,6 +25,8 @@ async def btn_next_handler(message: Message, state: FSMContext):
             s_names: list = data['s_names']
             # Если точки были переданы в одном сообщении, то разделяю их по разделителям, если они есть
             if len(s_names) == 1:
+                s_names = s_names[0].split('\n')
+            if len(s_names) == 1:
                 s_names = s_names[0].split(';')
             if len(s_names) == 1:
                 s_names = s_names[0].split(',')
@@ -37,11 +39,11 @@ async def btn_next_handler(message: Message, state: FSMContext):
                 s_names = s_names[0].split(' ')
                 data['s_names'] = s_names
             # У переданных точек заменяем " " на "_" в названии точки
-            else:
-                for i in range(len(s_names)):
-                    s_names[i] = s_names[i].removeprefix(' ')
-                    s_names[i] = s_names[i].replace(' ', '_')
-                data['s_names'] = s_names
+            # else:
+            for i in range(len(s_names)):
+                s_names[i] = s_names[i].removeprefix(' ')
+                s_names[i] = s_names[i].replace(' ', '_')
+            data['s_names'] = s_names
 
         try:
             if len(s_names) == 1:
@@ -111,11 +113,9 @@ async def use_del_file(call: CallbackQuery, state: FSMContext):
             if len(s_names) == 1:
                 remove(path_sites(f'{s_names[0]} Точка Б.trlc'))
                 remove(path_sites(f'{s_names[0]} Точка Б.path'))
-                remove(path_sites(f'{s_names[0]} Точка Б.png'))
             else:
                 remove(path_sites(f'{s_names[0]} {s_names[1]}.trlc'))
                 remove(path_sites(f'{s_names[0]} {s_names[1]}.path'))
-                remove(path_sites(f'{s_names[0]} {s_names[1]}.png'))
             await call.bot.send_message(call.message.chat.id, "Сохраненые координаты удалены."
                                                               " Введите координаты точек: ")
         except FileNotFoundError:

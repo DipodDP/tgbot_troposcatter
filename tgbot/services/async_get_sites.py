@@ -42,25 +42,34 @@ async def get_sites(s_name: str, coords: str):
                 coords = input('Введите координаты точек (Широта Долгота):')
 
     # Тестовые форматы ввода координат:
-    # 55,3672698 91,646198; 005,9896421 92,8998994
+    # 55,3672698 91,646198; 5,9896421 92,8998994
     # #55,3672698 91,646198 55,9896421 92,8998994
     # 55°59'37.13"С  92°54'5.54"В  55°23'0.53"С 91°37'41.09"В
     # 55 59 37.13,  92 54 5.54,  55 23 0.53, 91 37 41.09
-    # 51°58'12.12"С  85°56'35.96"В 51° 0'50.39"С  85°35'17.76"В
+    # 64° 44' 20.37"С  177° 29' 11.64"В  66° 18' 47.69"С  179° 8' 49.12"З
     # 55, 59, 37,13,  92, 54, 5,54,  55, 23, 0.53, 91, 37, 41,09
     # Регулярка ниже преобразует координаты, введенные в любом формате к ггг_мм_сс.с...
     coords = coords.replace(',', '.')
-    coords = re.sub(r'\D?(\d?\d?\d)?\D*\s*(\d?\d)?\D*\s*(\d?\d?\d\.\d+)\D*', r'\1_\2_\3 ', coords)
+    coords = coords.replace('\n', ' ')
+    coords = coords.replace('  ', ' ')
+
+    coords = re.sub(r'\D*\b(\d?\d?\d)?\D*\s*(\d?\d)?\D*\s*(\d?\d?\d\.\d+)[_]?(\D*\s*[sSwWсСвВюЮзЗ])?\D*',
+                    r'\1_\2_\3_\4: ', coords)
+
+    # Удаляем лишние символы
+    coords = re.sub(r'[^0-9._sSwWсСвВюЮзЗ: ]|\.$', '', coords)
     # Если градусы в десятичном формате удаляем получившиеся лишние "__" и двойные пробелы
     coords = coords.replace('__', '')
     coords = coords.replace('  ', ' ')
+    coords = coords.replace('_ ', '_')
+    coords = coords.replace(':', '')
+
     # Получаем список[ггг_мм_сс,ггг_мм_сс...]
     coords = coords.split(' ')
 
-    # Удаляем лишние символы и возвращаем пробелы из координат в списке
-    for i in range(len(coords)):
-        # coords[i] = coords[i].replace("_", ' ')
-        coords[i] = re.sub(r'[^0-9._]|\.$', '', coords[i])
+    # # Возвращаем пробелы для координат в списке
+    # for i in range(len(coords)):
+    #     coords[i] = re.sub(r'[^0-9._nNeEsSwWсСвВюЮзЗ]|\.$', '', coords[i])
 
     coords = list(filter(None, coords))
 
@@ -71,7 +80,7 @@ async def get_sites(s_name: str, coords: str):
     except FileExistsError:
         pass
 
-# Форматирование данных для вывода
+    # Форматирование данных для вывода
     # Возвращием обратно " " (если есть) в название точки
     for i in range(len(s_name)):
         s_name[i] = s_name[i].replace('_', ' ')
@@ -80,22 +89,37 @@ async def get_sites(s_name: str, coords: str):
     # для проверки правильности ввода)
     coords_dec = list(coords)
     for i in range(len(coords_dec)):
-        coords_dec[i] = list(coords_dec[i].split('_'))
-        if len(coords_dec[i]) <= 1:
-            coords_dec[i] = float(coords_dec[i][0])
+        coords_dec[i] = coords_dec[i].split('_')
+        if len(coords_dec[i]) <= 2:
+            coords_dec[i] = float(coords_dec[i][0]) if re.match(r'[sSwWюЮзЗ]', coords_dec[i][-1]) is None \
+                else -float(coords_dec[i][0])
         else:
-            for j in range(len(coords_dec[i])):
+            for j in range(len(coords_dec[i]) - 1):
                 coords_dec[i][j] = float(coords_dec[i][j])
-            coords_dec[i] = coord_min2dec(coords_dec[i][0], coords_dec[i][1], coords_dec[i][2])
+
+            if re.match(r'[sSwWюЮзЗ]', coords_dec[i][-1]) is None:
+                coords_dec[i] = coord_min2dec(coords_dec[i][0], coords_dec[i][1], coords_dec[i][2])
+            else:
+                coords_dec[i] = -coord_min2dec(coords_dec[i][0], coords_dec[i][1], coords_dec[i][2])
 
     for i in range(len(coords)):
         coords[i] = str.split(coords[i], '_')
 
-        if coords[i].__len__() == 1:
-            coords[i] = coords[i][0] + '° '
+        if len(coords[i]) == 2:
+            if coords[i][-1] == '':
+                if i % 2 == 0:
+                    coords[i][1] = "N"
+                else:
+                    coords[i][1] = "E"
+            coords[i] = coords[i][0] + '° ' + coords[i][1]
 
         else:
-            coords[i] = coords[i][0] + '° ' + coords[i][1] + "' " + coords[i][2] + '"'
+            if coords[i][-1] == '':
+                if i % 2 == 0:
+                    coords[i][3] = "N"
+                else:
+                    coords[i][3] = "E"
+            coords[i] = coords[i][0] + '° ' + coords[i][1] + "' " + coords[i][2] + '" ' + coords[i][3]
 
     return s_name, coords_dec, coords
 
@@ -105,7 +129,9 @@ async def get_azim(coords):
     azim1 = round(azim1[1], 2)
     azim2 = await gc.get_dist_azim(coords[2:4], coords[0:2])
     azim2 = round(azim2[1], 2)
-    m_azim1 = round(azim1 - await gc.get_magdec(coords[0:2]), 2)
-    m_azim2 = round(azim2 - await gc.get_magdec(coords[2:4]), 2)
+    dec1 = round(await gc.get_magdec(coords[0:2]), 2)
+    dec2 = round(await gc.get_magdec(coords[2:4]), 2)
+    m_azim1 = round(azim1 - dec1, 2)
+    m_azim2 = round(azim2 - dec2, 2)
 
-    return azim1, azim2, m_azim1, m_azim2
+    return azim1, azim2, dec1, dec2, m_azim1, m_azim2
