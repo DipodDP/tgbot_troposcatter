@@ -11,4 +11,5 @@ async def get_file_id(message: Message):
 
 
 def register_file(dp: Dispatcher):
-    dp.register_message_handler(get_file_id, ChatTypeFilter(ChatType.PRIVATE), content_types=ContentType.DOCUMENT)
+    dp.register_message_handler(get_file_id, ChatTypeFilter(ChatType.PRIVATE),
+                                content_types=ContentType.DOCUMENT, state='*')

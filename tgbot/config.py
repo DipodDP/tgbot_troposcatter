@@ -24,6 +24,7 @@ class Miscellaneous:
     # other_params: str = None
     bad_words_ru: list = None
     bad_words_en: list = None
+    c_zones_file_id: str = None
 
 
 @dataclass
@@ -36,6 +37,7 @@ class Config:
 def load_config(path: str = None):
     env = Env()
     env.read_env(path)
+
     # Get bad ru and en words lists from file
     try:
         with open('tgbot/filters/badwords.txt', encoding='utf8') as f:
@@ -61,5 +63,6 @@ def load_config(path: str = None):
         misc=Miscellaneous(
             bad_words_ru=bw_list_ru,
             bad_words_en=bw_list_en,
+            c_zones_file_id=env.str('CLIMATE_ZONES_FILE_ID')
         )
     )
