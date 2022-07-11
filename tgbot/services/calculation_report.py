@@ -74,7 +74,7 @@ async def calc_report(message: Message, state: FSMContext):
 Потери:
 L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
 Суммарные потери = {Ltot:.1f} dB
-Разница энергетики с референсной трассой = {dL:.1f} dB
+Дополнительные потери энергетики по сравнению с референсной трассой = {dL:.1f} dB
 
 Ожидаемая медианная скорость = {speed:.1f} {sp_pref}bits/s''')
 

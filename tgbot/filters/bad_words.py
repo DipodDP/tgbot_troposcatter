@@ -18,7 +18,7 @@ class BadWordsRU(BoundFilter):
         if self.bad_words_ru is None:
             return False
 
-        return (any(map(obj.text.lower().__contains__, map(str.lower, bw_list_ru)))) == self.bad_words_ru
+        return (any(map(lambda s: s in obj.text.lower(), map(str.lower, bw_list_ru)))) == self.bad_words_ru
 
 
 class BadWordsEN(BoundFilter):
@@ -33,5 +33,8 @@ class BadWordsEN(BoundFilter):
 
         if self.bad_words_en is None:
             return False
+
+        # return any(map(str.lower, bw_list_en))
+        return (any(map(lambda s: s in obj.text.lower(), map(str.lower, bw_list_en)))) == self.bad_words_en
 
         return (any(map(obj.text.lower().__contains__, map(str.lower, bw_list_en)))) == self.bad_words_en

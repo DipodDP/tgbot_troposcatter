@@ -84,7 +84,7 @@ async def main():
 
         await dp.storage.close()
         await dp.storage.wait_closed()
-        await bot.session.close()
+        # await bot.close()
         await on_down_notify(dp)
 
 

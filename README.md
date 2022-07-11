@@ -1,4 +1,5 @@
 # tgbot_troposcatter
+
 Troposcatter trace calculator
 
 Bot is available as Troposcatter_bot in Telegram
@@ -12,6 +13,6 @@ For tropo station Groza-1.5 it calculates losses and estimated median speed on t
 
 Bot supports almost any input formats for sites coordinates like decimal or "ddd_mm_ss.s".
 
-By default, if not defined S-latitude or W-longitude, is N-latitude and E-longitude.
+By default, if not defined S-latitude or W-longitude, N-latitude and E-longitude are using.
 
 And watch your language, please. Bot may be a little pique.

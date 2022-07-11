@@ -67,10 +67,10 @@ async def get_distance(coord_a, coord_b):
 async def linspace_coord(coord_a, coord_b, resolution=0.5):
     # Handling S and W coords for coord vector
     for i in range(2):
-        if coord_a[i] < 0:
+        if coord_a[i] < 0 and abs(coord_a[i] + 360 - coord_b[i]) < 180:
             coord_a[i] = coord_a[i] + 360
     for i in range(2):
-        if coord_b[i] < 0:
+        if coord_b[i] < 0 and abs(coord_a[i] + 360 - coord_b[i]) < 180:
             coord_b[i] = coord_b[i] + 360
     dist = await get_distance(coord_a, coord_b)
 
