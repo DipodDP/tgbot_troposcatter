@@ -34,8 +34,8 @@ def betta_calc(h1, h2, R, ha=2):
 
 
 def delta_calc(b_sum, ha=2):
-    if b_sum < -0.5:
-        b_sum = -0.5
+    if b_sum < -0.6:
+        b_sum = -0.6
     return b_sum + 0.056 * math.sqrt(ha)
 
 
