@@ -36,6 +36,7 @@ async def saved_sites(message: Message):
         sites[i] = sites[i].replace('_', " ")
         sites[i] = text('\n', code(sites[i]), '\n')
         sites[i] = sites[i].replace("\\-", "-")
+        sites[i] = sites[i].replace("\\.", ".")
 
     msg_text = ''.join(sites)
     await message.bot.send_message(message.chat.id, msg_text, 'Markdown')
