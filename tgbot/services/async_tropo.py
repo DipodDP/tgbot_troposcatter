@@ -22,7 +22,11 @@ def lr_calc(R, delta):
     a = 183.6242531493953
     b = 0.30840274015885827
     k = a / R + b
-    return 20 / 3 * math.log2(k * delta + 1)
+    c = k * delta + 1
+    if c > 0:
+        return 20 / 3 * math.log2(c)
+    else:
+        return -20
 
 
 def betta_calc(h1, h2, R, ha=2):
@@ -30,8 +34,8 @@ def betta_calc(h1, h2, R, ha=2):
 
 
 def delta_calc(b_sum, ha=2):
-    if b_sum < -0.5:
-        b_sum = -0.5
+    if b_sum < -0.6:
+        b_sum = -0.6
     return b_sum + 0.056 * math.sqrt(ha)
 
 
