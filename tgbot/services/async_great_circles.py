@@ -1,3 +1,6 @@
+from environs import Env
+
+
 async def get_dist_azim(coord_a, coord_b):
     # -*- coding: utf-8 -*-
     # !/usr/bin/env python
@@ -73,8 +76,12 @@ async def get_magdec(coord):
                 rc.append(node.data)
         return ''.join(rc)
 
-    params = urllib.parse.urlencode({'lat1': latitude, 'lon1': longitude, 'resultFormat': 'xml', 'startMonth': month})
+    env = Env()
+    env.read_env(".env")
+    key = env.str('GEOMAG_API_KEY')
+    params = urllib.parse.urlencode({'lat1': latitude, 'lon1': longitude, 'key': key, 'resultFormat': 'xml', 'startMonth': month})
     # Load XML file
+
     f = urllib.request.urlopen("http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
     # Process XML file into object tree and get only declination info
     dom = xml.dom.minidom.parseString(f.read())
