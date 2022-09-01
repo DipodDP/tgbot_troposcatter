@@ -53,7 +53,7 @@ async def get_sites(s_name: str, coords: str):
     coords = coords.replace('\n', ' ')
     coords = coords.replace('  ', ' ')
 
-    coords = re.sub(r'\D*\b(\d?\d?\d)?\D*\s*(\d?\d)?\D*\s*(\d?\d?\d\.\d+)[_]?(\D*\s*[sSwWсСвВюЮзЗ])?\D*',
+    coords = re.sub(r'\D*\b(\d?\d?\d)?\D*\s*(\d?\d)?\D*\s*(\d?\d?\d\.\d+)_?(\D*\s*[sSwWсСвВюЮзЗ])?\D*',
                     r'\1_\2_\3_\4: ', coords)
 
     # Удаляем лишние символы

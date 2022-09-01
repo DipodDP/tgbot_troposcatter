@@ -87,6 +87,9 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
 
         os.remove(str(path)+'.png')
 
-    except IndexError:
-        await message.bot.send_message(message.from_user.id, text="Неизвестный формат координат, попробуйте еще раз",
+    except (IndexError, ValueError):
+        await message.bot.send_message(message.from_user.id, text="Неизвестный формат координат, попробуйте еще раз. \n"
+                                                                  "\nВ координатах должна быть указана хотя бы одна "
+                                                                  "цифра после десятичного разделителя "
+                                                                  "(например 12.3456789° или 12'34\"56.7°)",
                                        reply_markup=main_menu)
