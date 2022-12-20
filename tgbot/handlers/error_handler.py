@@ -2,6 +2,10 @@ import logging
 
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import ChatTypeFilter
+from aiogram.utils.exceptions import (Unauthorized, InvalidQueryID, TelegramAPIError,
+                                      CantDemoteChatCreator, MessageNotModified, MessageToDeleteNotFound,
+                                      MessageTextIsEmpty, RetryAfter,
+                                      CantParseEntities, MessageCantBeDeleted, TerminatedByOtherGetUpdates)
 
 
 async def errors_handler(update, exception):
@@ -12,10 +16,6 @@ async def errors_handler(update, exception):
     :param exception:
     :return: stdout logging
     """
-    from aiogram.utils.exceptions import (Unauthorized, InvalidQueryID, TelegramAPIError,
-                                          CantDemoteChatCreator, MessageNotModified, MessageToDeleteNotFound,
-                                          MessageTextIsEmpty, RetryAfter,
-                                          CantParseEntities, MessageCantBeDeleted)
 
     if isinstance(exception, CantDemoteChatCreator):
         logging.debug("Can't demote chat creator")
@@ -53,8 +53,13 @@ async def errors_handler(update, exception):
     if isinstance(exception, CantParseEntities):
         logging.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
         return True
+    if isinstance(exception, TerminatedByOtherGetUpdates):
+        logging.exception(f'TerminatedByOtherGetUpdates: {exception} \nUpdate: {update}')
+        print(f'Handling {exception}')
+        return True
     logging.exception(f'Update: {update} \n{exception}')
+    return True
 
 
 def register_errors(dp: Dispatcher):
-    dp.register_message_handler(errors_handler, ChatTypeFilter(types.ChatType.PRIVATE))
+    dp.register_errors_handler(errors_handler, ChatTypeFilter(types.ChatType.PRIVATE), exception=Exception)

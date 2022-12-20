@@ -79,17 +79,29 @@ async def main():
     await set_all_default_commands(bot)
 
     try:
-        await dp.start_polling()
-    finally:
+        loop = asyncio.get_event_loop()
+        # getting runtime limit in seconds
+        uptime_limit = config.tg_bot.uptime_limit*3600
+        if uptime_limit != 0:
+            await asyncio.wait_for(dp.start_polling(), timeout=uptime_limit)
+        else:
+            await dp.start_polling()
 
+        loop.stop()
+        loop.close()
+
+    finally:
         await dp.storage.close()
         await dp.storage.wait_closed()
-        # await bot.close()
+        await dp.bot.close()
         await on_down_notify(dp)
-
 
 if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
+    except RuntimeError as e:
+        print(f'{e}')
+
+

@@ -17,6 +17,7 @@ class TgBot:
     admin_ids: list[int]
     use_redis: bool
     proxy: str
+    uptime_limit: float
 
 
 @dataclass
@@ -53,6 +54,7 @@ def load_config(path: str = None):
             admin_ids=list(map(int, env.list("ADMINS"))),
             use_redis=env.bool("USE_REDIS"),
             proxy=env.str("PROXY_URL"),
+            uptime_limit=env.float("UPTIME_LIMIT")
         ),
         db=DbConfig(
             host=env.str('DB_HOST'),
