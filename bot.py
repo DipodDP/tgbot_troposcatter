@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+import aiohttp
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
@@ -52,6 +53,11 @@ def register_all_handlers(dp):
     register_wrong(dp)
     register_errors(dp)
 
+# async def while_true():
+#     while True:
+#         pass
+#     return None
+
 
 async def main():
     logging.basicConfig(
@@ -79,7 +85,17 @@ async def main():
     await set_all_default_commands(bot)
 
     try:
-        await dp.start_polling()
+        # loop = asyncio.get_event_loop()
+        loop = asyncio.get_event_loop()
+
+        await asyncio.wait_for(dp.start_polling(), timeout=35)
+
+        loop.stop()
+        loop.close()
+
+    except asyncio.exceptions.TimeoutError:
+        print('Timeout')
+
     finally:
 
         await dp.storage.close()
@@ -93,3 +109,7 @@ if __name__ == '__main__':
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
+    except Exception as e:
+
+        print(f'Stopped {e}')
+
