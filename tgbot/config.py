@@ -66,5 +66,5 @@ def load_config(path: str = None):
             bad_words_ru=bw_list_ru,
             bad_words_en=bw_list_en,
             c_zones_file_id=env.str('CLIMATE_ZONES_FILE_ID')
-        )
+        ),
     )
