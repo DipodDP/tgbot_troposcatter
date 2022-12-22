@@ -1,4 +1,8 @@
+from urllib.error import HTTPError
+
 from environs import Env
+
+from tgbot.services.async_path_profiler import APIException
 
 
 async def get_dist_azim(coord_a, coord_b):
@@ -81,13 +85,21 @@ async def get_magdec(coord):
     key = env.str('GEOMAG_API_KEY')
     params = urllib.parse.urlencode({'lat1': latitude, 'lon1': longitude, 'key': key, 'resultFormat': 'xml', 'startMonth': month})
     # Load XML file
+    try:
+        f = urllib.request.urlopen("http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
+    except HTTPError as e:
+        raise APIException(f'{e}')
 
-    f = urllib.request.urlopen("http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
-    # Process XML file into object tree and get only declination info
-    dom = xml.dom.minidom.parseString(f.read())
-    my_string = get_text(dom.getElementsByTagName("declination")[0].childNodes)
-    # At this point the string still contains some formatting, this removes it
-    declination = float(re.findall(r"[-+]?\d*\.\d+|\d+", my_string)[0])
-    # Output formatting and append line to declination file
-    f.close()
-    return declination
+    response = f.read()
+    if f.code in [200, 301, 302]:
+        # Process XML file into object tree and get only declination info
+        dom = xml.dom.minidom.parseString(response)
+        my_string = get_text(dom.getElementsByTagName("declination")[0].childNodes)
+        # At this point the string still contains some formatting, this removes it
+        declination = float(re.findall(r"[-+]?\d*\.\d+|\d+", my_string)[0])
+        # Output formatting and append line to declination file
+        f.close()
+        return declination
+    else:
+        raise APIException(f'{f.code} {response}')
+

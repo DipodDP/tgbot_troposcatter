@@ -8,6 +8,7 @@ from aiogram.types import Message
 
 from tgbot.keyboards.reply import main_menu
 from tgbot.services.async_get_sites import get_sites, get_azim, path_sites
+from tgbot.services.async_path_profiler import APIException
 from tgbot.services.async_tropo import coords_analyzis
 
 
@@ -87,8 +88,14 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
 
         os.remove(str(path)+'.png')
 
+    except APIException as e:
+        await message.bot.send_message(message.from_user.id,
+                                       text=f"Ошибка получения данных внешнего сервера, попробуйте позже.\n\n{e}",
+                                       reply_markup=main_menu)
+
     except (IndexError, ValueError):
-        await message.bot.send_message(message.from_user.id, text="Неизвестный формат координат, попробуйте еще раз. \n"
+        await message.bot.send_message(message.from_user.id,
+                                       text="Неизвестный формат координат, попробуйте еще раз. \n"
                                                                   "\nВ координатах должна быть указана хотя бы одна "
                                                                   "цифра после десятичного разделителя "
                                                                   "(например 12.3456789° или 12'34\"56.7°)",

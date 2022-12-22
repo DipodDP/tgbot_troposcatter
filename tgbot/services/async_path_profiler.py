@@ -7,10 +7,15 @@ from environs import Env
 from progress.bar import Bar
 
 
+class APIException(Exception):
+    """Can't get API data"""
+
+
 BLOCK_SIZE = 256
 
 
 async def get_elevations(coord_vect):
+
     assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
 
     url = "https://geo-services-by-mvpc-com.p.rapidapi.com/elevation"
@@ -39,13 +44,16 @@ async def get_elevations(coord_vect):
         querystring["locations"] = querystring["locations"][:-1]
 
         response = requests.request("GET", url, headers=headers, params=querystring)
-        resp_data = json.loads(response.text)
+        resp_data: dict = json.loads(response.text)
+        if response.status_code in [200, 301, 302]:
+            for i in range(BLOCK_SIZE):
+                els[n * BLOCK_SIZE + i] = resp_data['data'][i]['elevation']
 
-        for i in range(BLOCK_SIZE):
-            els[n * BLOCK_SIZE + i] = resp_data['data'][i]['elevation']
+            bar.goto(n + 1)
+            time.sleep(1)
+        else:
 
-        bar.goto(n + 1)
-        time.sleep(1)
+            raise APIException(f'{response.status_code} - {": ".join(list(resp_data.values()))}')
 
     bar.finish()
 
