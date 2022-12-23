@@ -77,6 +77,7 @@ async def main():
 
     # start
     await set_all_default_commands(bot)
+    loop = asyncio.get_event_loop()
 
     try:
         # getting runtime limit in seconds
