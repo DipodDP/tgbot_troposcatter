@@ -1,3 +1,5 @@
+from typing import NamedTuple, TypeAlias
+
 import requests
 import json
 import time
@@ -11,49 +13,59 @@ class APIException(Exception):
     """Can't get API data"""
 
 
+HeightsBlock: TypeAlias = list
+Elevations: TypeAlias = np.ndarray
+
 BLOCK_SIZE = 256
 
 
-async def get_elevations(coord_vect):
-
-    assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
-
-    url = "https://geo-services-by-mvpc-com.p.rapidapi.com/elevation"
+async def elevations_api_request(coord_vect_block: list) -> HeightsBlock:
+    url = "https://maptoolkit.p.rapidapi.com/elevation"
 
     env = Env()
     env.read_env(".env")
-    api_key = env.str('GEO_MVPC_API_KEY')
     headers = {
-        "X-RapidAPI-Host": "geo-services-by-mvpc-com.p.rapidapi.com",
-        "X-RapidAPI-Key": api_key
+        "X-RapidAPI-Host": "maptoolkit.p.rapidapi.com",
+        "X-RapidAPI-Key": env.str('ELEVATION_API_KEY')
     }
+    querystring = {"points": '['}
+
+    for coord in coord_vect_block:
+        # getting back W and S coords from coord vector
+        if coord[0] > 180:
+            coord[0] = coord[0] - 360
+        if coord[1] > 180:
+            coord[1] = coord[1] - 360
+
+        querystring["points"] += f'[{coord[0]:.6f},{coord[1]:.6f}],'
+
+    querystring["points"] = querystring["points"][:-1] + ']'
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    resp = json.loads(response.text)
+
+    if response.status_code in [200, 301, 302]:
+        resp_data: HeightsBlock = resp
+        return resp_data
+
+    else:
+        raise APIException(f'{response.status_code} - {": ".join(list(resp.values()))}')
+
+
+async def get_elevations(coord_vect) -> Elevations:
+
+    assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
 
     blocks_num = coord_vect.shape[0] // BLOCK_SIZE
-    els = np.zeros(BLOCK_SIZE * blocks_num)
     bar = Bar('Retrieving data', max=blocks_num)
+    els = []
 
     for n in range(blocks_num):
-        querystring = {"locations": ''}
-        for c in coord_vect[n * BLOCK_SIZE: (n + 1) * BLOCK_SIZE]:
-            # getting back W and S coords from coord vector
-            if c[0] > 180:
-                c[0] = c[0] - 360
-            if c[1] > 180:
-                c[1] = c[1] - 360
-            querystring["locations"] += f'{c[0]:.6f},{c[1]:.6f}|'
-        querystring["locations"] = querystring["locations"][:-1]
+        coord_vect_block = coord_vect[n * BLOCK_SIZE:(n + 1) * BLOCK_SIZE]
+        els_block = await elevations_api_request(coord_vect_block)
+        els = np.append(els, els_block)
 
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        resp_data: dict = json.loads(response.text)
-        if response.status_code in [200, 301, 302]:
-            for i in range(BLOCK_SIZE):
-                els[n * BLOCK_SIZE + i] = resp_data['data'][i]['elevation']
-
-            bar.goto(n + 1)
-            time.sleep(1)
-        else:
-
-            raise APIException(f'{response.status_code} - {": ".join(list(resp_data.values()))}')
+        bar.goto(n + 1)
+        time.sleep(1)
 
     bar.finish()
 
@@ -82,8 +94,6 @@ async def linspace_coord(coord_a, coord_b, resolution=0.5):
             coord_b[i] = coord_b[i] + 360
     dist = await get_distance(coord_a, coord_b)
 
-    # if dist > 150 and resolution <= 0.5:
-    #     resolution = 1
     points_num = (np.ceil(dist / (BLOCK_SIZE * resolution)) * BLOCK_SIZE).astype(int)
     lat_vect = np.linspace(coord_a[0], coord_b[0], points_num)
     lon_vect = np.linspace(coord_a[1], coord_b[1], points_num)
