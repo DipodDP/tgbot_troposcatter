@@ -35,4 +35,3 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_start, commands=["start"], state="*", is_admin=True)
     dp.register_message_handler(stop_bot, commands=["stop"], state="*", is_admin=True)
     dp.register_callback_query_handler(get_button, text='Button', state="*", is_admin=True)
-    dp.register_callback_query_handler(get_button, text='Button', state="*", is_admin=True)
