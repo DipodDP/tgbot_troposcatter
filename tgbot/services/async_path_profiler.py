@@ -1,5 +1,3 @@
-from typing import NamedTuple, TypeAlias
-
 import requests
 import json
 import time
@@ -13,13 +11,10 @@ class APIException(Exception):
     """Can't get API data"""
 
 
-HeightsBlock: TypeAlias = list
-Elevations: TypeAlias = np.ndarray
-
 BLOCK_SIZE = 256
 
 
-async def elevations_api_request(coord_vect_block: list) -> HeightsBlock:
+async def elevations_api_request(coord_vect_block: list):
     url = "https://maptoolkit.p.rapidapi.com/elevation"
 
     env = Env()
@@ -44,14 +39,14 @@ async def elevations_api_request(coord_vect_block: list) -> HeightsBlock:
     resp = json.loads(response.text)
 
     if response.status_code in [200, 301, 302]:
-        resp_data: HeightsBlock = resp
+        resp_data = resp
         return resp_data
 
     else:
         raise APIException(f'{response.status_code} - {": ".join(list(resp.values()))}')
 
 
-async def get_elevations(coord_vect) -> Elevations:
+async def get_elevations(coord_vect):
 
     assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
 
