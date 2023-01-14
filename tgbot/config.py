@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 from environs import Env
 
@@ -41,7 +42,7 @@ def load_config(path: str = None):
 
     # Get bad ru and en words lists from file
     try:
-        with open('tgbot/filters/badwords.txt', encoding='utf8') as f:
+        with open(Path(Path.cwd(), 'tgbot', 'filters', 'badwords.txt'), encoding='utf8') as f:
             bw_list = f.readlines()
     except FileNotFoundError:
         bw_list = []
