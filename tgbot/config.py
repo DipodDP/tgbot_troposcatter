@@ -44,10 +44,11 @@ def load_config(path: str = None):
     try:
         with open(Path(Path.cwd(), 'tgbot', 'filters', 'badwords.txt'), encoding='utf8') as f:
             bw_list = f.readlines()
-    except FileNotFoundError:
-        bw_list = []
-    bw_list_ru = bw_list[0].replace('\n', '').split(', ')
-    bw_list_en = bw_list[1].replace('\n', '').split(', ')
+            bw_list_ru = bw_list[0].replace('\n', '').split(', ')
+            bw_list_en = bw_list[1].replace('\n', '').split(', ')
+    except (FileNotFoundError, IndexError):
+        bw_list_ru = []
+        bw_list_en = []
 
     return Config(
         tg_bot=TgBot(
