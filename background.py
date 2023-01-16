@@ -3,7 +3,7 @@ from subprocess import Popen
 
 from flask import Flask, redirect, url_for
 
-app = Flask('__name__')
+app = Flask(__name__)
 
 # process: Popen | None = None // not working on Pythonanywhere
 process: Popen = None
@@ -29,7 +29,6 @@ def start():
     if process is None:
         process = subprocess.Popen(["python", "bot.py"], shell=True)
         print('Starting...')
-    print(process.poll())
 
     return redirect(url_for('home'))
 
