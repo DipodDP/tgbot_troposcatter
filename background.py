@@ -5,7 +5,7 @@ from flask import Flask, redirect, url_for
 
 app = Flask(__name__)
 
-# process: Popen | None = None // not working on Pythonanywhere
+# process: Popen | None = None // get error on Pythonanywhere
 process: Popen = None
 
 
@@ -17,7 +17,7 @@ def home():
         if status is None:
             result = 'alive! :)'
         else:
-            result = status
+            result = f'stopped with code {status}.  Press <a href="/start">Start</a>'
     else:
         result = 'down! :(. Press <a href="/start">Start</a>'
     return f'Bot is {result}'
@@ -26,8 +26,11 @@ def home():
 @app.route('/start')
 def start():
     global process
-    if process is None:
-        process = subprocess.Popen(["python", "bot.py"], shell=True)
+    status = 'Down'
+    if process:
+        status = process.poll()
+    if status is not None:
+        process = subprocess.Popen(["python", "bot.py"])  # add parameter shell=True if using venv
         print('Starting...')
 
     return redirect(url_for('home'))
