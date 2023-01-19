@@ -17,6 +17,6 @@ For tropo station Groza-1.5 it calculates losses and estimated median speed on t
 
 Bot supports almost any input formats for sites coordinates like decimal or "ddd_mm_ss.s".
 
-By default, if not defined S-latitude or W-longitude, N-latitude and E-longitude are using.
+By default N-latitude and E-longitude are used, if S-latitude or W-longitude are not defined.
 
 And watch your language, please. Bot may be a little pique.
