@@ -10,7 +10,8 @@ from tgbot.misc.rate_limit import rate_limit
 async def user_start(message: Message):
     answer_message = '  Привет, ' + message.chat.first_name + '! Этот бот может рассчитать параметры тропосферной ' \
                                                               'линии ''для станции "Гроза 1,5" и, ' \
-                                                              'даже, её скорость (но это не точно). '
+                                                              'даже, её скорость (но это не точно). '\
+    '\nПосмотреть статус и запустить бота: http://troposcatterbot.eu.pythonanywhere.com'
     # bot.send_message(message.chat.id, answer_message, reply_markup=mainMenu)
     await message.bot.send_message(message.chat.id, answer_message, reply_markup=main_menu)
 

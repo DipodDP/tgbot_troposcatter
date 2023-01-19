@@ -1,4 +1,4 @@
-import subprocess, sys
+import subprocess
 from subprocess import Popen
 
 from flask import Flask, redirect, url_for
@@ -19,7 +19,7 @@ def home():
             result = f'stopped with code {status}.  Press <a href="/start">Start</a>'
     else:
         result = 'down! :(. Press <a href="/start">Start</a>'
-    return f'Bot is {result}'
+    return f'<h1>Bot is {result}</h>'
 
 
 @app.route('/start')
@@ -29,7 +29,8 @@ def start():
     if process:
         status = process.poll()
     if status is not None:
-        process = subprocess.Popen([sys.executable, "bot.py"])
+        # in venv Pythonanywhere you may need to set ful path to python interpreter
+        process = subprocess.Popen("python bot.py", shell=True)
         print('Starting...')
 
     return redirect(url_for('home'))
