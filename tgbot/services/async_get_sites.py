@@ -10,7 +10,7 @@ def path_sites(file_name: str):
     return Path(Path.cwd(), 'tgbot', 'services', 'sites coords', file_name)
 
 
-async def get_sites(s_name: str, coords: str):
+async def get_sites(s_name: str, coords: str): # -> s_name: list(str), coords_dec: list(float), coords: list(str)
     if s_name == '?':
         s_name = input('Введите названия точек (Точка(А) Точка(Б))')
 

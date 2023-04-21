@@ -38,7 +38,6 @@ def delta_calc(b_sum, ha=2):
         b_sum = -0.6
     return b_sum + 0.056 * math.sqrt(ha)
 
-
 def res_calc(l0, lmed, lp, lk, ld):
     """ Input: L0, Lmed, Lp, Lk, Ld
     Return L, Delta_L, and speed in tuple """
@@ -54,6 +53,31 @@ def res_calc(l0, lmed, lp, lk, ld):
         sp = 22.3
 
     return l, dl, sp
+
+
+def res_calc_sosnik(trace_dist, Lr, b_sum):
+    """ Input: trace distance, Lr
+    Return speed, extra distance in tuple """
+
+    # extra_dist = -Lr * 3 
+    extra_dist = 148 * b_sum
+    equal_dist = trace_dist + extra_dist
+    
+    if equal_dist < 90 and Lr >= -45:
+        speed = 2048
+        extra_dist = 0
+    elif Lr < -45:
+        speed = 0
+    elif equal_dist < 120:
+        speed = 512
+    elif equal_dist < 140:
+        speed = 256
+    elif equal_dist < 210:
+        speed = 64 
+    else:
+        speed = 0
+
+    return speed, extra_dist 
 
 
 def filt_elevation_profile(els, aa_level):
@@ -120,7 +144,58 @@ def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha):
     fig.savefig(pathfilename + '.png', dpi=300, transparent=False, facecolor='mintcream')
 
 
-def profile_an(prof, pathfilename, ha=2):
+def profile_analyzer(prof, pathfilename, bot_mode, ha=2):
+    els = prof['elevation']
+    dist = prof['distance']
+    trace_dist = dist[-1]
+
+    els = filt_elevation_profile(els, 2.5)
+
+    # find left hca (horizon close angle)
+    sp = els[0]
+    b1_max = -360
+    id1 = 0
+    for i in range(dist.size):
+        b1 = betta_calc(sp, els[i], dist[i], ha)
+        if b1 > b1_max:
+            b1_max = b1
+            id1 = i
+
+    # find right hca
+    sp = els[-1]
+    b2_max = -360
+    id2 = 0
+    for i in range(dist.size - 1, -1, -1):
+        b2 = betta_calc(sp, els[i], dist[-1] - dist[i], ha)
+        if b2 > b2_max:
+            b2_max = b2
+            id2 = i
+
+    b_sum = b1_max + b2_max
+
+    # calc losses
+    # Lr = lr_calc(trace_dist, delta_calc(b_sum, ha))
+
+    # if bot_mode == 1:
+    arg = 1 + (b_sum * 60 / (0.4 * trace_dist + b_sum * 60) * (1 + (b_sum * 60 / (0.2 * trace_dist))))
+    print(f'Argument {arg}')
+    if arg > 0:
+        Lr = -40 * math.log10(arg)
+    else:
+        Lr = 0
+
+    # some output
+    plot_elevation_profiles(dist, els, (id1, id2), pathfilename, ha)
+    print(f'Trace distance = {trace_dist:.1f} km')
+    print(f"Left site HCA = {b1_max:.2f}°")
+    print(f"Right site HCA = {b2_max:.2f}°")
+    print(f'Sum HCA = {b_sum:.2f}°')
+    print(f'Lr = {Lr:.1f} dB')
+    # print(f'Extra distance = {extra_dist:.1f} km')
+    return trace_dist, b1_max, b2_max, b_sum, Lr
+
+
+def profile_an_legacy(prof, pathfilename, bot_mode, ha=2):
     els = prof['elevation']
     dist = prof['distance']
     trace_dist = dist[-1]
@@ -153,7 +228,7 @@ def profile_an(prof, pathfilename, ha=2):
     L0 = l0_calc(trace_dist)
     Lmed = lmed_calc(trace_dist)
     Lr = lr_calc(trace_dist, delta_calc(b_sum, ha))
-
+        
     # some output
     plot_elevation_profiles(dist, els, (id1, id2), pathfilename, ha)
     print(f'Trace distance = {trace_dist:.1f} km')
@@ -165,7 +240,7 @@ def profile_an(prof, pathfilename, ha=2):
     return L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum
 
 
-async def coords_analyzis(coord_a, coord_b, Lk, pathfilename, ha=2):
+async def load_path_coords(coord_a, coord_b, pathfilename)-> dict:
     # try to load path_coords from the file
     try:
         tmp = fromfile(pathfilename + '.path').reshape((-1, 4))
@@ -177,8 +252,15 @@ async def coords_analyzis(coord_a, coord_b, Lk, pathfilename, ha=2):
         tmp = hstack((path['coordinates'],
                       column_stack((path['distance'], path['elevation']))))
         tmp.tofile(pathfilename + '.path')
+    return path
 
-    L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum = profile_an(path, pathfilename, ha)
+
+async def coords_analyzis_groza(coord_a, coord_b, Lk, pathfilename, bot_mode=0, ha=2):
+
+    print(f"!--- Groza -------- Bot mode is: {bot_mode} -----------!")
+    path = load_path_coords(coord_a, coord_b, pathfilename)
+
+    L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum = profile_an_legacy(path, pathfilename, bot_mode, ha)
     Ltot, dL, speed = res_calc(L0, Lmed, Lr, Lk, 2)
     print(f'Total losses = {Ltot:.1f} dB')
     print(f'Delta to reference trace = {dL:.1f} dB')
@@ -189,3 +271,18 @@ async def coords_analyzis(coord_a, coord_b, Lk, pathfilename, ha=2):
     print(f'Estimated median speed = {speed:.1f} {sp_pref}bits/s')
 
     return L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum, Ltot, dL, speed, sp_pref
+
+
+async def coords_analyzis_sosnik(coord_a, coord_b, Lk, pathfilename, bot_mode=0, ha=2):
+
+    print(f"!--- Sosnik -------- Bot mode is: {bot_mode} -----------!")
+    path = await load_path_coords(coord_a, coord_b, pathfilename)
+
+    trace_dist, b1_max, b2_max, b_sum, Lr = profile_analyzer(path, pathfilename, bot_mode, ha)
+    speed, extra_dist = res_calc_sosnik(trace_dist, Lr, b_sum)
+    sp_pref = 'k'
+    print(f'Extra distance = {extra_dist:.1f} km')
+    print(f'Estimated median speed = {speed:.1f} {sp_pref}bits/s')
+
+    return trace_dist, extra_dist, b1_max, b2_max, b_sum, Lr, speed, sp_pref
+

@@ -72,12 +72,10 @@ async def main():
     register_all_middlewares(dp)
     register_all_filters(dp)
     register_all_handlers(dp)
-    await on_startup_notify(dp)
-    await set_all_default_commands(bot)
 
     # start
     await set_all_default_commands(bot)
-    loop = asyncio.get_event_loop()
+    await on_startup_notify(dp)
 
     try:
         # getting runtime limit in seconds
@@ -103,5 +101,4 @@ if __name__ == '__main__':
         logger.warning("Bot stopped!")
     except RuntimeError as e:
         print(f'{e}')
-
 

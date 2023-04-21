@@ -9,7 +9,7 @@ from aiogram.types import Message
 from tgbot.keyboards.reply import main_menu
 from tgbot.services.async_get_sites import get_sites, get_azim, path_sites
 from tgbot.services.async_path_profiler import APIException
-from tgbot.services.async_tropo import coords_analyzis
+from tgbot.services.async_tropo import coords_analyzis_groza, coords_analyzis_sosnik
 
 
 async def calc_report(message: Message, state: FSMContext):
@@ -21,7 +21,7 @@ async def calc_report(message: Message, state: FSMContext):
     # # await  state.reset_state(with_data=False)
     # await state.finish()
     # await message.answer(f'Состояние: {await state.get_state()}', reply_markup=main_menu)
-
+    bot_mode = message.bot['config'].tg_bot.bot_mode
     try:
         async with state.proxy() as data:
             data['s_names']: list
@@ -60,14 +60,18 @@ async def calc_report(message: Message, state: FSMContext):
         await message.bot.send_message(message.from_user.id, text=azimuth)
 
         await types.ChatActions.typing()
-        print(f"{datetime.datetime.now()} {s_name[0]} - {s_name[1]}")
-        L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum, \
-        Ltot, dL, speed, sp_pref = await coords_analyzis(
-            coords_dec[0:2], coords_dec[2:4], 0, str(path)
-        )
 
-        await message.bot.send_message(message.from_user.id, text=
-        f'''Протяженность трассы = {trace_dist:.1f} км
+        print(f"{datetime.datetime.now()} {s_name[0]} - {s_name[1]}")
+
+        if bot_mode == 0:
+            
+            L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum, \
+            Ltot, dL, speed, sp_pref = await coords_analyzis_groza(
+                coords_dec[0:2], coords_dec[2:4], 0, str(path), bot_mode
+            )
+
+            await message.bot.send_message(message.from_user.id, text=
+            f'''Протяженность трассы = {trace_dist:.1f} км
 Угол закрытия {s_name[0]} = {b1_max:.2f}°
 Угол закрытия {s_name[1]} = {b2_max:.2f}°
 Суммарный угол закрытия = {b_sum:.2f}°
@@ -78,6 +82,22 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
 Дополнительные потери энергетики по сравнению с референсной трассой = {dL:.1f} dB
 
 Ожидаемая медианная скорость = {speed:.1f} {sp_pref}bits/s''')
+
+        elif bot_mode == 1:
+
+            trace_dist, extra_dist, b1_max, b2_max, b_sum, Lr, speed, sp_pref \
+            = await coords_analyzis_sosnik(
+                    coords_dec[0:2], coords_dec[2:4], 0, str(path), bot_mode
+            )
+            await message.bot.send_message(message.from_user.id, text=
+            f'''Протяженность трассы = {trace_dist:.1f} км
+Угол закрытия {s_name[0]} = {b1_max:.2f}°
+Угол закрытия {s_name[1]} = {b2_max:.2f}°
+Суммарный угол закрытия = {b_sum:.2f}°
+
+Дополнительные потери энергетики за счет наличия углов закрытия = {-Lr:.1f} dB
+Эквивалентная дальность с учетом углов закрытия = {trace_dist + extra_dist:.2f} км
+Ожидаемая скорость = {speed:.1f} {sp_pref}bits/s''')
 
         await types.ChatActions.typing()
         await message.bot.send_document(message.chat.id, open(str(path) + '.png', 'rb'),
@@ -93,10 +113,11 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
                                        text=f"Ошибка получения данных внешнего сервера, попробуйте позже.\n\n{e}",
                                        reply_markup=main_menu)
 
-    except (IndexError, ValueError):
+    except (IndexError, ValueError) as e:
         await message.bot.send_message(message.from_user.id,
-                                       text="Неизвестный формат координат, попробуйте еще раз. \n"
-                                                                  "\nВ координатах должна быть указана хотя бы одна "
-                                                                  "цифра после десятичного разделителя "
-                                                                  "(например 12.3456789° или 12'34\"56.7°)",
+                                       text=f"Неизвестный формат координат, попробуйте указать координаты иначе.\n{e}\n"
+                                              "\nВ координатах должна быть указана хотя бы одна "
+                                              "цифра после десятичного разделителя "
+                                              "(например 12.3456789° или 12'34\"56.7°)\n",
                                        reply_markup=main_menu)
+
