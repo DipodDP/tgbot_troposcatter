@@ -68,9 +68,9 @@ def res_calc_sosnik(trace_dist, Lr, b_sum):
 
     equal_dist = trace_dist + extra_dist
     
-    if equal_dist < 90 and Lr >= -45:
+    if trace_dist < 40 and equal_dist < 90 and Lr >= -35:
         speed = 2048
-        extra_dist = 0
+        # extra_dist = 0
     elif Lr < -45:
         speed = 0
     elif equal_dist < 120:

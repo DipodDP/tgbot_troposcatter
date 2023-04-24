@@ -71,7 +71,7 @@ async def calc_report(message: Message, state: FSMContext):
             )
 
             await message.bot.send_message(message.from_user.id, text=
-            f'''Протяженность трассы = {trace_dist:.1f} км
+            f'''Протяженность трассы = {trace_dist:.2f} км
 Угол закрытия {s_name[0]} = {b1_max:.2f}°
 Угол закрытия {s_name[1]} = {b2_max:.2f}°
 Суммарный угол закрытия = {b_sum:.2f}°
@@ -90,7 +90,7 @@ L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB
                     coords_dec[0:2], coords_dec[2:4], 0, str(path), bot_mode
             )
             await message.bot.send_message(message.from_user.id, text=
-            f'''Протяженность трассы = {trace_dist:.1f} км
+            f'''Протяженность трассы = {trace_dist:.2f} км
 Угол закрытия {s_name[0]} = {b1_max:.2f}°
 Угол закрытия {s_name[1]} = {b2_max:.2f}°
 Суммарный угол закрытия = {b_sum:.2f}°
