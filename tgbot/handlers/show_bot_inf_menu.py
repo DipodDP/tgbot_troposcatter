@@ -12,6 +12,29 @@ from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import BotInfMenuStates
 from tgbot.services.async_get_sites import path_sites
 
+async def get_saved_sites(message: Message):
+    await message.answer('Я знаю координаты точек для этих трасс:')
+    files = listdir(path_sites(''))
+    sites = list(filter(lambda x: x.endswith('.trlc'), files))
+    sites.sort()
+
+    try:
+        sites.remove("Точка А Точка Б.trlc")
+    except ValueError:
+        pass
+
+    for i in range(len(sites)):
+        sites[i] = sites[i].replace('.trlc', "")
+        sites[i] = sites[i].replace(' ', " — ")
+        sites[i] = sites[i].replace('_', " ")
+        sites[i] = text('\n', code(sites[i]), '\n')
+        sites[i] = sites[i].replace("\\-", "-")
+        sites[i] = sites[i].replace("\\.", ".")
+
+    msg_text = ''.join(sites)
+
+    return msg_text
+
 
 @rate_limit(5, key=btn_show_bot_inf.text)
 async def show_bot_inf_menu(message: Message):
@@ -26,33 +49,19 @@ async def saved_sites(message: Message):
 
     match bot_mode:
         case 1:
-            msg_text = 'Список сохранненых точек скрыт!'
+            if message.from_id in message.bot['config'].tg_bot.admin_ids:
+                msg_text = await get_saved_sites(message)
+            else:
+                msg_text = 'Список сохранненых точек скрыт!'
+
         case _:
-
-            await message.answer('Я знаю координаты точек для этих трасс:')
-            files = listdir(path_sites(''))
-            sites = list(filter(lambda x: x.endswith('.trlc'), files))
-            sites.sort()
-
-            try:
-                sites.remove("Точка А Точка Б.trlc")
-            except ValueError:
-                pass
-
-            for i in range(len(sites)):
-                sites[i] = sites[i].replace('.trlc', "")
-                sites[i] = sites[i].replace(' ', " — ")
-                sites[i] = sites[i].replace('_', " ")
-                sites[i] = text('\n', code(sites[i]), '\n')
-                sites[i] = sites[i].replace("\\-", "-")
-                sites[i] = sites[i].replace("\\.", ".")
-
-            msg_text = ''.join(sites)
+            msg_text = await get_saved_sites(message)   
     await message.bot.send_message(message.chat.id, msg_text, 'Markdown')
 
 
 @rate_limit(5, key=btn_bot_inf.text)
 async def bot_inf(message: Message):
+
     bot_mode = message.bot['config'].tg_bot.bot_mode
 
     match bot_mode:

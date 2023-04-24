@@ -60,7 +60,12 @@ def res_calc_sosnik(trace_dist, Lr, b_sum):
     Return speed, extra distance in tuple """
 
     # extra_dist = -Lr * 3 
-    extra_dist = 148 * b_sum
+
+    if b_sum > 0:
+        extra_dist = 148 * b_sum
+    else:
+        extra_dist = 0
+
     equal_dist = trace_dist + extra_dist
     
     if equal_dist < 90 and Lr >= -45:
