@@ -63,7 +63,8 @@ async def main():
     config = load_config(".env")
 
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
-    bot = Bot(token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy)
+    bot = Bot(token=config.tg_bot.token,
+              parse_mode='HTML', proxy=config.tg_bot.proxy)
     await bot.get_session()
     dp = Dispatcher(bot, storage=storage)
 
@@ -101,4 +102,3 @@ if __name__ == '__main__':
         logger.warning("Bot stopped!")
     except RuntimeError as e:
         print(f'{e}')
-

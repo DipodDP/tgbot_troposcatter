@@ -16,7 +16,8 @@ def home():
         if status is None:
             result = 'alive! :)'
         else:
-            result = f'stopped with code {status}.  Press <a href="/start">Start</a>'
+            result = f'stopped with code {status}.\
+            Press <a href="/start">Start</a>'
     else:
         result = 'down! :(. Press <a href="/start">Start</a>'
     return f'<h1>Bot is {result}</h>'
@@ -29,7 +30,8 @@ def start():
     if process:
         status = process.poll()
     if status is not None:
-        # in venv Pythonanywhere you may need to set ful path to python interpreter
+        # in venv Pythonanywhere you may need to set
+        # full path to python interpreter
         process = subprocess.Popen("python bot.py", shell=True)
         print('Starting...')
 
@@ -38,3 +40,5 @@ def start():
 
 if __name__ == '__main__':
     app.run()
+
+    pass
