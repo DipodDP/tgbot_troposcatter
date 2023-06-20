@@ -32,7 +32,14 @@ def start():
     if status is not None:
         # in venv Pythonanywhere you may need to set
         # full path to python interpreter
-        process = subprocess.Popen("python bot.py", shell=True)
+        result_python_path = subprocess.run(
+            ['which', 'python'], capture_output=True, text=True)
+
+        if result_python_path.returncode == 0:
+            python_path = result_python_path.stdout.strip()
+        else:
+            python_path = 'python'
+        process = subprocess.Popen(f"{python_path} bot.py", shell=True)
         print('Starting...')
 
     return redirect(url_for('home'))
