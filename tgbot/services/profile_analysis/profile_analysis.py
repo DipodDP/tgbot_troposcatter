@@ -4,7 +4,27 @@ import math
 from matplotlib.pyplot import subplots
 from numpy import correlate, pad, ones, zeros, polyval
 
-from async_tropo import l0_calc, lmed_calc, lr_calc
+
+def l0_calc(R, lam=0.06):
+    return 20 * math.log10(4 * math.pi * R * 1000 / lam)
+
+
+def lmed_calc(R, lam=0.06):
+    l = 0.3
+    k = (70 - 85) / (146 - 345)
+    b = 70 - k * 146
+    return (k * R + b) - 10 * math.log10(lam / l)
+
+
+def lr_calc(R, delta):
+    a = 183.6242531493953
+    b = 0.30840274015885827
+    k = a / R + b
+    c = k * delta + 1
+    if c > 0:
+        return 20 / 3 * math.log2(c)
+    else:
+        return -20
 
 
 def get_line_pol(p0, p1):
@@ -14,7 +34,7 @@ def get_line_pol(p0, p1):
     return pol
 
 
-def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha):
+def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha1=2, ha2=2):
     fig, axes = subplots(2, 1, figsize=[19.20, 5.4])
 
     # plot plain profile
@@ -45,14 +65,13 @@ def plot_elevation_profiles(dist, els, hca_dist_ind, pathfilename, ha):
 
     # plot lines of view
     # get lines coeffs
-    pol_1 = get_line_pol((dist[0], els_curved[0] + ha),
+    pol_1 = get_line_pol((dist[0], els_curved[0] + ha1),
                          (dist[hca_dist_ind[0]], els_curved[hca_dist_ind[0]]))
-    pol_2 = get_line_pol((dist[-1], els_curved[-1] + ha),
+    pol_2 = get_line_pol((dist[-1], els_curved[-1] + ha2),
                          (dist[hca_dist_ind[1]], els_curved[hca_dist_ind[1]]))
 
     axes[1].plot(dist, polyval(pol_1, dist), 'k', lw=1)
     axes[1].plot(dist, polyval(pol_2, dist), 'k', lw=1)
-
     crosspoint = ((pol_2[1] - pol_1[1]) / (pol_1[0] - pol_2[0]),
                   (pol_2[1] - pol_1[1]) / (pol_1[0] - pol_2[0])
                   * pol_1[0] + pol_1[1])
@@ -70,10 +89,10 @@ def betta_calc(h1, h2, R, ha=2):
                       (R * 1000)) * 180 / math.pi
 
 
-def delta_calc(b_sum, ha=2):
+def delta_calc(b_sum, ha1=2, ha2=2):
     if b_sum < -0.6:
         b_sum = -0.6
-    return b_sum + 0.056 * math.sqrt(ha)
+    return b_sum + 0.056 * math.sqrt((ha1 + ha2)/2)
 
 
 def filt_elevation_profile(els, aa_level):
@@ -90,7 +109,9 @@ def filt_elevation_profile(els, aa_level):
     return ret_els
 
 
-def hca_calc(prof, pathfilename, ha=2):
+def hca_calc(prof, pathfilename, ha1=2, ha2=2):
+
+    print(f'Antenas heigths {ha1}, {ha2}')
 
     els = prof['elevation']
     dist = prof['distance']
@@ -103,7 +124,7 @@ def hca_calc(prof, pathfilename, ha=2):
     b1_max = -360
     id1 = 0
     for i in range(dist.size):
-        b1 = betta_calc(sp, els[i], dist[i], ha)
+        b1 = betta_calc(sp, els[i], dist[i], ha1)
         if b1 > b1_max:
             b1_max = b1
             id1 = i
@@ -113,21 +134,20 @@ def hca_calc(prof, pathfilename, ha=2):
     b2_max = -360
     id2 = 0
     for i in range(dist.size - 1, -1, -1):
-        b2 = betta_calc(sp, els[i], dist[-1] - dist[i], ha)
+        b2 = betta_calc(sp, els[i], dist[-1] - dist[i], ha2)
         if b2 > b2_max:
             b2_max = b2
             id2 = i
 
     b_sum = b1_max + b2_max
 
-    plot_elevation_profiles(dist, els, (id1, id2), pathfilename, ha)
+    plot_elevation_profiles(dist, els, (id1, id2), pathfilename, ha1=ha1, ha2=ha2)
 
     return trace_dist, b1_max, b2_max, b_sum
 
 
-def profile_analyzer(prof, pathfilename, bot_mode, ha=2):
-
-    trace_dist, b1_max, b2_max, b_sum = hca_calc(prof, pathfilename, ha=2)
+def profile_analyzer(prof, pathfilename, ha1=2, ha2=2):
+    trace_dist, b1_max, b2_max, b_sum = hca_calc(prof, pathfilename, ha1=ha1, ha2=ha2)
 
     # calc losses
     # Lr = lr_calc(trace_dist, delta_calc(b_sum, ha))
@@ -150,14 +170,14 @@ def profile_analyzer(prof, pathfilename, bot_mode, ha=2):
     return trace_dist, b1_max, b2_max, b_sum, Lr
 
 
-def profile_an_legacy(prof, pathfilename, bot_mode, ha=2):
-
-    trace_dist, b1_max, b2_max, b_sum = hca_calc(prof, pathfilename, ha=2)
+def profile_an_legacy(prof, pathfilename, ha1=2, ha2=2):
+    print(prof)
+    trace_dist, b1_max, b2_max, b_sum = hca_calc(prof, pathfilename, ha1=ha1, ha2=ha2)
 
     # calc losses
     L0 = l0_calc(trace_dist)
     Lmed = lmed_calc(trace_dist)
-    Lr = lr_calc(trace_dist, delta_calc(b_sum, ha))
+    Lr = lr_calc(trace_dist, delta_calc(b_sum, ha1=ha1, ha2=ha2))
 
     # some output
     print(f'Trace distance = {trace_dist:.1f} km')

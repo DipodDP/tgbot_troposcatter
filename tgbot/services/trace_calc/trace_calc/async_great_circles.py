@@ -1,8 +1,14 @@
+import datetime
+import math
+import re
+import xml.dom.minidom
+import urllib.request
+import urllib.parse
 from urllib.error import HTTPError
 
 from environs import Env
 
-from tgbot.services.async_path_profiler import APIException
+from trace_calc.profile_analysis import APIException
 
 
 async def get_dist_azim(coord_a, coord_b):
@@ -16,8 +22,6 @@ async def get_dist_azim(coord_a, coord_b):
     # Date created: 04.07.2010
     # Last updated: 11.08.2010
     # ---------------------------------------------------------------------------
-
-    import math
 
     # pi - число pi, rad - радиус сферы (Земли)
     rad = 6372795
@@ -39,7 +43,8 @@ async def get_dist_azim(coord_a, coord_b):
     sdelta = math.sin(delta)
 
     # вычисления длины большого круга
-    y = math.sqrt(math.pow(cl2 * sdelta, 2) + math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2))
+    y = math.sqrt(math.pow(cl2 * sdelta, 2) +
+                  math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2))
     x = sl1 * sl2 + cl1 * cl2 * cdelta
     ad = math.atan2(y, x)
     dist = ad * rad
@@ -62,11 +67,6 @@ async def get_dist_azim(coord_a, coord_b):
 
 
 async def get_magdec(coord):
-    import datetime
-    import re
-    import urllib.request
-    import urllib.parse
-    import xml.dom.minidom
 
     now = datetime.datetime.now()
     month = now.month
@@ -83,10 +83,12 @@ async def get_magdec(coord):
     env = Env()
     env.read_env(".env")
     key = env.str('GEOMAG_API_KEY')
-    params = urllib.parse.urlencode({'lat1': latitude, 'lon1': longitude, 'key': key, 'resultFormat': 'xml', 'startMonth': month})
+    params = urllib.parse.urlencode(
+        {'lat1': latitude, 'lon1': longitude, 'key': key, 'resultFormat': 'xml', 'startMonth': month})
     # Load XML file
     try:
-        f = urllib.request.urlopen("http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
+        f = urllib.request.urlopen(
+            "http://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?%s" % params)
     except HTTPError as e:
         raise APIException(f'{e}')
 
@@ -94,7 +96,8 @@ async def get_magdec(coord):
     if f.code in [200, 301, 302]:
         # Process XML file into object tree and get only declination info
         dom = xml.dom.minidom.parseString(response)
-        my_string = get_text(dom.getElementsByTagName("declination")[0].childNodes)
+        my_string = get_text(dom.getElementsByTagName(
+            "declination")[0].childNodes)
         # At this point the string still contains some formatting, this removes it
         declination = float(re.findall(r"[-+]?\d*\.\d+|\d+", my_string)[0])
         # Output formatting and append line to declination file
@@ -102,4 +105,3 @@ async def get_magdec(coord):
         return declination
     else:
         raise APIException(f'{f.code} {response}')
-

@@ -1,13 +1,17 @@
 import re
 from os import remove
+from environs import Env
 from pathlib import Path
 
-import tgbot.services.async_great_circles as gc
-from tgbot.services.async_path_profiler import coord_min2dec
+import trace_calc.async_great_circles as gc
+from trace_calc.profile_analysis import coord_min2dec
 
 
 def path_sites(file_name: str):
-    return Path(Path.cwd(), 'tgbot', 'services', 'sites coords', file_name)
+    env = Env()
+    env.read_env(".env")
+    path_to_sites = env('SITES_PATH').split('/')
+    return Path(Path.cwd(), *path_to_sites, file_name)
 
 
 async def get_sites(s_name: str, coords: str): # -> s_name: list(str), coords_dec: list(float), coords: list(str)

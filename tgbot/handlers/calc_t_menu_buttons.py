@@ -9,7 +9,7 @@ from tgbot.services.calculation_report import calc_report
 from tgbot.keyboards import reply, inline
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import CalcMenuStates
-from tgbot.services.async_get_sites import path_sites
+from trace_calc.async_get_sites import path_sites
 
 
 @rate_limit(1, key=reply.btn_next.text)

@@ -1,32 +1,9 @@
 # functions for troposphere trace analysis
-import math
+import asyncio
 
 from numpy import fromfile, hstack, column_stack
 
-from tgbot.services import async_path_profiler
-from tgbot.services.profile_analyzer import profile_an_legacy, profile_analyzer
-
-
-def l0_calc(R, lam=0.06):
-    return 20 * math.log10(4 * math.pi * R * 1000 / lam)
-
-
-def lmed_calc(R, lam=0.06):
-    l = 0.3
-    k = (70 - 85) / (146 - 345)
-    b = 70 - k * 146
-    return (k * R + b) - 10 * math.log10(lam / l)
-
-
-def lr_calc(R, delta):
-    a = 183.6242531493953
-    b = 0.30840274015885827
-    k = a / R + b
-    c = k * delta + 1
-    if c > 0:
-        return 20 / 3 * math.log2(c)
-    else:
-        return -20
+from trace_calc.profile_analysis import profile_an_legacy, profile_analyzer, get_profile
 
 
 def res_calc(l0, lmed, lp, lk, ld):
@@ -85,7 +62,7 @@ async def load_path_coords(coord_a, coord_b, pathfilename) -> dict:
     except Exception:
         # there are problems with read file or path_coords didn't match.
         # get the new one
-        path = await async_path_profiler.get_profile(coord_a, coord_b, 0.2)
+        path = await get_profile(coord_a, coord_b, 0.2)
         tmp = hstack((path['coordinates'],
                       column_stack((path['distance'], path['elevation']))))
         tmp.tofile(pathfilename + '.path')
@@ -93,13 +70,13 @@ async def load_path_coords(coord_a, coord_b, pathfilename) -> dict:
 
 
 async def coords_analyzis_groza(coord_a, coord_b, Lk, pathfilename,
-                                bot_mode=0, ha=2):
+                                bot_mode=0, ha1=2, ha2=2):
 
     print(f"!--- Groza -------- Bot mode is: {bot_mode} -----------!")
-    path = load_path_coords(coord_a, coord_b, pathfilename)
+    path = await load_path_coords(coord_a, coord_b, pathfilename)
 
     L0, Lmed, Lr, trace_dist, b1_max, b2_max, b_sum = profile_an_legacy(
-        path, pathfilename, ha)
+        path, pathfilename, ha1=ha1, ha2=ha2)
     Ltot, dL, speed = res_calc(L0, Lmed, Lr, Lk, 2)
     print(f'Total losses = {Ltot:.1f} dB')
     print(f'Delta to reference trace = {dL:.1f} dB')
@@ -114,16 +91,44 @@ async def coords_analyzis_groza(coord_a, coord_b, Lk, pathfilename,
 
 
 async def coords_analyzis_sosnik(coord_a, coord_b, Lk,
-                                 pathfilename, bot_mode=0, ha=2):
-
+                                 pathfilename, bot_mode=0, ha1=2, ha2=2):
     print(f"!--- Sosnik -------- Bot mode is: {bot_mode} -----------!")
     path = await load_path_coords(coord_a, coord_b, pathfilename)
 
     trace_dist, b1_max, b2_max, b_sum, Lr = profile_analyzer(
-        path, pathfilename, ha)
+        path, pathfilename, ha1=ha1, ha2=ha2)
     speed, extra_dist = res_calc_sosnik(trace_dist, Lr, b_sum)
     sp_pref = 'k'
     print(f'Extra distance = {extra_dist:.1f} km')
     print(f'Estimated median speed = {speed:.1f} {sp_pref}bits/s')
 
     return trace_dist, extra_dist, b1_max, b2_max, b_sum, Lr, speed, sp_pref
+
+
+async def main():
+    stored_filename = input('Enter stored file name: ')
+    try:
+        with open(f'sites coords/{stored_filename}.path', 'r') as f:
+            f.close()
+        coord_a, coord_b = ([0.0, 0.0], [0.0, 0.0])
+
+    except FileNotFoundError:
+        coord_a1, coord_a2 = input(
+            'Input site "A" coorinates (format: -123.456 12,345): '
+        ).split()
+        coord_b1, coord_b2 = input(
+            'Input site "B" coorinates (format: -123.456 12,345): '
+        ).split()
+
+        coord_a, coord_b = ([int(coord_a1), int(coord_a2)],
+                            [int(coord_b1), int(coord_b2)])
+
+    ha1 = int(input('Enter antenna 1 height: '))
+    ha2 = int(input('Enter antenna 2 height: '))
+    await coords_analyzis_sosnik(coord_a, coord_b, 0,
+                                 f'./sites coords/{stored_filename}',
+                                 ha1=ha1, ha2=ha2)
+
+if __name__ == "__main__":
+
+    asyncio.run(main())
