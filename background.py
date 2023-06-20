@@ -33,7 +33,8 @@ def start():
         # in venv Pythonanywhere you may need to set
         # full path to python interpreter
         result_python_path = subprocess.run(
-            ['which', 'python'], capture_output=True, text=True)
+            ['poetry', 'run', 'which', 'python'],
+            capture_output=True, text=True)
 
         if result_python_path.returncode == 0:
             python_path = result_python_path.stdout.strip()
@@ -47,5 +48,3 @@ def start():
 
 if __name__ == '__main__':
     app.run()
-
-    pass
