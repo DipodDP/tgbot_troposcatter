@@ -41,7 +41,8 @@ def load_config(path: str | None = None):
 
     # Get bad ru and en words lists from file
     try:
-        with open(Path(Path.cwd(), 'tgbot', 'filters', 'badwords.txt'), encoding='utf8') as f:
+        with open(Path(Path.cwd(), 'tgbot', 'filters', 'badwords.txt'),
+                  encoding='utf8') as f:
             bw_list = f.readlines()
             bw_list_ru = bw_list[0].replace('\n', '').split(', ')
             bw_list_en = bw_list[1].replace('\n', '').split(', ')
@@ -50,13 +51,13 @@ def load_config(path: str | None = None):
         bw_list_en = []
 
     return Config(
-        tg_bot = TgBot(
-            bot_mode = env.int("BOT_MODE"),
-            token = env.str("BOT_TOKEN"),
-            admin_ids = list(map(int, env.list("ADMINS"))),
-            use_redis = env.bool("USE_REDIS"),
-            proxy = env.str("PROXY_URL"),
-            uptime_limit = env.float("UPTIME_LIMIT")
+        tg_bot=TgBot(
+            bot_mode=env.int("BOT_MODE"),
+            token=env.str("BOT_TOKEN"),
+            admin_ids=list(map(int, env.list("ADMINS"))),
+            use_redis=env.bool("USE_REDIS"),
+            proxy=env.str("PROXY_URL"),
+            uptime_limit=env.float("UPTIME_LIMIT")
         ),
         db = DbConfig(
             host = env.str('DB_HOST'),

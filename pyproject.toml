@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "tgbot-troposcatter"
+version = "0.1.0"
+description = ""
+authors = ["DipodDP <DipodDP>"]
+readme = "README.md"
+packages = [{include = "tgbot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = "2.24"
+environs = ">=9.5.0,<9.6.0"
+aiohttp = "3.8.3"
+flask = ">=2.2.2,<2.3.0"
+trace_calc = {path = "./tgbot/services/trace_calc/"}
+progress = "^1.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+back = "background:app.run"

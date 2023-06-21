@@ -6,11 +6,12 @@ from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.types import Message, ChatType
 from aiogram.utils.markdown import code, text
 
-from tgbot.keyboards.reply import bot_inf_menu, btn_back, main_menu, btn_bot_inf, btn_show_bot_inf, btn_saved_sites, \
-    btn_like
+from tgbot.keyboards.reply import bot_inf_menu, btn_back, main_menu,\
+    btn_bot_inf, btn_show_bot_inf, btn_saved_sites, btn_like
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import BotInfMenuStates
-from tgbot.services.async_get_sites import path_sites
+from trace_calc.async_get_sites import path_sites
+
 
 async def get_saved_sites(message: Message):
     await message.answer('Я знаю координаты точек для этих трасс:')
@@ -55,7 +56,7 @@ async def saved_sites(message: Message):
                 msg_text = 'Список сохранненых точек скрыт!'
 
         case _:
-            msg_text = await get_saved_sites(message)   
+            msg_text = await get_saved_sites(message)
     await message.bot.send_message(message.chat.id, msg_text, 'Markdown')
 
 
