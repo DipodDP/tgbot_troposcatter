@@ -32,7 +32,7 @@ async def elevations_api_request(coord_vect_block: list):
         if coord[1] > 180:
             coord[1] = coord[1] - 360
 
-        querystring["points"] += f'[{coord[0]:.6f},{coord[1]:.6f}],'
+        querystring["points"] += f'[{coord[1]:.6f},{coord[0]:.6f}],'
 
     querystring["points"] = querystring["points"][:-1] + ']'
     response = requests.request("GET", url, headers=headers, params=querystring)

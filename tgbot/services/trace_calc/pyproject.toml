@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "trace-calc"
-version = "0.2.12"
+version = "0.2.13"
 description = ""
 authors = ["DipodDP <dipoddp@gmail.com>"]
 readme = "README.md"
