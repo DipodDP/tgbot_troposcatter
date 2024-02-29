@@ -111,7 +111,7 @@ def filt_elevation_profile(els, aa_level):
 
 def hca_calc(prof, pathfilename, ha1=2, ha2=2):
 
-    print(f'Antenas heigths {ha1}, {ha2}')
+    print(f'Antennas heigths {ha1}, {ha2}')
 
     els = prof['elevation']
     dist = prof['distance']
@@ -171,7 +171,6 @@ def profile_analyzer(prof, pathfilename, ha1=2, ha2=2):
 
 
 def profile_an_legacy(prof, pathfilename, ha1=2, ha2=2):
-    print(prof)
     trace_dist, b1_max, b2_max, b_sum = hca_calc(prof, pathfilename, ha1=ha1, ha2=ha2)
 
     # calc losses
