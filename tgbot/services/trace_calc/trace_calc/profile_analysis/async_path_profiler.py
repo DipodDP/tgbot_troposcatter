@@ -4,7 +4,7 @@ import time
 
 import numpy as np
 from environs import Env
-from progress.bar import Bar
+from progressbar import ProgressBar
 
 
 class APIException(Exception):
@@ -51,7 +51,8 @@ async def get_elevations(coord_vect):
     assert coord_vect.shape[0] % BLOCK_SIZE == 0, f'support only {BLOCK_SIZE} wide requests'
 
     blocks_num = coord_vect.shape[0] // BLOCK_SIZE
-    bar = Bar('Retrieving data', max=blocks_num)
+    print('Retriving data')
+    bar = ProgressBar(max_value=blocks_num).start()
     els = []
 
     for n in range(blocks_num):
@@ -59,7 +60,7 @@ async def get_elevations(coord_vect):
         els_block = await elevations_api_request(coord_vect_block)
         els = np.append(els, els_block)
 
-        bar.goto(n + 1)
+        bar.update(n + 1)
         time.sleep(1)
 
     bar.finish()
@@ -98,6 +99,7 @@ async def linspace_coord(coord_a, coord_b, resolution=0.5):
 async def get_profile(coord_a, coord_b, resolution=0.5):
     coord_v = await linspace_coord(coord_a, coord_b, resolution)
     points_num = coord_v.shape[0]
+    print(f'Coordinates: {coord_a} {coord_b}')
 
     profile = {'distance': np.zeros(points_num), 'elevation': np.zeros(points_num),
                'coordinates': coord_v}

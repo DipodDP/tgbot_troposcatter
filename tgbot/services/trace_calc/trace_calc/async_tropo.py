@@ -114,14 +114,14 @@ async def main():
 
     except FileNotFoundError:
         coord_a1, coord_a2 = input(
-            'Input site "A" coorinates (format: -123.456 12,345): '
+            'Input site "A" coorinates (format: -123.456 12.345): '
         ).split()
         coord_b1, coord_b2 = input(
-            'Input site "B" coorinates (format: -123.456 12,345): '
+            'Input site "B" coorinates (format: -123.456 12.345): '
         ).split()
 
-        coord_a, coord_b = ([int(coord_a1), int(coord_a2)],
-                            [int(coord_b1), int(coord_b2)])
+        coord_a, coord_b = ([float(coord_a1), float(coord_a2)],
+                            [float(coord_b1), float(coord_b2)])
 
     ha1 = int(input('Enter antenna 1 height: '))
     ha2 = int(input('Enter antenna 2 height: '))
