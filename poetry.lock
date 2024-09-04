@@ -1109,16 +1109,6 @@ typing = ["typing-extensions"]
 xmp = ["defusedxml"]
 
 [[package]]
-name = "progress"
-version = "1.6"
-description = "Easy to use progress bars"
-optional = false
-python-versions = "*"
-files = [
-    {file = "progress-1.6.tar.gz", hash = "sha256:c9c86e98b5c03fa1fe11e3b67c1feda4788b8d0fe7336c2ff7d5644ccfba34cd"},
-]
-
-[[package]]
 name = "progressbar2"
 version = "4.5.0"
 description = "A Python Progressbar library to provide visual (yet text based) progress to long running operations."
@@ -1413,4 +1403,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "beaf6642a83a1298d4d35c5499925ce1f21cb2fecc741b299eca9f582a92c0cf"
+content-hash = "5fee8a32d7716b632c7c737387cd7b232a2d4111a215d43f9b07a820b29a4dd3"
