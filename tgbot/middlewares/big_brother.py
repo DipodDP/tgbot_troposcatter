@@ -9,9 +9,9 @@ class BigBrother(BaseMiddleware):
     # async def on_point_event_type:
     # 1
     async def on_pre_process_update(self, update: types.Update, data: dict):
-        logging.info('---------------New_update---------------')
-        logging.info('1. pre process update')
-        logging.info('Next: process update')
+        logging.debug('---------------New_update---------------')
+        logging.debug('1. pre process update')
+        logging.debug('Next: process update')
         data['mware_data'] = "Send to on_post_process_update"
 
         banned_users = []
@@ -28,33 +28,33 @@ class BigBrother(BaseMiddleware):
 
     # 2
     async def on_process_update(self, update: types.Update, data: dict):
-        logging.info(f'2. process update {data=}')
-        logging.info('Next: pre process message')
+        logging.debug(f'2. process update {data=}')
+        logging.debug('Next: pre process message')
 
     # 3
     async def on_pre_process_message(self, message: types.Message, data: dict):
-        logging.info(f'3. preprocess message {data=}')
-        logging.info('Next: filters, process message')
+        logging.debug(f'3. preprocess message {data=}')
+        logging.debug('Next: filters, process message')
         data['mware_data'] = "Send to on_process_message"
 
     # 4 filters
     # 5
     async def on_process_message(self, message: types.Message, data: dict):
-        logging.info(f'5. process message')
-        logging.info('Next: handler')
+        logging.debug(f'5. process message')
+        logging.debug('Next: handler')
         data['mware_data'] = "Send to hadnler"
 
     # 6 handler
     # 7
     async def on_post_process_message(self, message: types.Message, data_from_handler: list, data: dict):
-        logging.info(f'7. post process message{data=}{data_from_handler=}')
-        logging.info('Next: post process update')
+        logging.debug(f'7. post process message{data=}{data_from_handler=}')
+        logging.debug('Next: post process update')
         data['mware_data'] = "Send to hadnler"
 
     # 8
     async def on_post_process_update(self, update: types.Update, data_from_handler: list, data: dict):
-        logging.info(f'8. post process update{data=}, {data_from_handler=}')
-        logging.info('-----------------Exit-----------------')
+        logging.debug(f'8. post process update{data=}, {data_from_handler=}')
+        logging.debug('-----------------Exit-----------------')
 
     # Get rid of clocks on inline buttons
     async def on_pre_process_callback_query(self, cq: types.CallbackQuery, data: dict):
