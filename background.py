@@ -13,6 +13,7 @@ from multiprocessing import Process
 from subprocess import Popen
 import asyncio
 
+from aiogram import sys
 import requests
 from flask import Flask, redirect, url_for
 
@@ -22,29 +23,53 @@ process: Popen | None = None
 
 
 # Function to make a periodic request
-async def request_url_periodically(url, interval):
-    while True:
-        await asyncio.sleep(interval)
-        try:
-            response = requests.get(url)
-            print(f'Requested {url}, status code: {response.status_code}')
-        except Exception as e:
-            print(f'Error while requesting {url}: {e}')
+# async def request_url_periodically(url, interval):
+#     while True:
+#         await asyncio.sleep(interval)
+#         try:
+#             response = requests.get(url)
+#             print(f'Requested {url}, status code: {response.status_code}')
+#         except Exception as e:
+#             print(f'Error while requesting {url}: {e}')
 
 
+# Function to make a periodic request
+async def request_url(url, interval):
+    # status_code = None
+    try:
+        response = requests.get(url)
+        status_code = response.status_code
+        print(f'Requested {url}, status code: {status_code}')
+
+        while status_code not in (200, 302):
+            await asyncio.sleep(interval)
+            await request_url(url, interval)
+            break
+
+    except Exception as e:
+        print(f'Error while requesting {url}: {e}')
 # Use multiprocessing to run the async task
-def run_periodic_request(url):
+# def run_periodic_request(url):
+#     # This is the correct way to start an async function with asyncio in a process.
+#     print('Starting the background URL request thread')
+#     interval = 15  # Time interval in seconds between retries
+#     asyncio.run(
+#         request_url(url + '/start', interval)
+#     )  # run the coroutine
+
+def run_request(url):
     # This is the correct way to start an async function with asyncio in a process.
     print('Starting the background URL request thread')
-    interval = 60 * 15  # Time interval in seconds (e.g., every 15 minutes)
+    interval = 5  # Time interval in seconds between retries
     asyncio.run(
-        request_url_periodically(url + '/start', interval)
+        request_url(url + '/start', interval)
     )  # run the coroutine
 
 
 def start_requester_process(url):
     # Start the background requester process
-    requester_process = Process(target=run_periodic_request, args=(url,))
+    # requester_process = Process(target=run_periodic_request, args=(url,))
+    requester_process = Process(target=run_request, args=(url,))
     requester_process.start()  # Start the process
 
 
@@ -90,5 +115,6 @@ def start():
 
 
 if __name__ == '__main__':
-    start_requester_process('http://127.0.0.1:5000')
+    start_requester_process(sys.argv[1])
+    # start_requester_process(sys.argv[1])
     app.run()

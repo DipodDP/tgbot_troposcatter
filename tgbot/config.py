@@ -19,6 +19,9 @@ class TgBot:
     use_redis: bool
     proxy: str
     uptime_limit: float
+    webhook_host: str
+    webapp_host: str | None = None
+    webapp_port: int | None = None
 
 
 @dataclass
@@ -56,14 +59,17 @@ def load_config(path: str | None = None):
             token=env.str("BOT_TOKEN"),
             admin_ids=list(map(int, env.list("ADMINS"))),
             use_redis=env.bool("USE_REDIS"),
-            proxy=env.str("PROXY_URL"),
-            uptime_limit=env.float("UPTIME_LIMIT")
+            uptime_limit=env.float("UPTIME_LIMIT"),
+            proxy=env.str("PROXY_URL", default=None),
+            webhook_host=env.str("WEBHOOK_HOST", default=None),
+            webapp_host=env.str("WEBAPP_HOST", default=None),
+            webapp_port=env.int("WEBAPP_PORT", default=None),
         ),
         db = DbConfig(
-            host = env.str('DB_HOST'),
-            password = env.str('DB_PASS'),
-            user = env.str('DB_USER'),
-            database = env.str('DB_NAME')
+            host = env.str('DB_HOST', default=None),
+            password = env.str('DB_PASS', default=None),
+            user = env.str('DB_USER', default=None),
+            database = env.str('DB_NAME', default=None),
         ),
         misc = Miscellaneous(
             bad_words_ru = bw_list_ru,
