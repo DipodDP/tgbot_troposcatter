@@ -19,7 +19,7 @@ class TgBot:
     use_redis: bool
     proxy: str
     uptime_limit: float
-    webhook_host: str
+    webhook_host: str | None = None 
     webapp_host: str | None = None
     webapp_port: int | None = None
 

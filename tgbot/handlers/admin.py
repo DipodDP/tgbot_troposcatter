@@ -16,8 +16,8 @@ async def admin_start(message: Message, mware_data):
                             ]
                         ))
     await message.reply('Troposcatter calculation', reply_markup=main_menu)
-    logging.info(f'6. handler')
-    logging.info(f'Next: post process message')
+    logging.debug(f'6. handler')
+    logging.debug(f'Next: post process message')
     return {"from_handler": "data from handler"}
 
 

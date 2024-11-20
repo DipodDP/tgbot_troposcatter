@@ -15,8 +15,8 @@ class AdminFilter(BoundFilter):
 
     async def check(self, obj):
         data = ctx_data.get()
-        logging.info(f'4. filter {data=}')
-        logging.info('Next: process message')
+        logging.debug(f'4. filter {data=}')
+        logging.debug('Next: process message')
 
         if self.is_admin is None:
             return False
