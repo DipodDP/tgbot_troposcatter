@@ -40,12 +40,9 @@ def elevations_api_request(coord_vect_block: list):
     )
     resp = json.loads(response.text)
 
-    print(
-        f'Query string: {querystring["points"][:10]} ... from {len(querystring["points"])}'
-    )
+    print(f'\nQuery string: {querystring["points"][:80]}...')
 
     if response.status_code in [200, 301, 302]:
-        print(f'Query string: {querystring}')
         resp_data = resp
         return resp_data
 
