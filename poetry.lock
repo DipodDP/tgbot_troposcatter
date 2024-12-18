@@ -1333,7 +1333,7 @@ files = [
 
 [[package]]
 name = "trace-calc"
-version = "0.2.21"
+version = "0.3.22"
 description = ""
 optional = false
 python-versions = "^3.10"

@@ -1,5 +1,6 @@
 # functions for troposphere trace analysis
 import asyncio
+from pathlib import Path
 
 from numpy import fromfile, hstack, column_stack
 
@@ -106,13 +107,15 @@ async def coords_analyzis_sosnik(coord_a, coord_b, Lk,
 
 
 async def main():
-    stored_filename = input('Enter stored file name: ')
+    SITES_COORDS_PATH = Path(__file__).parent.absolute() / 'sites coords'
+    stored_filename = input('Enter stored file name (without .path): ')
     try:
-        with open(f'sites coords/{stored_filename}.path', 'r') as f:
+        with open(f'{SITES_COORDS_PATH}//{stored_filename}.path', 'r') as f:
             f.close()
         coord_a, coord_b = ([0.0, 0.0], [0.0, 0.0])
 
     except FileNotFoundError:
+        print(f'File sites coords/{stored_filename}.path not found')
         coord_a1, coord_a2 = input(
             'Input site "A" coorinates (format: -123.456 12.345): '
         ).split()
@@ -126,7 +129,7 @@ async def main():
     ha1 = int(input('Enter antenna 1 height: '))
     ha2 = int(input('Enter antenna 2 height: '))
     await coords_analyzis_sosnik(coord_a, coord_b, 0,
-                                 f'./sites coords/{stored_filename}',
+                                 f'{SITES_COORDS_PATH}//{stored_filename}',
                                  ha1=ha1, ha2=ha2)
 
 if __name__ == "__main__":
