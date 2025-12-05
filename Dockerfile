@@ -1,8 +1,18 @@
-FROM python:3.9-buster
-ENV BOT_NAME=$BOT_NAME
+# Use an official Python runtime as a parent image
+FROM python:3.10-buster
 
-WORKDIR /usr/src/app/"${BOT_NAME:-tg_bot}"
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-COPY requirements.txt /usr/src/app/"${BOT_NAME:-tg_bot}"
-RUN pip install -r /usr/src/app/"${BOT_NAME:-tg_bot}"/requirements.txt
-COPY . /usr/src/app/"${BOT_NAME:-tg_bot}"
+# Install poetry
+RUN pip install poetry
+
+# Copy the poetry lock and pyproject files to the container
+COPY poetry.lock pyproject.toml /usr/src/app/
+COPY . /usr/src/app/
+
+# Install project dependencies
+RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+
+# Command to run the bot
+CMD ["python", "bot.py"]

@@ -9,11 +9,14 @@ packages = [{include = "tgbot"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 aiogram = "2.24"
-environs = ">=9.5.0,<9.6.0"
+environs = "*"
 aiohttp = "3.8.3"
 flask = ">=2.2.2,<2.3.0"
-trace_calc = {path = "./tgbot/services/trace_calc/"}
+trace_calc = {git = "https://github.com/DipodDP/trace_calc.git"}
+python-json-logger = "^4.0.0"
 
+[tool.ruff.format]
+quote-style = "single"
 
 [build-system]
 requires = ["poetry-core"]

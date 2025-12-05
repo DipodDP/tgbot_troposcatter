@@ -20,3 +20,23 @@ Bot supports almost any input formats for sites coordinates like decimal or "ddd
 By default N-latitude and E-longitude are used, if S-latitude or W-longitude are not defined.
 
 And watch your language, please. Bot may be a little pique.
+
+## Configuration
+
+The project includes two new files for configuration: `paths.py` and `logging.py`. The `paths.py` file defines all the relevant paths for the project, while the `logging.py` file configures all the logging settings.
+
+To run the bot, you need to create a `.env` file in the root of the project. You can do this by copying the `.env.dist` file and renaming it to `.env`.
+
+```shell
+cp .env.dist .env
+```
+
+Then, you need to fill in the required environment variables in the `.env` file. The following variables are required:
+
+- `BOT_TOKEN`: Your Telegram bot token.
+- `ADMINS`: A comma-separated list of Telegram user IDs that should have admin access to the bot.
+- `ELEVATION_API_URL`: The URL for the elevation API.
+- `ELEVATION_API_KEY`: The API key for the elevation API.
+- `DECLINATION_API_URL`: The URL for the declination API.
+- `DECLINATION_API_KEY`: The API key for the declination API.
+```

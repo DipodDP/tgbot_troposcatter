@@ -16,16 +16,16 @@ from trace_calc.async_get_sites import path_sites
 async def get_saved_sites(message: Message):
     await message.answer('Я знаю координаты точек для этих трасс:')
     files = listdir(path_sites(''))
-    sites = list(filter(lambda x: x.endswith('.trlc'), files))
+    sites = list(filter(lambda x: x.endswith('.path'), files))
     sites.sort()
 
     try:
-        sites.remove("Точка А Точка Б.trlc")
+        sites.remove("Точка А Точка Б.path")
     except ValueError:
         pass
 
     for i in range(len(sites)):
-        sites[i] = sites[i].replace('.trlc', "")
+        sites[i] = sites[i].replace('.path', "")
         sites[i] = sites[i].replace(' ', " — ")
         sites[i] = sites[i].replace('_', " ")
         sites[i] = text('\n', code(sites[i]), '\n')

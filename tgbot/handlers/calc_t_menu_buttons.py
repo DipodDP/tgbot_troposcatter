@@ -1,3 +1,4 @@
+import logging
 from os import remove
 
 from aiogram import Dispatcher, types
@@ -10,6 +11,8 @@ from tgbot.keyboards import reply, inline
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import CalcMenuStates
 from trace_calc.async_get_sites import path_sites
+
+logger = logging.getLogger(__name__)
 
 
 @rate_limit(1, key=reply.btn_next.text)
@@ -47,23 +50,28 @@ async def btn_next_handler(message: Message, state: FSMContext):
 
         try:
             if len(s_names) == 1:
-                with open(path_sites(f'{s_names[0]} Точка Б.trlc'), 'r') as f:
+                with open(path_sites(f'{s_names[0]} Точка Б.path'), 'r') as f:
                     f.close()
             else:
-                with open(path_sites(f'{s_names[0]} {s_names[1]}.trlc'), 'r') as f:
+                with open(path_sites(f'{s_names[0]} {s_names[1]}.path'), 'r') as f:
                     f.close()
-            await message.bot.send_message(message.chat.id,
-                                           "Нашел координаты этих точек!"
-                                           " Использовать или удалить эти координаты?",
-                                           reply_markup=inline.use_file)
+            await message.bot.send_message(
+                message.chat.id,
+                'Нашел координаты этих точек! Использовать или удалить эти координаты?',
+                reply_markup=inline.use_file,
+            )
         except FileNotFoundError:
-            await message.answer("Сохраненные данные для этих точек не найдены."
-                                 " Введите координаты точек: ")
+            await message.answer(
+                'Сохраненные данные для этих точек не найдены.'
+                ' Введите координаты точек: '
+            )
             await CalcMenuStates.s_coords.set()
 
     elif curr_state == 'CalcMenuStates:s_coords':
-        await message.answer('Нажмите кнопку ' + reply.btn_next.text + ' для начала расчета',
-                             reply_markup=reply.calc_t_menu)
+        await message.answer(
+            'Нажмите кнопку ' + reply.btn_next.text + ' для начала расчета',
+            reply_markup=reply.calc_t_menu,
+        )
         await CalcMenuStates.got_s_coords.set()
 
     elif curr_state == 'CalcMenuStates:got_s_coords':
@@ -80,7 +88,10 @@ async def btn_back_handler(message: Message, state: FSMContext):
         await state.finish()
         await message.answer('Главное меню: ', reply_markup=reply.main_menu)
 
-    elif curr_state == 'CalcMenuStates:got_s_names' or curr_state == 'CalcMenuStates:s_coords':
+    elif (
+        curr_state == 'CalcMenuStates:got_s_names'
+        or curr_state == 'CalcMenuStates:s_coords'
+    ):
         async with state.proxy() as data:
             data['s_names'] = []
             data['s_coords'] = []
@@ -98,10 +109,13 @@ async def use_del_file(call: CallbackQuery, state: FSMContext):
     if call.data == 'use_file':
         await call.bot.send_message(
             call.message.chat.id,
-            "Использую сохраненые координаты. \nНажмите кнопку " + reply.btn_next.text +
-            ' для начала расчета, ' + ' или ' + reply.btn_back.text +
-            " для ввода новых координат этих точек",
-            reply_markup=reply.calc_t_menu
+            'Использую сохраненые координаты. \nНажмите кнопку '
+            + reply.btn_next.text
+            + ' для начала расчета, '
+            + ' или '
+            + reply.btn_back.text
+            + ' для ввода новых координат этих точек',
+            reply_markup=reply.calc_t_menu,
         )
         await call.message.edit_reply_markup()
         await CalcMenuStates.got_s_coords.set()
@@ -109,29 +123,57 @@ async def use_del_file(call: CallbackQuery, state: FSMContext):
     elif call.data == 'del_file':
         data = await state.get_data()
         s_names = data['s_names']
+
+        if len(s_names) == 1:
+            path_name = f'{s_names[0]} Точка Б'
+        else:
+            path_name = f'{s_names[0]} {s_names[1]}'
+
+        path_file = path_sites(f'{path_name}.path')
+        png_file = path_sites(f'{path_name}.png')
+
         try:
-            if len(s_names) == 1:
-                remove(path_sites(f'{s_names[0]} Точка Б.trlc'))
-                remove(path_sites(f'{s_names[0]} Точка Б.path'))
-            else:
-                remove(path_sites(f'{s_names[0]} {s_names[1]}.trlc'))
-                remove(path_sites(f'{s_names[0]} {s_names[1]}.path'))
-            await call.bot.send_message(call.message.chat.id, "Сохраненые координаты удалены."
-                                                              " Введите координаты точек: ")
+            logger.debug(f'Deleting path file: {path_file}')
+            remove(path_file)
+
+            try:
+                logger.debug(f'Deleting png file: {png_file}')
+                remove(png_file)
+            except FileNotFoundError:
+                logger.debug(f'PNG file not found, skipping: {png_file}')
+                pass  # It's okay if the png is not there
+
+            await call.bot.send_message(
+                call.message.chat.id,
+                'Сохраненые координаты удалены. Введите координаты точек: ',
+            )
         except FileNotFoundError:
-            await call.bot.send_message(call.message.chat.id, "Ошибка удаления."
-                                                              " Введите координаты точек: ")
+            logger.error(f'Could not find path file to delete: {path_file}')
+            await call.bot.send_message(
+                call.message.chat.id, 'Ошибка удаления. Введите координаты точек: '
+            )
 
         await call.message.edit_reply_markup()
         await CalcMenuStates.s_coords.set()
 
 
 def register_calc_t_menu_buttons(dp: Dispatcher):
-    dp.register_message_handler(btn_next_handler, ChatTypeFilter(types.ChatType.PRIVATE),
-                                text=reply.btn_next.text, state=CalcMenuStates)
+    dp.register_message_handler(
+        btn_next_handler,
+        ChatTypeFilter(types.ChatType.PRIVATE),
+        text=reply.btn_next.text,
+        state=CalcMenuStates,
+    )
 
-    dp.register_message_handler(btn_back_handler, ChatTypeFilter(types.ChatType.PRIVATE),
-                                text=reply.btn_back.text, state=CalcMenuStates)
+    dp.register_message_handler(
+        btn_back_handler,
+        ChatTypeFilter(types.ChatType.PRIVATE),
+        text=reply.btn_back.text,
+        state=CalcMenuStates,
+    )
 
-    dp.register_callback_query_handler(use_del_file, ChatTypeFilter(types.ChatType.PRIVATE),
-                                       state=CalcMenuStates.got_s_names)
+    dp.register_callback_query_handler(
+        use_del_file,
+        ChatTypeFilter(types.ChatType.PRIVATE),
+        state=CalcMenuStates.got_s_names,
+    )

@@ -61,10 +61,11 @@ venv.bak/
 # Pyre type checker
 .pyre/
 .idea/*
+
+.vscode/
 .env
 
 # calculation results
-*.trlc
 *.path
 *.png
 like.cnt
