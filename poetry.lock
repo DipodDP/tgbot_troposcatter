@@ -1644,7 +1644,7 @@ test = ["pytest", "tornado (>=4.5)", "typeguard"]
 
 [[package]]
 name = "trace-calc"
-version = "0.3.22"
+version = "0.3.23"
 description = ""
 optional = false
 python-versions = "^3.10"
@@ -1666,7 +1666,7 @@ tenacity = "^8.2.0"
 type = "git"
 url = "https://github.com/DipodDP/trace_calc.git"
 reference = "HEAD"
-resolved_reference = "21a25126813a01fb3f2d43a2d956bebd9e2d127d"
+resolved_reference = "4e1b1b6a12c570304dad98db2073af57cb247ccd"
 
 [[package]]
 name = "typing-extensions"
