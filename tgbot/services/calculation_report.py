@@ -453,6 +453,9 @@ async def calc_report(message: Message, state: FSMContext):
             await message.answer(
                 'Файл с профилем трассы не найден.', reply_markup=main_menu
             )
+        finally:
+            if os.path.exists(plot_path):
+                os.remove(plot_path)
 
     except Exception as e:
         logger.exception('Error in calc_report')
