@@ -4,9 +4,11 @@ import sys
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.contrib.fsm_storage.redis import RedisStorage
 from aiogram.utils.executor import start_webhook
 
+from app_logging import setup_logging
+from paths import OUTPUT_DATA_DIR
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
 from tgbot.filters.bad_words import BadWordsEN, BadWordsRU
@@ -20,11 +22,14 @@ from tgbot.handlers.my_id import register_my_id
 from tgbot.handlers.show_bot_inf_menu import register_show_bot_inf_menu
 from tgbot.handlers.start import register_start
 from tgbot.handlers.sticker import register_sticker
+from tgbot.handlers.view_switch import register_view_switch_handlers
 from tgbot.handlers.wrong import register_wrong
 from tgbot.middlewares.big_brother import BigBrother
 from tgbot.middlewares.rate_limit import RateLimitMiddleware
 from tgbot.misc.notify_admins import on_down_notify, on_startup_notify
 from tgbot.misc.setting_comands import set_all_default_commands
+from trace_calc.adapter import TraceAnalyzerAPI
+from trace_calc.infrastructure.storage import FilePathStorage
 
 WEBHOOK_PATH = '/webhook'
 
@@ -52,6 +57,7 @@ def register_all_handlers(dp):
     register_my_id(dp)
     register_sticker(dp)
     register_file(dp)
+    register_view_switch_handlers(dp)
     register_wrong(dp)
     register_errors(dp)
 
@@ -83,26 +89,27 @@ async def on_shutdown(dp):
 
 
 def main():
-    logging.basicConfig(
-        # filename='log.txt',
-        level=logging.INFO,
-        format='%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
-    )
     logger.info('Starting bot')
     config = load_config('.env')
+    setup_logging(config)
+
+    logger.info('Starting bot')
 
     # Overriding webhook host url from env by url from cli
     if len(sys.argv) > 1:
         setattr(config.tg_bot, 'webhook_host', sys.argv[1])
 
-    storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
-    bot = Bot(
-        token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy
-    )
+    fsm_storage = RedisStorage() if config.tg_bot.use_redis else MemoryStorage()
+    bot = Bot(token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy)
+
+    file_storage = FilePathStorage(output_dir=OUTPUT_DATA_DIR)
+    analyzer = TraceAnalyzerAPI.create_from_config(config, file_storage)
 
     bot['config'] = config
+    bot['analyzer'] = analyzer
+    bot['file_storage'] = file_storage
 
-    dp = Dispatcher(bot, storage=storage)
+    dp = Dispatcher(bot, storage=fsm_storage)
 
     register_all_middlewares(dp)
     register_all_filters(dp)
