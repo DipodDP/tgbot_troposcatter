@@ -6,6 +6,8 @@ class CalcMenuStates(StatesGroup):
     got_s_names = State()
     s_coords = State()
     got_s_coords = State()
+    s_heights = State()
+    got_s_heights = State()
 
 
 class ClimateZoneMenuStates(StatesGroup):

@@ -6,8 +6,15 @@ from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.types import Message, ChatType
 from aiogram.utils.markdown import code, text
 
-from tgbot.keyboards.reply import bot_inf_menu, btn_back, main_menu,\
-    btn_bot_inf, btn_show_bot_inf, btn_saved_sites, btn_like
+from tgbot.keyboards.reply import (
+    bot_inf_menu,
+    btn_back,
+    main_menu,
+    btn_bot_inf,
+    btn_show_bot_inf,
+    btn_saved_sites,
+    btn_like,
+)
 from tgbot.misc.rate_limit import rate_limit
 from tgbot.misc.states import BotInfMenuStates
 from trace_calc.async_get_sites import path_sites
@@ -20,17 +27,17 @@ async def get_saved_sites(message: Message):
     sites.sort()
 
     try:
-        sites.remove("Точка А Точка Б.path")
+        sites.remove('Точка А Точка Б.path')
     except ValueError:
         pass
 
     for i in range(len(sites)):
-        sites[i] = sites[i].replace('.path', "")
-        sites[i] = sites[i].replace(' ', " — ")
-        sites[i] = sites[i].replace('_', " ")
+        sites[i] = sites[i].replace('.path', '')
+        sites[i] = sites[i].replace(' ', ' — ')
+        sites[i] = sites[i].replace('_', ' ')
         sites[i] = text('\n', code(sites[i]), '\n')
-        sites[i] = sites[i].replace("\\-", "-")
-        sites[i] = sites[i].replace("\\.", ".")
+        sites[i] = sites[i].replace('\\-', '-')
+        sites[i] = sites[i].replace('\\.', '.')
 
     msg_text = ''.join(sites)
 
@@ -45,7 +52,6 @@ async def show_bot_inf_menu(message: Message):
 
 @rate_limit(5, key=btn_saved_sites.text)
 async def saved_sites(message: Message):
-
     bot_mode = message.bot['config'].tg_bot.bot_mode
 
     match bot_mode:
@@ -62,7 +68,6 @@ async def saved_sites(message: Message):
 
 @rate_limit(5, key=btn_bot_inf.text)
 async def bot_inf(message: Message):
-
     bot_mode = message.bot['config'].tg_bot.bot_mode
 
     match bot_mode:
@@ -75,14 +80,18 @@ async def bot_inf(message: Message):
         case _:
             text_info = 'No information'
 
-    await message.answer(text_info, disable_web_page_preview=True, reply_markup=bot_inf_menu)
+    await message.answer(
+        text_info, disable_web_page_preview=True, reply_markup=bot_inf_menu
+    )
 
 
 @rate_limit(5, key=btn_like.text)
 async def like(message: Message):
     await message.answer('Спасибо:)')
-    await message.bot.send_sticker(message.chat.id,
-                                   'CAACAgIAAxkBAAIDf2I0sruXeS-rJxeSNhmhjXBp0B93AAIfAANZu_wl6jl0G9k9NpkjBA')
+    await message.bot.send_sticker(
+        message.chat.id,
+        'CAACAgIAAxkBAAIDf2I0sruXeS-rJxeSNhmhjXBp0B93AAIfAANZu_wl6jl0G9k9NpkjBA',
+    )
     with open('tgbot/like.cnt', 'r') as f:
         c = int(f.read())
         c += 1
@@ -96,13 +105,33 @@ async def bot_inf_back(message: Message, state: FSMContext):
 
 
 def register_show_bot_inf_menu(dp: Dispatcher):
-    dp.register_message_handler(show_bot_inf_menu, ChatTypeFilter(ChatType.PRIVATE), text=btn_show_bot_inf.text,
-                                state='*')
-    dp.register_message_handler(saved_sites, ChatTypeFilter(ChatType.PRIVATE), text=btn_saved_sites.text,
-                                state=BotInfMenuStates.bot_inf_state)
-    dp.register_message_handler(bot_inf, ChatTypeFilter(ChatType.PRIVATE), text=btn_bot_inf.text,
-                                state=BotInfMenuStates.bot_inf_state)
-    dp.register_message_handler(like, ChatTypeFilter(ChatType.PRIVATE), text=btn_like.text,
-                                state=BotInfMenuStates.bot_inf_state)
-    dp.register_message_handler(bot_inf_back, ChatTypeFilter(ChatType.PRIVATE), text=btn_back.text,
-                                state=BotInfMenuStates.bot_inf_state)
+    dp.register_message_handler(
+        show_bot_inf_menu,
+        ChatTypeFilter(ChatType.PRIVATE),
+        text=btn_show_bot_inf.text,
+        state='*',
+    )
+    dp.register_message_handler(
+        saved_sites,
+        ChatTypeFilter(ChatType.PRIVATE),
+        text=btn_saved_sites.text,
+        state=BotInfMenuStates.bot_inf_state,
+    )
+    dp.register_message_handler(
+        bot_inf,
+        ChatTypeFilter(ChatType.PRIVATE),
+        text=btn_bot_inf.text,
+        state=BotInfMenuStates.bot_inf_state,
+    )
+    dp.register_message_handler(
+        like,
+        ChatTypeFilter(ChatType.PRIVATE),
+        text=btn_like.text,
+        state=BotInfMenuStates.bot_inf_state,
+    )
+    dp.register_message_handler(
+        bot_inf_back,
+        ChatTypeFilter(ChatType.PRIVATE),
+        text=btn_back.text,
+        state=BotInfMenuStates.bot_inf_state,
+    )

@@ -22,6 +22,7 @@ from tgbot.handlers.my_id import register_my_id
 from tgbot.handlers.show_bot_inf_menu import register_show_bot_inf_menu
 from tgbot.handlers.start import register_start
 from tgbot.handlers.sticker import register_sticker
+from tgbot.handlers.view_switch import register_view_switch_handlers
 from tgbot.handlers.wrong import register_wrong
 from tgbot.middlewares.big_brother import BigBrother
 from tgbot.middlewares.rate_limit import RateLimitMiddleware
@@ -56,6 +57,7 @@ def register_all_handlers(dp):
     register_my_id(dp)
     register_sticker(dp)
     register_file(dp)
+    register_view_switch_handlers(dp)
     register_wrong(dp)
     register_errors(dp)
 
