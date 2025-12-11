@@ -33,6 +33,7 @@ cp .env.dist .env
 
 Then, you need to fill in the required environment variables in the `.env` file. The following variables are required:
 
+```
 - `BOT_TOKEN`: Your Telegram bot token.
 - `ADMINS`: A comma-separated list of Telegram user IDs that should have admin access to the bot.
 - `ELEVATION_API_URL`: The URL for the elevation API.
