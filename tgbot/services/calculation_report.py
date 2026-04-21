@@ -8,6 +8,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 import aiogram.utils.markdown as md
 
+from trace_calc.domain import APIException, InvalidResponseException
+
 from paths import OUTPUT_DATA_DIR
 from tgbot.keyboards.reply import main_menu
 from tgbot.keyboards.inline import show_volume_keyboard
@@ -459,6 +461,17 @@ async def calc_report(message: Message, state: FSMContext):
 
     except Exception as e:
         logger.exception('Error in calc_report')
-        await message.answer(f'Произошла ошибка: {e}', reply_markup=main_menu)
+
+        if isinstance(e, InvalidResponseException) and "414" in str(e):
+            user_message = (
+                "Слишком длинная трасса для API. "
+                "Попробуйте уменьшить расстояние между точками."
+            )
+        elif isinstance(e, APIException):
+            user_message = "Ошибка при получении данных о высотах. Попробуйте позже."
+        else:
+            user_message = f'Произошла ошибка: {e}'
+
+        await message.answer(user_message, reply_markup=main_menu)
         if await state.get_state() is not None:
             await state.finish()

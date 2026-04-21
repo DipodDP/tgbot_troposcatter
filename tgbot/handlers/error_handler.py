@@ -1,7 +1,6 @@
 import logging
 
-from aiogram import types, Dispatcher
-from aiogram.dispatcher.filters import ChatTypeFilter
+from aiogram import Dispatcher
 from aiogram.utils.exceptions import (Unauthorized, InvalidQueryID, TelegramAPIError,
                                       CantDemoteChatCreator, MessageNotModified, MessageToDeleteNotFound,
                                       MessageTextIsEmpty, RetryAfter,
@@ -62,4 +61,4 @@ async def errors_handler(update, exception):
 
 
 def register_errors(dp: Dispatcher):
-    dp.register_errors_handler(errors_handler, ChatTypeFilter(types.ChatType.PRIVATE), exception=Exception)
+    dp.register_errors_handler(errors_handler, exception=Exception)
