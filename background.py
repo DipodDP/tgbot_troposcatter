@@ -5,9 +5,15 @@ from subprocess import Popen
 from time import sleep
 
 import requests
+from environs import Env
 from flask import Flask, jsonify, make_response, redirect, request, url_for
 
 from bot import WEBHOOK_PATH
+
+_env = Env()
+_env.read_env('.env')
+WEBAPP_HOST = _env.str('WEBAPP_HOST', default='localhost')
+WEBAPP_PORT = _env.int('WEBAPP_PORT', default=8080)
 
 STARTUP_PATH = '/start'
 INTERVAL = 60 * 30  # Time interval in seconds (e.g., every 30 minutes)
@@ -129,7 +135,7 @@ def webhook_handler():
 
     proxied_response = requests.request(
         method=request.method,  # Forward the same HTTP method
-        url=f'http://localhost:8080/{WEBHOOK_PATH}',  # Destination URL
+        url=f'http://{WEBAPP_HOST}:{WEBAPP_PORT}/{WEBHOOK_PATH}',
         headers={
             key: value for key, value in request.headers if key != 'Host'
         },
