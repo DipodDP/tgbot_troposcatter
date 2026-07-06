@@ -8,32 +8,33 @@ from aiogram.types import (
     CallbackQuery,
 )
 
-from tgbot.keyboards.reply import main_menu
+from tgbot.i18n import t_bot
+from tgbot.keyboards.reply import get_main_menu
 
 
-async def admin_start(message: Message, mware_data):
+async def admin_start(message: Message, mware_data: object, lang: str = 'en'):
     await message.reply(
-        f"Hello, admin! It's tropobot.\n Press /stop to stop bot\n {mware_data=}",
+        t_bot('admin_hello', lang, mware_data=str(mware_data)),
         reply_markup=InlineKeyboardMarkup(
             inline_keyboard=[
-                [InlineKeyboardButton(text='Just button', callback_data='Button')]
+                [InlineKeyboardButton(text=t_bot('admin_button', lang), callback_data='Button')]
             ]
         ),
     )
-    await message.reply('Troposcatter calculation', reply_markup=main_menu)
+    await message.reply(t_bot('admin_troposcatter_calc', lang), reply_markup=get_main_menu(lang))
     logging.debug('6. handler')
     logging.debug('Next: post process message')
     return {'from_handler': 'data from handler'}
 
 
-async def stop_bot(message: Message):
-    await message.reply('Stopping bot...')
+async def stop_bot(message: Message, lang: str = 'en'):
+    await message.reply(t_bot('admin_stopping', lang))
     dp = Dispatcher.get_current()
     await dp.stop_polling()
 
 
-async def get_button(call: CallbackQuery):
-    await call.answer('You pressed the button', show_alert=True, cache_time=1)
+async def get_button(call: CallbackQuery, lang: str = 'en'):
+    await call.answer(t_bot('admin_button_pressed', lang), show_alert=True, cache_time=1)
 
 
 def register_admin(dp: Dispatcher):

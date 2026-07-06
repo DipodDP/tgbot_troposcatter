@@ -3,13 +3,21 @@ from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.types import Message, ContentType, ChatType
 from aiogram.utils.markdown import text, code
 
+from tgbot.i18n import t_bot
 
-async def get_file_id(message: Message):
+
+async def get_file_id(message: Message, lang: str = 'en'):
     file_id = text(code(message.document.file_id)).replace("\\", "")
-    await message.answer(f'Вот id твоего файла:\n'
-                         f'{file_id}', parse_mode='Markdown',)
+    await message.answer(
+        t_bot('file_id', lang, file_id=file_id),
+        parse_mode='Markdown',
+    )
 
 
 def register_file(dp: Dispatcher):
-    dp.register_message_handler(get_file_id, ChatTypeFilter(ChatType.PRIVATE),
-                                content_types=ContentType.DOCUMENT, state='*')
+    dp.register_message_handler(
+        get_file_id,
+        ChatTypeFilter(ChatType.PRIVATE),
+        content_types=ContentType.DOCUMENT,
+        state='*',
+    )

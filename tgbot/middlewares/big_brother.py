@@ -4,6 +4,9 @@ from aiogram import types
 from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
+from tgbot.i18n import get_lang
+from trace_calc.infrastructure.i18n import set_language
+
 
 class BigBrother(BaseMiddleware):
     # async def on_point_event_type:
@@ -37,6 +40,17 @@ class BigBrother(BaseMiddleware):
         logging.debug('Next: filters, process message')
         data['mware_data'] = "Send to on_process_message"
 
+        lang = get_lang(
+            message.from_user.language_code if message.from_user else None
+        )
+        logging.debug(
+            f"Message from user_id={message.from_user.id if message.from_user else 'unknown'}, "
+            f"client_language_code={message.from_user.language_code if message.from_user else 'None'}, "
+            f"resolved_lang={lang}"
+        )
+        data['lang'] = lang
+        set_language(lang)
+
     # 4 filters
     # 5
     async def on_process_message(self, message: types.Message, data: dict):
@@ -56,6 +70,14 @@ class BigBrother(BaseMiddleware):
         logging.debug(f'8. post process update{data=}, {data_from_handler=}')
         logging.debug('-----------------Exit-----------------')
 
-    # Get rid of clocks on inline buttons
+    # Get rid of clocks on inline buttons + inject language
     async def on_pre_process_callback_query(self, cq: types.CallbackQuery, data: dict):
+        lang = get_lang(cq.from_user.language_code if cq.from_user else None)
+        logging.debug(
+            f"CallbackQuery from user_id={cq.from_user.id if cq.from_user else 'unknown'}, "
+            f"client_language_code={cq.from_user.language_code if cq.from_user else 'None'}, "
+            f"resolved_lang={lang}"
+        )
+        data['lang'] = lang
+        set_language(lang)
         await cq.answer()

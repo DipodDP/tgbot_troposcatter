@@ -1,32 +1,60 @@
 # main menu
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
-btn_calc_t = KeyboardButton('⚡️ Рассчитать трассу')
-btn_show_climate_zone = KeyboardButton('🌤 Показать климатические зоны')
-btn_show_bot_inf = KeyboardButton('📗 Показать информацию')
-main_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
-    btn_calc_t, btn_show_climate_zone, btn_show_bot_inf
-)
+from tgbot.i18n import SUPPORTED_LANGS, t_bot
 
-btn_next = KeyboardButton('➡️ Дальше')
-btn_back = KeyboardButton('↩️ Назад')
 
-# calc troposcatter menu
-calc_t_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
-    btn_next, btn_back
-)
+# ---------------------------------------------------------------------------
+# Factory functions — call with lang to get a localized keyboard
+# ---------------------------------------------------------------------------
 
-# climate menu
-btn_climate_zones = KeyboardButton('🌍 Карта климатических зон')
-climate_zone_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
-    btn_climate_zones, btn_back
-)
+def get_main_menu(lang: str = 'en') -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
+        KeyboardButton(t_bot('btn_calc_t', lang)),
+        KeyboardButton(t_bot('btn_show_climate_zone', lang)),
+        KeyboardButton(t_bot('btn_show_bot_inf', lang)),
+    )
 
-# bot info menu
-btn_bot_inf = KeyboardButton('🤖 About Troposcatter bot')
-# btn_like = KeyboardButton('❤️ Лайк!')
-btn_like = KeyboardButton('')
-btn_saved_sites = KeyboardButton('🧭 Показать сохраненные точки')
-bot_inf_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
-    btn_saved_sites, btn_bot_inf, btn_like, btn_back
-)
+
+def get_calc_t_menu(lang: str = 'en') -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
+        KeyboardButton(t_bot('btn_next', lang)),
+        KeyboardButton(t_bot('btn_back', lang)),
+    )
+
+
+def get_climate_zone_menu(lang: str = 'en') -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
+        KeyboardButton(t_bot('btn_climate_zones', lang)),
+        KeyboardButton(t_bot('btn_back', lang)),
+    )
+
+
+def get_bot_inf_menu(lang: str = 'en') -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(resize_keyboard=True, row_width=1).add(
+        KeyboardButton(t_bot('btn_saved_sites', lang)),
+        KeyboardButton(t_bot('btn_bot_inf', lang)),
+        KeyboardButton(t_bot('btn_like', lang)),
+        KeyboardButton(t_bot('btn_back', lang)),
+    )
+
+
+# ---------------------------------------------------------------------------
+# All-language text sets — used in handler registrations so a handler
+# responds to the same button regardless of which language the user has.
+# ---------------------------------------------------------------------------
+
+def _all_texts(key: str) -> list[str]:
+    """Return the set of button texts for *key* across all supported languages."""
+    return list({t_bot(key, lang) for lang in SUPPORTED_LANGS})
+
+
+ALL_BTN_CALC_T = _all_texts('btn_calc_t')
+ALL_BTN_SHOW_CLIMATE_ZONE = _all_texts('btn_show_climate_zone')
+ALL_BTN_SHOW_BOT_INF = _all_texts('btn_show_bot_inf')
+ALL_BTN_NEXT = _all_texts('btn_next')
+ALL_BTN_BACK = _all_texts('btn_back')
+ALL_BTN_CLIMATE_ZONES = _all_texts('btn_climate_zones')
+ALL_BTN_BOT_INF = _all_texts('btn_bot_inf')
+ALL_BTN_SAVED_SITES = _all_texts('btn_saved_sites')
+ALL_BTN_LIKE = _all_texts('btn_like')
