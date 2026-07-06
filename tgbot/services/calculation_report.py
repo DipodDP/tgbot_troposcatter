@@ -1,6 +1,8 @@
 import datetime
 import os
 import logging
+import re
+from typing import Any
 
 import numpy as np
 from aiogram import types
@@ -9,6 +11,7 @@ from aiogram.types import Message
 import aiogram.utils.markdown as md
 
 from trace_calc.domain import APIException, InvalidResponseException
+from trace_calc.infrastructure.i18n import t, set_language
 
 from paths import OUTPUT_DATA_DIR
 from tgbot.keyboards.reply import main_menu
@@ -16,6 +19,18 @@ from tgbot.keyboards.inline import show_volume_keyboard
 
 
 logger = logging.getLogger(__name__)
+
+
+def esc(text: Any) -> str:
+    """Escape characters for Telegram MarkdownV2."""
+    if text is None:
+        return ''
+    return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', str(text))
+
+
+def bold(text: Any) -> str:
+    """Bold text for Telegram MarkdownV2."""
+    return f'*{esc(text)}*'
 
 
 def format_common_volume_results(profile) -> str:
@@ -26,184 +41,193 @@ def format_common_volume_results(profile) -> str:
     output = []
 
     # Common Volume metrics
-    output.append(md.bold('\nМетрики общего объема:\n'))
+    output.append(bold(t('common_volume_metrics').strip()))
     output.append(
         md.text(
-            md.bold('  Общий объем рассеяния:'),
-            md.escape_md(f' {common_volume.cone_intersection_volume_m3 / 1e9:.2f} км³'),
+            esc(
+                t(
+                    'common_scatter_volume',
+                    common_volume.cone_intersection_volume_m3 / 1e9,
+                ).strip()
+            )
         )
     )
     output.append(
         md.text(
-            md.bold('  Верхняя граница объема рассеяния:'),
-            md.escape_md(
-                f' {intersections.upper.distance_km:.2f} км, '
-                f'{intersections.upper.elevation_terrain / 1000:.2f} км над рельефом, '
-                f'{intersections.upper.elevation_sea_level / 1000:.2f} км над уровнем моря'
-            ),
+            esc(
+                t(
+                    'common_volume_top',
+                    intersections.upper.distance_km,
+                    intersections.upper.elevation_terrain / 1000,
+                    intersections.upper.elevation_sea_level / 1000,
+                ).strip()
+            )
         )
     )
     output.append(
         md.text(
-            md.bold('  Нижняя граница объема рассеяния:'),
-            md.escape_md(
-                f' {intersections.lower.distance_km:.2f} км, '
-                f'{intersections.lower.elevation_terrain / 1000:.2f} км над рельефом, '
-                f'{intersections.lower.elevation_sea_level / 1000:.2f} км над уровнем моря'
-            ),
+            esc(
+                t(
+                    'common_volume_bottom',
+                    intersections.lower.distance_km,
+                    intersections.lower.elevation_terrain / 1000,
+                    intersections.lower.elevation_sea_level / 1000,
+                ).strip()
+            )
         )
     )
     output.append(
         md.text(
-            '  Расстояние от А до Верх А x Низ Б:',
-            md.escape_md(f' {common_volume.distance_a_to_cross_ab:.2f} км'),
+            esc(t('dist_a_cross_ab', common_volume.distance_a_to_cross_ab).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние от Б до Верх Б x Низ А:',
-            md.escape_md(f' {common_volume.distance_b_to_cross_ba:.2f} км'),
+            esc(t('dist_b_cross_ba', common_volume.distance_b_to_cross_ba).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние между границами объема рассеяния:',
-            md.escape_md(f' {common_volume.distance_between_crosses:.2f} км'),
+            esc(t('dist_between_crosses', common_volume.distance_between_crosses).strip())
         )
     )
+    output.append(esc(''))
 
     # Beam Intersection Point
     if intersections.beam_intersection_point:
-        output.append(md.bold('\nТочка пересечения лучей:'))
+        output.append(bold(t('beam_intersection_point').strip()))
         output.append(
             md.text(
-                '  Расстояние:',
-                md.escape_md(
-                    f' {intersections.beam_intersection_point.distance_km:.2f} км, '
-                    f'Высота над уровнем моря: {intersections.beam_intersection_point.elevation_sea_level / 1000:.2f} км, '
-                    f'Высота над рельефом: {intersections.beam_intersection_point.elevation_terrain / 1000:.2f} км, '
-                    f'Угол пересечения: {intersections.beam_intersection_point.angle:.2f}°'
-                    if intersections.beam_intersection_point.angle is not None
-                    else ' N/A'
-                ),
+                esc(
+                    t(
+                        'beam_intersection_details',
+                        intersections.beam_intersection_point.distance_km,
+                        intersections.beam_intersection_point.elevation_sea_level
+                        / 1000,
+                        intersections.beam_intersection_point.elevation_terrain / 1000,
+                        intersections.beam_intersection_point.angle or 0.0,
+                    ).strip()
+                )
             )
         )
     else:
-        output.append(
-            md.text(
-                md.bold('\nТочка пересечения лучей:'),
-                md.escape_md(' Не найдена в пределах трассы.'),
-            )
-        )
+        output.append(bold(t('beam_intersection_not_found').strip()))
+    output.append('')
 
     # Antenna Elevation Angles
-    output.append(md.bold('\nУглы возвышения антенн:'))
+    output.append(bold(t('antenna_elevation_angles').strip()))
     output.append(
         md.text(
-            '  Угол возвышения антенны А:',
-            md.escape_md(f' {common_volume.antenna_elevation_angle_a:.2f}°'),
+            esc(
+                t(
+                    'antenna_elevation_angle_a',
+                    common_volume.antenna_elevation_angle_a,
+                ).strip()
+            )
         )
     )
     output.append(
         md.text(
-            '  Угол возвышения антенны Б:',
-            md.escape_md(f' {common_volume.antenna_elevation_angle_b:.2f}°'),
+            esc(
+                t(
+                    'antenna_elevation_angle_b',
+                    common_volume.antenna_elevation_angle_b,
+                ).strip()
+            )
         )
     )
+    output.append('')
 
     # Lower sight lines
-    output.append(md.bold('\nНижние линии визирования:'))
+    output.append(bold(t('lower_sight_lines').strip()))
     angle_a = np.degrees(np.arctan(sight_lines.lower_a[0] / 1000))
     angle_b = np.degrees(np.arctan(-sight_lines.lower_b[0] / 1000))
     output.append(
         md.text(
-            md.escape_md('  Точка А -> Препятствие:'),
-            md.escape_md(f' наклон={sight_lines.lower_a[0]:.4f}, угол={angle_a:.2f}°'),
+            esc(t('site_a_obstacle', sight_lines.lower_a[0], angle_a).strip())
         )
     )
     output.append(
         md.text(
-            md.escape_md('  Точка Б -> Препятствие:'),
-            md.escape_md(f' наклон={-sight_lines.lower_b[0]:.4f}, угол={angle_b:.2f}°'),
+            esc(t('site_b_obstacle', -sight_lines.lower_b[0], angle_b).strip())
         )
     )
+    output.append('')
 
     # Upper sight lines
-    output.append(md.bold('\nВерхние линии визирования:'))
+    output.append(bold(t('upper_sight_lines').strip()))
     angle_upper_a = np.degrees(np.arctan(sight_lines.upper_a[0] / 1000))
     angle_upper_b = np.degrees(np.arctan(-sight_lines.upper_b[0] / 1000))
     output.append(
         md.text(
-            md.escape_md('  Точка А (верхняя):'),
-            md.escape_md(
-                f' наклон={sight_lines.upper_a[0]:.4f}, угол={angle_upper_a:.2f}°'
-            ),
+            esc(t('site_a_upper', sight_lines.upper_a[0], angle_upper_a).strip())
         )
     )
     output.append(
         md.text(
-            md.escape_md('  Точка Б (верхняя):'),
-            md.escape_md(
-                f' наклон={-sight_lines.upper_b[0]:.4f}, угол={angle_upper_b:.2f}°'
-            ),
+            esc(t('site_b_upper', -sight_lines.upper_b[0], angle_upper_b).strip())
         )
     )
+    output.append('')
 
     # Cross intersections
-    output.append(md.bold('\nГраницы пересечения:'))
+    output.append(bold(t('cross_intersections').strip()))
     output.append(
         md.text(
-            '  Верх А x Низ Б:',
-            md.escape_md(
-                f' {intersections.cross_ab.distance_km:.2f} км, '
-                f'{intersections.cross_ab.elevation_sea_level / 1000:.2f} км над уровнем моря, '
-                f'{intersections.cross_ab.elevation_terrain / 1000:.2f} км над рельефом'
-            ),
+            esc(
+                t(
+                    'upper_a_lower_b',
+                    intersections.cross_ab.distance_km,
+                    intersections.cross_ab.elevation_sea_level / 1000,
+                    intersections.cross_ab.elevation_terrain / 1000,
+                ).strip()
+            )
         )
     )
     output.append(
         md.text(
-            '  Верх Б x Низ А:',
-            md.escape_md(
-                f' {intersections.cross_ba.distance_km:.2f} км, '
-                f'{intersections.cross_ba.elevation_sea_level / 1000:.2f} км над уровнем моря, '
-                f'{intersections.cross_ba.elevation_terrain / 1000:.2f} км над рельефом'
-            ),
+            esc(
+                t(
+                    'upper_b_lower_a',
+                    intersections.cross_ba.distance_km,
+                    intersections.cross_ba.elevation_sea_level / 1000,
+                    intersections.cross_ba.elevation_terrain / 1000,
+                ).strip()
+            )
         )
     )
+    output.append(esc(''))
 
     # Distance metrics to lower/upper intersections
-    output.append(md.bold('\nРасстояния до нижних/верхних пересечений:'))
+    output.append(bold(t('distance_metrics').strip()))
     output.append(
         md.text(
-            '  Расстояние от А до нижнего пересечения:',
-            md.escape_md(f' {common_volume.distance_a_to_lower_intersection:.2f} км'),
+            esc(t('dist_a_lower', common_volume.distance_a_to_lower_intersection).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние от Б до нижнего пересечения:',
-            md.escape_md(f' {common_volume.distance_b_to_lower_intersection:.2f} км'),
+            esc(t('dist_b_lower', common_volume.distance_b_to_lower_intersection).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние от А до верхнего пересечения:',
-            md.escape_md(f' {common_volume.distance_a_to_upper_intersection:.2f} км'),
+            esc(t('dist_a_upper', common_volume.distance_a_to_upper_intersection).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние от Б до верхнего пересечения:',
-            md.escape_md(f' {common_volume.distance_b_to_upper_intersection:.2f} км'),
+            esc(t('dist_b_upper', common_volume.distance_b_to_upper_intersection).strip())
         )
     )
     output.append(
         md.text(
-            '  Расстояние между нижним и верхним пересечениями:',
-            md.escape_md(
-                f' {common_volume.distance_between_lower_upper_intersections:.2f} км'
-            ),
+            esc(
+                t(
+                    'dist_lower_upper',
+                    common_volume.distance_between_lower_upper_intersections,
+                ).strip()
+            )
         )
     )
     return '\n'.join(output)
@@ -214,6 +238,8 @@ async def calc_report(message: Message, state: FSMContext):
     bot_mode = message.bot['config'].tg_bot.bot_mode
     analyzer = message.bot['analyzer']
     storage = message.bot['file_storage']
+    lang = (message.from_user.language_code or 'en')[:2]
+    set_language(lang)
 
     try:
         async with state.proxy() as data:
@@ -254,15 +280,15 @@ async def calc_report(message: Message, state: FSMContext):
             data['current_view'] = 'report'
 
         coords_text = md.text(
-            md.bold('Координаты точек:'),
+            bold(t('site_coordinates').strip()),
             '',
-            md.text(md.bold(s_name[0]), ':', sep=''),
-            md.text('Широта:', md.escape_md(coords[0])),
-            md.text('Долгота:', md.escape_md(coords[1])),
+            md.text(bold(s_name[0]), esc(':'), sep=''),
+            md.text(esc('Широта:'), esc(coords[0])),
+            md.text(esc('Долгота:'), esc(coords[1])),
             '',
-            md.text(md.bold(s_name[1]), ':', sep=''),
-            md.text('Широта:', md.escape_md(coords[2])),
-            md.text('Долгота:', md.escape_md(coords[3])),
+            md.text(bold(s_name[1]), esc(':'), sep=''),
+            md.text(esc('Широта:'), esc(coords[2])),
+            md.text(esc('Долгота:'), esc(coords[3])),
             sep='\n',
         )
         await message.bot.send_message(
@@ -271,30 +297,32 @@ async def calc_report(message: Message, state: FSMContext):
             parse_mode=types.ParseMode.MARKDOWN_V2,
         )
         azimuth = md.text(
+            bold(t('geographic_data').strip()),
+            '',
             md.text(
-                md.bold('Азимут на точку ', s_name[1], ':'),
-                md.escape_md(f' {geo_data.true_azimuth_a_b}°'),
+                bold(f"{t('true_azimuth_a_b').strip()} {s_name[1]}:"),
+                esc(f' {geo_data.true_azimuth_a_b}°'),
             ),
             md.text(
-                'Магнитное склонение:',
-                md.escape_md(f' {geo_data.mag_declination_a}°'),
+                md.text(esc(t('mag_declination_a').strip())),
+                esc(f' {geo_data.mag_declination_a}°'),
             ),
             md.text(
-                md.bold('Магнитный азимут на точку ', s_name[1], ':'),
-                md.escape_md(f' {geo_data.mag_azimuth_a_b}°'),
+                bold(f"{t('mag_azimuth_a_b').strip()} {s_name[1]}:"),
+                esc(f' {geo_data.mag_azimuth_a_b}°'),
             ),
-            md.bold('-' * 47),
+            bold('-' * 47),
             md.text(
-                md.bold('Азимут на точку ', s_name[0], ':'),
-                md.escape_md(f' {geo_data.true_azimuth_b_a}°'),
-            ),
-            md.text(
-                'Магнитное склонение :',
-                md.escape_md(f' {geo_data.mag_declination_b}°'),
+                bold(f"{t('true_azimuth_b_a').strip()} {s_name[0]}:"),
+                esc(f' {geo_data.true_azimuth_b_a}°'),
             ),
             md.text(
-                md.bold('Магнитный азимут на точку ', s_name[0], ':'),
-                md.escape_md(f' {geo_data.mag_azimuth_b_a}°'),
+                md.text(esc(t('mag_declination_b').strip())),
+                esc(f' {geo_data.mag_declination_b}°'),
+            ),
+            md.text(
+                bold(f"{t('mag_azimuth_b_a').strip()} {s_name[0]}:"),
+                esc(f' {geo_data.mag_azimuth_b_a}°'),
             ),
             sep='\n',
         )
@@ -329,40 +357,42 @@ async def calc_report(message: Message, state: FSMContext):
                 geo_data=geo_data,
                 antenna_a_height=antenna_a_height,
                 antenna_b_height=antenna_b_height,
+                lang=lang,
             )
             report_text = md.text(
                 md.text(
-                    md.bold('Протяженность трассы'),
-                    md.escape_md(f' = {trace_dist:.2f} км'),
+                    bold(t('distance_km').strip()),
+                    esc(f' = {trace_dist:.2f}'),
                 ),
                 md.text(
-                    md.bold('Угол закрытия ', s_name[0]),
-                    md.escape_md(f' = {b1_max:.2f}°'),
+                    bold(f"{t('site_a_hca').strip()} {s_name[0]}"),
+                    esc(f' = {b1_max:.2f}°'),
                 ),
                 md.text(
-                    md.bold('Угол закрытия ', s_name[1]),
-                    md.escape_md(f' = {b2_max:.2f}°'),
+                    bold(f"{t('site_b_hca').strip()} {s_name[1]}"),
+                    esc(f' = {b2_max:.2f}°'),
                 ),
                 md.text(
-                    md.bold('Суммарный угол закрытия'),
-                    md.escape_md(f' = {b_sum:.2f}°'),
+                    bold(t('hca_sum').strip()),
+                    esc(f' = {b_sum:.2f}°'),
                 ),
                 '',
-                md.bold('Потери:'),
-                md.escape_md(
-                    f' L0 = {L0:.1f} dB, Lmed = {Lmed:.1f} dB, Lr = {Lr:.1f} dB'
+                bold(t('propagation_loss_parameters').strip()),
+                esc(
+                    f"{t('free_space_loss').strip()} = {L0:.1f} dB\n{t('atmospheric_loss').strip()} = {Lmed:.1f} dB\n{t('refraction_loss').strip()} = {Lr:.1f} dB\n"
                 ),
-                md.text(md.bold('Суммарные потери'), md.escape_md(f' = {Ltot:.1f} dB')),
                 md.text(
-                    md.bold(
-                        'Дополнительные потери энергетики по сравнению с референсной трассой'
-                    ),
-                    md.escape_md(f' = {dL:.1f} dB'),
+                    bold(t('total_path_loss').strip()),
+                    esc(f' = {Ltot:.1f} dB'),
+                ),
+                md.text(
+                    bold('Дополнительные потери энергетики по сравнению с референсной трассой'),
+                    esc(f' = {dL:.1f} dB'),
                 ),
                 '',
                 md.text(
-                    md.bold('Ожидаемая медианная скорость'),
-                    md.escape_md(f' = {speed:.1f} {sp_pref}bits/s'),
+                    bold(t('estimated_speed').strip()),
+                    esc(f' = {speed:.1f} {t("mbps") if sp_pref == "M" else t("kbps")}'),
                 ),
                 sep='\n',
             )
@@ -385,39 +415,38 @@ async def calc_report(message: Message, state: FSMContext):
                 geo_data=geo_data,
                 antenna_a_height=antenna_a_height,
                 antenna_b_height=antenna_b_height,
+                lang=lang,
             )
             equiv_dist = trace_dist + extra_dist
             report_text = md.text(
                 md.text(
-                    md.bold('Протяженность трассы'),
-                    md.escape_md(f' = {trace_dist:.2f} км'),
+                    bold(t('distance_km').strip()),
+                    esc(f' = {trace_dist:.2f}'),
                 ),
                 md.text(
-                    'Угол закрытия ',
-                    md.bold(s_name[0]),
-                    md.escape_md(f' = {b1_max:.2f}°'),
+                    bold(f"{t('site_a_hca').strip()} {s_name[0]}"),
+                    esc(f' = {b1_max:.2f}°'),
                 ),
                 md.text(
-                    'Угол закрытия ',
-                    md.bold(s_name[1]),
-                    md.escape_md(f' = {b2_max:.2f}°'),
+                    bold(f"{t('site_b_hca').strip()} {s_name[1]}"),
+                    esc(f' = {b2_max:.2f}°'),
                 ),
                 md.text(
-                    md.bold('Суммарный угол закрытия'),
-                    md.escape_md(f' = {b_sum:.2f}°'),
+                    bold(t('hca_sum').strip()),
+                    esc(f' = {b_sum:.2f}°'),
                 ),
                 '',
                 md.text(
-                    'Дополнительные потери энергетики за счет наличия углов закрытия',
-                    md.escape_md(f' = {-Lr:.1f} dB'),
+                    esc('Дополнительные потери энергетики за счет наличия углов закрытия'),
+                    esc(f' = {-Lr:.1f} dB'),
                 ),
                 md.text(
-                    'Эквивалентная дальность с учетом углов закрытия',
-                    md.escape_md(f' = {equiv_dist:.2f} км'),
+                    bold(t('equal_dist').strip()),
+                    esc(f' = {equiv_dist:.2f}'),
                 ),
                 md.text(
-                    md.bold('Ожидаемая скорость'),
-                    md.escape_md(f' = {speed:.1f} {sp_pref}bits/s'),
+                    bold(t('estimated_speed').strip()),
+                    esc(f' = {speed:.1f} {t("mbps") if sp_pref == "M" else t("kbps")}'),
                 ),
                 sep='\n',
             )
@@ -425,7 +454,7 @@ async def calc_report(message: Message, state: FSMContext):
         if analysis_result and analysis_result.profile_data:
             volume_text = format_common_volume_results(analysis_result.profile_data)
         else:
-            volume_text = md.escape_md(
+            volume_text = esc(
                 'Данные об объеме рассеяния недоступны для этого расчета.'
             )
 
@@ -446,7 +475,7 @@ async def calc_report(message: Message, state: FSMContext):
                 await message.bot.send_document(
                     message.chat.id,
                     photo,
-                    caption=md.bold('Профиль трассы ', s_name[0], ' - ', s_name[1]),
+                    caption=bold(f'Профиль трассы {s_name[0]} - {s_name[1]}'),
                     reply_markup=main_menu,
                     parse_mode=types.ParseMode.MARKDOWN_V2,
                 )
