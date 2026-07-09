@@ -74,7 +74,6 @@ def start_requester_process(url):
     """
 
     # Create the background requester process
-    app.config['url'] = url
     requester_process = Process(
         target=request_url_periodically,
         args=(url + STARTUP_PATH, INTERVAL),
@@ -119,7 +118,7 @@ def start():
 
         # Run main process
         process = subprocess.Popen(
-            f'{python_path} bot.py {app.config.get("url")}', shell=True
+            f'{python_path} bot.py', shell=True
         )
         print('Starting...')
 
