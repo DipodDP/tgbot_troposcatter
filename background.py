@@ -1,25 +1,56 @@
-import subprocess
-import sys
+import asyncio
+import logging
 from multiprocessing import Process
-from subprocess import Popen
 from time import sleep
 
 import requests
 from environs import Env
-from flask import Flask, jsonify, make_response, redirect, request, url_for
+from flask import Flask, request
 
-from bot import WEBHOOK_PATH
+from aiogram import Bot, Dispatcher, types
+
+from bot import WEBHOOK_PATH, build_dispatcher, on_startup
+from tgbot.config import load_config
 
 _env = Env()
 _env.read_env('.env')
-WEBAPP_HOST = _env.str('WEBAPP_HOST', default='localhost')
-WEBAPP_PORT = _env.int('WEBAPP_PORT', default=8080)
 
 STARTUP_PATH = '/start'
 INTERVAL = 60 * 30  # Time interval in seconds (e.g., every 30 minutes)
 
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
-process: Popen | None = None
+
+# Build the aiogram Dispatcher once, in-process, and keep a dedicated event
+# loop to run coroutines on. On PythonAnywhere only the WSGI web app can accept
+# inbound connections; a bot subprocess binds but is unreachable. So Flask must
+# own the Dispatcher and handle updates itself instead of proxying to a separate
+# process.
+config = load_config('.env')
+dp: Dispatcher = build_dispatcher(config)
+loop = asyncio.new_event_loop()
+
+
+def _run(coro):
+    """Run a coroutine on the module-wide loop with aiogram context set."""
+    Bot.set_current(dp.bot)
+    Dispatcher.set_current(dp)
+    return loop.run_until_complete(coro)
+
+
+def setup_webhook(url):
+    """Register ``url`` as the Telegram webhook host and run bot startup.
+
+    Called from the WSGI configuration file with the app's public URL (the same
+    URL used for the self-ping), so the webhook host has a single source. The
+    ``/webhook`` path is appended by ``on_startup`` via ``set_webhook``.
+    """
+    dp.bot.get('config').tg_bot.webhook_host = url
+    try:
+        _run(on_startup(dp))
+    except Exception:  # pragma: no cover - set_webhook/notify best-effort
+        logger.exception('on_startup failed')
 
 
 def request_startup_url(url):
@@ -66,14 +97,16 @@ def start_requester_process(url):
 
     # import flask app but need to call it "application" for WSGI to work
     from background import app as application  # noqa
-    from background import start_requester_process
+    from background import setup_webhook, start_requester_process
 
     url = 'https://' + '.'.join(__name__.split('_')[:-2]) + '.com'
     print('URL is: ', url)
-    start_requester_process(url)
+    setup_webhook(url)            # register the Telegram webhook at <url>/webhook
+    start_requester_process(url)  # keep the free-tier app awake with a self-ping
     """
 
-    # Create the background requester process
+    # Create the background requester process. This periodic self-ping keeps the
+    # free-tier web app awake; Telegram webhook POSTs also wake it on demand.
     requester_process = Process(
         target=request_url_periodically,
         args=(url + STARTUP_PATH, INTERVAL),
@@ -83,80 +116,31 @@ def start_requester_process(url):
 
 @app.route('/')
 def home():
-    global process
-    if process:
-        status = process.poll()
-        if status is None:
-            result = 'alive! :)'
-        else:
-            result = f'stopped with code {status}.\
-            Press <a href="/start">Start</a>'
-    else:
-        result = 'down! :(. Press <a href="/start">Start</a>'
-    return f'<h1>Bot is {result}</h>'
+    return '<h1>Bot is alive! :)</h1>'
 
 
-# Flask satart subprocess endpoint
-@app.route('/start')
+@app.route(STARTUP_PATH)
 def start():
-    global process
-    status = 'Down'
-    if process:
-        status = process.poll()
-    if status is not None:
-        # in venv Pythonanywhere you may need to set
-        # full path to the Python interpreter
-        result_python_path = subprocess.run(
-            ['poetry', 'run', 'which', 'python'],
-            capture_output=True,
-            text=True,
-        )
-        if result_python_path.returncode == 0:
-            python_path = result_python_path.stdout.strip()
-        else:
-            python_path = 'python'
+    """Lightweight health/keep-alive endpoint for the self-pinger.
 
-        # Run main process
-        process = subprocess.Popen(
-            f'{python_path} bot.py', shell=True
-        )
-        print('Starting...')
-
-    return redirect(url_for('home'))
+    The bot no longer runs as a subprocess, so there is nothing to spawn here;
+    a request to any route already wakes the sleeping web app.
+    """
+    return '<h1>Bot is alive! :)</h1>'
 
 
-# Flask webhook endpoint
 @app.route(WEBHOOK_PATH, methods=['POST'])
 def webhook_handler():
+    """Feed the incoming Telegram update straight into the Dispatcher.
+
+    No proxy hop to a bot subprocess (unreachable on PythonAnywhere) and no
+    aiogram IP-allowlist check (which 403s behind a proxy) - the update is
+    handled in this same process and replies go out via the bot API.
     """
-    Flask route to proxy webhook requests to Aiogram.
-    """
-
-    proxied_response = requests.request(
-        method=request.method,  # Forward the same HTTP method
-        url=f'http://{WEBAPP_HOST}:{WEBAPP_PORT}/{WEBHOOK_PATH}',
-        headers={
-            key: value for key, value in request.headers if key != 'Host'
-        },
-        data=request.get_data(),  # Forward the body
-        cookies=request.cookies,  # Forward cookies if needed
-    )
-
-    # Return the response from the proxied server
-    response = make_response(
-        jsonify(proxied_response.json())
-        if proxied_response.headers.get('Content-Type') == 'application/json'
-        else proxied_response.text
-    )
-    response.status_code = proxied_response.status_code
-    (
-        response.headers.add_header(*header)
-        for header in proxied_response.headers.items()
-    )
-
-    return response
+    update = types.Update(**request.get_json(force=True))
+    _run(dp.process_update(update))
+    return '', 200
 
 
 if __name__ == '__main__':
-    start_requester_process(sys.argv[1])
     app.run()

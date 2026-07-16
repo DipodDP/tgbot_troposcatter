@@ -88,17 +88,9 @@ async def on_shutdown(dp):
     logging.warning('Bye!')
 
 
-def main():
-    logger.info('Starting bot')
-    config = load_config('.env')
-    setup_logging(config)
-
-    logger.info('Starting bot')
-
-    # Overriding webhook host url from env by url from cli
-    if len(sys.argv) > 1:
-        setattr(config.tg_bot, 'webhook_host', sys.argv[1])
-
+def build_dispatcher(config) -> Dispatcher:
+    """Create a fully-wired Dispatcher (bot, storage, middlewares, filters,
+    handlers), ready for either polling or webhook update processing."""
     fsm_storage = RedisStorage() if config.tg_bot.use_redis else MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML', proxy=config.tg_bot.proxy)
 
@@ -114,6 +106,22 @@ def main():
     register_all_middlewares(dp)
     register_all_filters(dp)
     register_all_handlers(dp)
+
+    return dp
+
+
+def main():
+    logger.info('Starting bot')
+    config = load_config('.env')
+    setup_logging(config)
+
+    logger.info('Starting bot')
+
+    # Overriding webhook host url from env by url from cli
+    if len(sys.argv) > 1:
+        setattr(config.tg_bot, 'webhook_host', sys.argv[1])
+
+    dp = build_dispatcher(config)
 
     if url := config.tg_bot.webhook_host:
         logger.info(f'Using webhook: {url + WEBHOOK_PATH}')
