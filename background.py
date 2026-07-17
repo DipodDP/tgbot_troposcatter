@@ -9,7 +9,7 @@ from flask import Flask, request
 
 from aiogram import Bot, Dispatcher, types
 
-from bot import WEBHOOK_PATH, build_dispatcher, on_startup
+from bot import WEBHOOK_PATH, build_dispatcher
 from tgbot.config import load_config
 
 _env = Env()
@@ -22,35 +22,46 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Build the aiogram Dispatcher once, in-process, and keep a dedicated event
-# loop to run coroutines on. On PythonAnywhere only the WSGI web app can accept
-# inbound connections; a bot subprocess binds but is unreachable. So Flask must
-# own the Dispatcher and handle updates itself instead of proxying to a separate
-# process.
+# Build the aiogram Dispatcher once, in-process. On PythonAnywhere only the
+# WSGI web app can accept inbound connections; a bot subprocess binds but is
+# unreachable. So Flask must own the Dispatcher and handle updates itself
+# instead of proxying to a separate process.
+#
+# Building the dispatcher does no network I/O. All network I/O (bot API calls)
+# happens per-request on a fresh event loop with a fresh aiohttp session:
+# a session created at import time in the uwsgi master ends up with a dead
+# connector in the forked worker, and every bot API call then hangs until
+# aiohttp's 5-minute timeout (observed live: 499s from Telegram, SIGPIPE on
+# response write, and one update redelivered forever).
 config = load_config('.env')
 dp: Dispatcher = build_dispatcher(config)
-loop = asyncio.new_event_loop()
-
-
-def _run(coro):
-    """Run a coroutine on the module-wide loop with aiogram context set."""
-    Bot.set_current(dp.bot)
-    Dispatcher.set_current(dp)
-    return loop.run_until_complete(coro)
 
 
 def setup_webhook(url):
-    """Register ``url`` as the Telegram webhook host and run bot startup.
+    """Record ``url`` as the Telegram webhook host.
 
-    Called from the WSGI configuration file with the app's public URL (the same
-    URL used for the self-ping), so the webhook host has a single source. The
-    ``/webhook`` path is appended by ``on_startup`` via ``set_webhook``.
+    Called from the WSGI configuration file with the app's public URL (the
+    same URL used for the self-ping). Deliberately does NO network I/O:
+    registering the webhook with Telegram (``setWebhook``) is a one-off,
+    out-of-band console step, not something to run on every worker start.
     """
     dp.bot.get('config').tg_bot.webhook_host = url
+
+
+async def _handle_update(update):
+    """Process one update with aiogram context set, on the current loop.
+
+    The bot's aiohttp session is closed afterwards so the next request
+    creates a fresh session bound to its own (fresh) event loop.
+    """
+    Bot.set_current(dp.bot)
+    Dispatcher.set_current(dp)
     try:
-        _run(on_startup(dp))
-    except Exception:  # pragma: no cover - set_webhook/notify best-effort
-        logger.exception('on_startup failed')
+        await dp.process_update(update)
+    finally:
+        session = await dp.bot.get_session()
+        if session is not None and not session.closed:
+            await session.close()
 
 
 def request_startup_url(url):
@@ -138,7 +149,11 @@ def webhook_handler():
     handled in this same process and replies go out via the bot API.
     """
     update = types.Update(**request.get_json(force=True))
-    _run(dp.process_update(update))
+    loop = asyncio.new_event_loop()
+    try:
+        loop.run_until_complete(_handle_update(update))
+    finally:
+        loop.close()
     return '', 200
 
 
