@@ -40,12 +40,42 @@ dp: Dispatcher = build_dispatcher(config)
 def setup_webhook(url):
     """Record ``url`` as the Telegram webhook host.
 
-    Called from the WSGI configuration file with the app's public URL (the
-    same URL used for the self-ping). Deliberately does NO network I/O:
-    registering the webhook with Telegram (``setWebhook``) is a one-off,
-    out-of-band console step, not something to run on every worker start.
+    Deliberately does NO network I/O: it runs at WSGI import time, in the
+    uwsgi master before forking, where creating an aiohttp session leaves a
+    dead connector in the workers. Actual registration with Telegram happens
+    in the self-pinger process — see ``register_webhook``.
     """
     dp.bot.get('config').tg_bot.webhook_host = url
+
+
+def register_webhook(url):
+    """Register ``url + WEBHOOK_PATH`` with Telegram via aiogram.
+
+    Runs ``bot.set_webhook`` on a fresh event loop and closes the aiohttp
+    session afterwards, so nothing outlives the loop. Must only be called
+    from the self-pinger process — never at WSGI import time in the pre-fork
+    master, where the session's connector would be dead in the workers.
+    """
+    async def _set():
+        try:
+            await dp.bot.set_webhook(url + WEBHOOK_PATH)
+            print(f'Webhook set to {url + WEBHOOK_PATH}')
+        finally:
+            session = await dp.bot.get_session()
+            if session is not None and not session.closed:
+                await session.close()
+
+    loop = asyncio.new_event_loop()
+    try:
+        for _ in range(3):
+            try:
+                loop.run_until_complete(_set())
+                return
+            except Exception as e:
+                print(f'Error registering webhook: {e}')
+                sleep(5)
+    finally:
+        loop.close()
 
 
 async def _handle_update(update):
@@ -83,15 +113,19 @@ def request_startup_url(url):
 
 def request_url_periodically(url, interval):
     """Function to make a periodic startup requests"""
-    request_startup_url(url)
+    ping_url = url + STARTUP_PATH
+    request_startup_url(ping_url)
+    # Register the webhook only after the app has answered its first ping,
+    # so Telegram never POSTs to an app that is not up yet.
+    register_webhook(url)
     while True:
         try:
             sleep(interval)
-            response = requests.get(url)
-            print(f'Requested {url}, status code: {response.status_code}')
+            response = requests.get(ping_url)
+            print(f'Requested {ping_url}, status code: {response.status_code}')
 
         except Exception as e:
-            print(f'Error while requesting {url}: {e}')
+            print(f'Error while requesting {ping_url}: {e}')
 
 
 def start_requester_process(url):
@@ -108,19 +142,21 @@ def start_requester_process(url):
 
     # import flask app but need to call it "application" for WSGI to work
     from background import app as application  # noqa
-    from background import setup_webhook, start_requester_process
+    from background import start_requester_process
 
     url = 'https://' + '.'.join(__name__.split('_')[:-2]) + '.com'
     print('URL is: ', url)
-    setup_webhook(url)            # register the Telegram webhook at <url>/webhook
-    start_requester_process(url)  # keep the free-tier app awake with a self-ping
+    start_requester_process(url)  # webhook registration + self-ping
     """
+    setup_webhook(url)
 
-    # Create the background requester process. This periodic self-ping keeps the
-    # free-tier web app awake; Telegram webhook POSTs also wake it on demand.
+    # Create the background requester process. This child process registers the
+    # Telegram webhook (safe: not the pre-fork master) and then keeps the
+    # free-tier web app awake with a periodic self-ping; Telegram webhook POSTs
+    # also wake it on demand.
     requester_process = Process(
         target=request_url_periodically,
-        args=(url + STARTUP_PATH, INTERVAL),
+        args=(url, INTERVAL),
     )
     requester_process.start()  # Start the process
 
